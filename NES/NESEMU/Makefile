@@ -30,6 +30,6 @@ run: main
 	./$(TARGET_MAIN)
 
 clean:
-	rm -f $(OBJ_MAIN) $(TARGET_MAIN)
+	rm -f $(OBJ_DIR)/*
 
 .PHONY: all main run clean
