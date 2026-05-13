@@ -1,6 +1,5 @@
 import SwiftUI
 import SpriteKit
-import NESEMU
 
 struct NESPPUView: View {
     @StateObject private var scene: NESRenderScene

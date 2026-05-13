@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NESEMU
 
 @main
 struct AHNESEMUMacOSApp: App {

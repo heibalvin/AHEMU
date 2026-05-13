@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		39E585A32FB37E0200D25712 /* NESEMU in Frameworks */ = {isa = PBXBuildFile; productRef = 39E585A22FB37E0200D25712 /* NESEMU */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		39E585792FB3794E00D25712 /* AHNESEMUMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AHNESEMUMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -27,7 +23,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39E585A32FB37E0200D25712 /* NESEMU in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +65,6 @@
 			);
 			name = AHNESEMUMacOS;
 			packageProductDependencies = (
-				39E585A22FB37E0200D25712 /* NESEMU */,
 			);
 			productName = AHNESEMUMacOS;
 			productReference = 39E585792FB3794E00D25712 /* AHNESEMUMacOS.app */;
@@ -101,7 +95,6 @@
 			mainGroup = 39E585702FB3794E00D25712;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				39E585A12FB37E0200D25712 /* XCLocalSwiftPackageReference "../../../Sources/NESEMU" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 39E5857A2FB3794E00D25712 /* Products */;
@@ -340,20 +333,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		39E585A12FB37E0200D25712 /* XCLocalSwiftPackageReference "Sources/NESEMU" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = /Users/heibalvin/Github/heibalvin/AHEMU/Sources/NESEMU;
-		};
-	/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		39E585A22FB37E0200D25712 /* NESEMU */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NESEMU;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 39E585712FB3794E00D25712 /* Project object */;
 }

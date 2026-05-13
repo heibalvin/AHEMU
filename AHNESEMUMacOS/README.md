@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-This macOS application implements an NES emulator using SwiftUI and our custom `NESEMU` core library. The UI layer consists of two main views: `NESEMUView` (the main container) and `NESPPUView` (the PPU rendering view).
+This macOS application implements an NES emulator using SwiftUI. The emulation core (`NESEMU`) and PPU renderer (`NESPPU`) are integrated directly into this app (previously separate packages). The UI layer consists of two main views: `NESEMUView` (the main container) and `NESPPUView` (the PPU rendering view).
 
 ## NESEMUView & NESEMUHolder
 
@@ -100,6 +100,7 @@ The `cycleId` in `NESEMU` is an internal counter of total CPU cycles executed ac
 
 ## Technical Notes
 
+- **Integration:** Both `NESEMU` and `NESPPU` are integrated directly into this application (previously distributed as separate Swift packages).
 - **Thread Safety:** `NESPPU` uses `NSLock` to protect the double-buffered frame buffer swap. `NESEMUHolder` uses `NSLock` for the `updateCount`.
 - **Memory:** The frame buffer is `256 × 240 × 4` bytes (RGBA) ≈ 245 KB.
 - **Timer Granularity:** Combine `Timer` runs on the main run loop; suitable for display metrics but not precise timing.

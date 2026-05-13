@@ -1,5 +1,4 @@
 import SpriteKit
-import NESEMU
 import Combine
 
 class NESRenderScene: SKScene, ObservableObject {
