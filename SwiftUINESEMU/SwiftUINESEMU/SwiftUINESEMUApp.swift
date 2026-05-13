@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct AHNESEMUMacOSApp: App {
+struct SwiftUINESEMUSApp: App {
     var body: some Scene {
         WindowGroup {
             NESEMUView()

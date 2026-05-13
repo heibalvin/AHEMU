@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		39E585792FB3794E00D25712 /* SwiftUINESEMU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUINESEMU.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39E585792FB3794E00D25712 /* SwiftUINESEMU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = SwiftUINESEMU.app; path = AHNESEMUMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		39E5857A2FB3794E00D25712 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				39E585792FB3794E00D25712 /* AHNESEMUMacOS.app */,
+				39E585792FB3794E00D25712 /* SwiftUINESEMU.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				39E5857B2FB3794E00D25712 /* AHNESEMUMacOS */,
+				39E5857B2FB3794E00D25712 /* SwiftUINESEMU */,
 			);
 			name = AHNESEMUMacOS;
 			packageProductDependencies = (
 			);
 			productName = AHNESEMUMacOS;
-			productReference = 39E585792FB3794E00D25712 /* AHNESEMUMacOS.app */;
+			productReference = 39E585792FB3794E00D25712 /* SwiftUINESEMU.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 39E585742FB3794E00D25712 /* Build configuration list for PBXProject "AHNESEMUMacOS" */;
+			buildConfigurationList = 39E585742FB3794E00D25712 /* Build configuration list for PBXProject "SwiftUINESEMU" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -314,7 +314,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		39E585742FB3794E00D25712 /* Build configuration list for PBXProject "AHNESEMUMacOS" */ = {
+		39E585742FB3794E00D25712 /* Build configuration list for PBXProject "SwiftUINESEMU" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				39E585822FB3794F00D25712 /* Debug */,
