@@ -6,6 +6,15 @@ Emulator & Tools for Retro Consoles (NES, SMS, GB, PCE, ...)
 
 The initial strategy was to build a NESEMU (NES Emulator) on **SwiftUI with Swift Package**. We are now testing an alternative approach using **SDL3 / C++ with Dear ImGui**, as the SwiftUI approach is ~800× slower than expected for real-time emulation.
 
+## Performance Comparison
+
+| Implementation | FPS | UPS | Update Time | CPU Steps/Update | Status |
+|----------------|-----|-----|-------------|------------------|--------|
+| **SwiftUI / Swift** | 60 FPS | 6.67 KHz | 0.150 ms | ~806 | ❌ ~800× slower than target |
+| **SDL3 / C++** | 60 FPS | 0.316 MHz | 0.00316 ms | ~17 | ❌ ~17× slower than target |
+
+**Target:** 5.37 MHz (~0.000186 ms/update)
+
 ### SwiftUI / Swift Approach (SwiftUINESEMU)
 
 The SwiftUI-based emulator is available in [`SwiftUINESEMU/`](SwiftUINESEMU/).
@@ -19,10 +28,10 @@ The SwiftUI-based emulator is available in [`SwiftUINESEMU/`](SwiftUINESEMU/).
 
 ### SDL3 / C++ / Dear ImGui Approach (In Testing)
 
-| Metric | Target |
-|--------|--------|
-| **FPS** | 60 FPS (~16.67 ms/frame) |
-| **UPS** | 5.37 MHz (~0.000186 ms/update) |
-| **CPU Steps per Update** | ~29,780 cycles per frame, spread across timely ticks |
+| Metric | Measure | Target | Status |
+|--------|---------|--------|--------|
+| **FPS** | 60 FPS (~16.67 ms/frame) | 60 FPS (NTSC NES) | ✅ Achieved |
+| **UPS** | 0.316 MHz (~0.00316 ms/update) | 5.37 MHz (~0.000186 ms/update) | ❌ ~17× slower than required |
+| **CPU Steps per Update** | ~17 cycles | ~17 cycles target | ⚠️ Near target per update |
 
-The SDL3 / C++ / Dear ImGui approach is being evaluated to achieve the required UPS and real-time emulation performance that SwiftUI cannot currently deliver.
+**Key takeaway:** SDL3 / C++ runs at 0.316 MHz with ~17 cycles per update. However, it still falls ~17× short of the 5.37 MHz target needed for real-time NES emulation.

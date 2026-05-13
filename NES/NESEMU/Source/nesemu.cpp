@@ -22,13 +22,13 @@ void NESEMU::update(double currentTime) {
     deltaTime = currentTime - previousTime;
     previousTime = currentTime;
 
-    int cyclesToRun = int(deltaTime * clock)
+    int cyclesToRun = int(deltaTime * clock);
     for(int i = 0; i < cyclesToRun; i++) {
         step();
     }
 
     cycleId += cyclesToRun;
-    printf("Ran %d cycles in %f ms", cyclesToRun, deltaTime);
+    printf("Ran %d cycles in %f ms\n", cyclesToRun, deltaTime * 1000.0);
 }
 
 bool NESEMU::isRefreshRequested() const {

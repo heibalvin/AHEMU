@@ -8,14 +8,6 @@ static SDL_Renderer *renderer = NULL;
 static SDL_Texture *frameTexture = NULL;
 static NESEMU *emu = nullptr;
 
-// Timing for FPS calculation (frames rendered)
-static double previousFrameTime = 0.0;
-static uint64_t frameCount = 0;
-
-// Timing for UPS calculation (update calls)
-static double previousUpdateTime = 0.0;
-static uint64_t updateCount = 0;
-
 int main(int argc, char *argv[]) {
     // 1. Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) == false) {
@@ -53,32 +45,9 @@ int main(int argc, char *argv[]) {
         }
 
         const double currentTime = (double)SDL_GetTicksNS() / 1e9;
-
-        // Track UPS: count every update() call
-        if (previousUpdateTime > 0.0) {
-            updateCount++;
-        }
         emu->update(currentTime);
 
         if (emu->isRefreshRequested()) {
-            // --- FPS calculation ---
-            if (previousFrameTime > 0.0) {
-                frameCount++;
-                double fps = frameCount / (currentTime - previousFrameTime);
-
-                // --- UPS calculation (per-second rate) ---
-                double ups = updateCount / (currentTime - previousUpdateTime);
-
-                // --- Render overlay text ---
-                char fpsText[64];
-                char upsText[64];
-                SDL_snprintf(fpsText, sizeof(fpsText), "FPS: %.2f", fps);
-                SDL_snprintf(upsText, sizeof(upsText), "UPS: %.2f", ups);
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                SDL_RenderDebugText(renderer, 2, 2, fpsText);
-                SDL_RenderDebugText(renderer, 2, 20, upsText);
-            }
-
             // Update texture with new frame data
             const auto& fb = emu->getFrameBuffer();
             SDL_UpdateTexture(frameTexture, NULL, fb.data(), 256 * 4);
@@ -89,10 +58,6 @@ int main(int argc, char *argv[]) {
             SDL_RenderPresent(renderer);
 
             emu->clearRefreshRequest();
-            previousFrameTime = currentTime;
-            frameCount = 0;
-            updateCount = 0;
-            previousUpdateTime = currentTime;
         }
     }
 
