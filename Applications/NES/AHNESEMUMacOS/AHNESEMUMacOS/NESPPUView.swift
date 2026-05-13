@@ -1,26 +1,29 @@
-//
-//  NESPPUView.swift
-//  AHNESEMUMacOS
-//
-//  Created by Alvin HEIB on 12/05/2026.
-//
-
 import SwiftUI
 import SpriteKit
 import NESEMU
 
 struct NESPPUView: View {
-    let ppu: NESPPU
-    
-    // Create the scene instance
-    var scene: SKScene {
-        let scene = NESRenderScene(ppu: ppu)
-        scene.scaleMode = .aspectFit
-        return scene
+    @StateObject private var scene: NESRenderScene
+
+    init(emu: NESEMU) {
+        _scene = StateObject(wrappedValue: NESRenderScene(ppu: emu.ppu))
     }
 
     var body: some View {
-        SpriteView(scene: scene)
-            .edgesIgnoringSafeArea(.all)
+        ZStack(alignment: .topTrailing) {
+            SpriteView(scene: scene)
+                .edgesIgnoringSafeArea(.all)
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text("FPS: \(scene.fps, specifier: "%.0f")")
+                    .font(.caption)
+                    .monospacedDigit()
+                    .foregroundColor(.white)
+            }
+            .padding(.top, 8)
+            .padding(.trailing, 8)
+        }
+        .onAppear { scene.startFPSTimer() }
+        .onDisappear { scene.stopFPSTimer() }
     }
 }

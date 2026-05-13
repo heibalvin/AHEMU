@@ -4,8 +4,8 @@ import PackageDescription
 let package = Package(
     name: "NESEMU",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13),
+        .macOS(.v11),
+        .iOS(.v14),
     ],
     products: [
         .library(
