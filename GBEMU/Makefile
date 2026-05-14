@@ -1,7 +1,7 @@
 CXX = g++
 SDL3_DIR = /opt/homebrew/opt/sdl3
-CXXFLAGS = -Wall -std=c++17 -I$(SDL3_DIR)/include -I$(LIBPNG_DIR)/include -I./Source/Include
-LDFLAGS = -L$(SDL3_DIR)/lib -lSDL3 -L$(LIBPNG_DIR)/lib -lpng16
+CXXFLAGS = -Wall -std=c++17 -I$(SDL3_DIR)/include -I./Source/Include
+LDFLAGS = -L$(SDL3_DIR)/lib -lSDL3
 
 SRC_DIR = ./Source
 SRC_MAIN = $(SRC_DIR)/main.cpp $(SRC_DIR)/gbemu.cpp $(SRC_DIR)/gbcpu.cpp $(SRC_DIR)/gbppu.cpp $(SRC_DIR)/gbdsk.cpp $(SRC_DIR)/gbbus.cpp $(SRC_DIR)/gbcomponent.cpp $(SRC_DIR)/sdlemu.cpp

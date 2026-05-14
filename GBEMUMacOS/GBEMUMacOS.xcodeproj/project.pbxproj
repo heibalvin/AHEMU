@@ -7,37 +7,67 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		39164CDB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */; };
-		39164CDC2FB62330002FC8A3 /* INSTALL.md in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC72FB62330002FC8A3 /* INSTALL.md */; };
-		39164CDD2FB62330002FC8A3 /* sdl_logo.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD12FB62330002FC8A3 /* sdl_logo.pdf */; };
-		39164CDE2FB62330002FC8A3 /* SDL3Config.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */; };
-		39164CDF2FB62330002FC8A3 /* SDL_DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC82FB62330002FC8A3 /* SDL_DS_Store */; };
-		39164CE02FB62330002FC8A3 /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCF2FB62330002FC8A3 /* build.xcconfig */; };
-		39164CE12FB62330002FC8A3 /* SDL.info in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD02FB62330002FC8A3 /* SDL.info */; };
-		39164CE22FB62330002FC8A3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD32FB62330002FC8A3 /* Info.plist */; };
-		39164CE32FB62330002FC8A3 /* config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD52FB62330002FC8A3 /* config.xcconfig */; };
-		39164CE42FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */; };
-		39164CE52FB62330002FC8A3 /* Info-Framework.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD62FB62330002FC8A3 /* Info-Framework.plist */; };
-		39164CE62FB62330002FC8A3 /* SDL3Config.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC22FB62330002FC8A3 /* SDL3Config.cmake */; };
-		39164CE72FB62330002FC8A3 /* INSTALL.md in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC52FB62330002FC8A3 /* INSTALL.md */; };
-		39EE4F4E2FB5F1AD0001C645 /* GBEMU in Frameworks */ = {isa = PBXBuildFile; productRef = 39EE4F4D2FB5F1AD0001C645 /* GBEMU */; };
+		39164D0B2FB62B51002FC8A3 /* SDL3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39164D092FB62B48002FC8A3 /* SDL3.framework */; };
+		39164D0C2FB62B51002FC8A3 /* SDL3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 39164D092FB62B48002FC8A3 /* SDL3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		39164D262FB62C4D002FC8A3 /* gbemu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D212FB62C4D002FC8A3 /* gbemu.cpp */; };
+		39164D272FB62C4D002FC8A3 /* gbcpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D1F2FB62C4D002FC8A3 /* gbcpu.cpp */; };
+		39164D282FB62C4D002FC8A3 /* gbbus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D1D2FB62C4D002FC8A3 /* gbbus.cpp */; };
+		39164D292FB62C4D002FC8A3 /* gbppu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D222FB62C4D002FC8A3 /* gbppu.cpp */; };
+		39164D2A2FB62C4D002FC8A3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D232FB62C4D002FC8A3 /* main.cpp */; };
+		39164D2B2FB62C4D002FC8A3 /* gbcomponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D1E2FB62C4D002FC8A3 /* gbcomponent.cpp */; };
+		39164D2C2FB62C4D002FC8A3 /* sdlemu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D242FB62C4D002FC8A3 /* sdlemu.cpp */; };
+		39164D2D2FB62C4D002FC8A3 /* gbdsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D202FB62C4D002FC8A3 /* gbdsk.cpp */; };
+		39164D342FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */; };
+		39164D352FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */; };
+		39164D362FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */; };
+		39164D372FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		39164D082FB62B48002FC8A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39164D002FB62B47002FC8A3 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BECDF66C0761BA81005FE872;
+			remoteInfo = SDL3;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		39164CFD2FB62978002FC8A3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				39164D0C2FB62B51002FC8A3 /* SDL3.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		39164CC22FB62330002FC8A3 /* SDL3Config.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3Config.cmake; sourceTree = "<group>"; };
-		39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3ConfigVersion.cmake; sourceTree = "<group>"; };
-		39164CC52FB62330002FC8A3 /* INSTALL.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INSTALL.md; sourceTree = "<group>"; };
-		39164CC72FB62330002FC8A3 /* INSTALL.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INSTALL.md; sourceTree = "<group>"; };
-		39164CC82FB62330002FC8A3 /* SDL_DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDL_DS_Store; sourceTree = "<group>"; };
-		39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3Config.cmake; sourceTree = "<group>"; };
-		39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3ConfigVersion.cmake; sourceTree = "<group>"; };
-		39164CCF2FB62330002FC8A3 /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
-		39164CD02FB62330002FC8A3 /* SDL.info */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL.info; sourceTree = "<group>"; };
-		39164CD12FB62330002FC8A3 /* sdl_logo.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sdl_logo.pdf; sourceTree = "<group>"; };
-		39164CD32FB62330002FC8A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		39164CD52FB62330002FC8A3 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
-		39164CD62FB62330002FC8A3 /* Info-Framework.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Framework.plist"; sourceTree = "<group>"; };
-		39164CD72FB62330002FC8A3 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SDL.xcodeproj; sourceTree = "<group>"; };
+		39164D002FB62B47002FC8A3 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = /Users/heibalvin/Github/heibalvin/SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<absolute>"; };
+		39164D152FB62C4D002FC8A3 /* gbbus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbbus.hpp; sourceTree = "<group>"; };
+		39164D162FB62C4D002FC8A3 /* gbcomponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbcomponent.hpp; sourceTree = "<group>"; };
+		39164D172FB62C4D002FC8A3 /* gbcpu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbcpu.hpp; sourceTree = "<group>"; };
+		39164D182FB62C4D002FC8A3 /* gbdsk.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbdsk.hpp; sourceTree = "<group>"; };
+		39164D192FB62C4D002FC8A3 /* gbemu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbemu.hpp; sourceTree = "<group>"; };
+		39164D1A2FB62C4D002FC8A3 /* gbppu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbppu.hpp; sourceTree = "<group>"; };
+		39164D1B2FB62C4D002FC8A3 /* sdlemu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sdlemu.hpp; sourceTree = "<group>"; };
+		39164D1D2FB62C4D002FC8A3 /* gbbus.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbbus.cpp; sourceTree = "<group>"; };
+		39164D1E2FB62C4D002FC8A3 /* gbcomponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbcomponent.cpp; sourceTree = "<group>"; };
+		39164D1F2FB62C4D002FC8A3 /* gbcpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbcpu.cpp; sourceTree = "<group>"; };
+		39164D202FB62C4D002FC8A3 /* gbdsk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbdsk.cpp; sourceTree = "<group>"; };
+		39164D212FB62C4D002FC8A3 /* gbemu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbemu.cpp; sourceTree = "<group>"; };
+		39164D222FB62C4D002FC8A3 /* gbppu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbppu.cpp; sourceTree = "<group>"; };
+		39164D232FB62C4D002FC8A3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		39164D242FB62C4D002FC8A3 /* sdlemu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sdlemu.cpp; sourceTree = "<group>"; };
+		39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322261-zeldas-adventure-game-boy-title-screen.png"; sourceTree = "<group>"; };
+		39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322265-zeldas-adventure-game-boy-starting-area.png"; sourceTree = "<group>"; };
+		39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322269-zeldas-adventure-game-boy-take-the-wand.png"; sourceTree = "<group>"; };
+		39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322277-zeldas-adventure-game-boy-slimes-attack.png"; sourceTree = "<group>"; };
 		39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBEMUMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -54,112 +84,88 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39EE4F4E2FB5F1AD0001C645 /* GBEMU in Frameworks */,
+				39164D0B2FB62B51002FC8A3 /* SDL3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		39164CC42FB62330002FC8A3 /* CMake */ = {
+		39164D032FB62B47002FC8A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				39164CC22FB62330002FC8A3 /* SDL3Config.cmake */,
-				39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */,
-			);
-			path = CMake;
-			sourceTree = "<group>";
-		};
-		39164CC62FB62330002FC8A3 /* framework */ = {
-			isa = PBXGroup;
-			children = (
-				39164CC52FB62330002FC8A3 /* INSTALL.md */,
-			);
-			path = framework;
-			sourceTree = "<group>";
-		};
-		39164CC92FB62330002FC8A3 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				39164CC42FB62330002FC8A3 /* CMake */,
-				39164CC62FB62330002FC8A3 /* framework */,
-				39164CC72FB62330002FC8A3 /* INSTALL.md */,
-				39164CC82FB62330002FC8A3 /* SDL_DS_Store */,
-			);
-			path = resources;
-			sourceTree = "<group>";
-		};
-		39164CCC2FB62330002FC8A3 /* SDL3 */ = {
-			isa = PBXGroup;
-			children = (
-				39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */,
-				39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */,
-			);
-			path = SDL3;
-			sourceTree = "<group>";
-		};
-		39164CCD2FB62330002FC8A3 /* cmake */ = {
-			isa = PBXGroup;
-			children = (
-				39164CCC2FB62330002FC8A3 /* SDL3 */,
-			);
-			path = cmake;
-			sourceTree = "<group>";
-		};
-		39164CCE2FB62330002FC8A3 /* share */ = {
-			isa = PBXGroup;
-			children = (
-				39164CCD2FB62330002FC8A3 /* cmake */,
-			);
-			path = share;
-			sourceTree = "<group>";
-		};
-		39164CD22FB62330002FC8A3 /* pkg-support */ = {
-			isa = PBXGroup;
-			children = (
-				39164CC92FB62330002FC8A3 /* resources */,
-				39164CCE2FB62330002FC8A3 /* share */,
-				39164CCF2FB62330002FC8A3 /* build.xcconfig */,
-				39164CD02FB62330002FC8A3 /* SDL.info */,
-				39164CD12FB62330002FC8A3 /* sdl_logo.pdf */,
-			);
-			path = "pkg-support";
-			sourceTree = "<group>";
-		};
-		39164CD42FB62330002FC8A3 /* SDL3 */ = {
-			isa = PBXGroup;
-			children = (
-				39164CD32FB62330002FC8A3 /* Info.plist */,
-			);
-			path = SDL3;
-			sourceTree = "<group>";
-		};
-		39164CD82FB62330002FC8A3 /* SDL */ = {
-			isa = PBXGroup;
-			children = (
-				39164CD22FB62330002FC8A3 /* pkg-support */,
-				39164CD42FB62330002FC8A3 /* SDL3 */,
-				39164CD52FB62330002FC8A3 /* config.xcconfig */,
-				39164CD62FB62330002FC8A3 /* Info-Framework.plist */,
-				39164CD72FB62330002FC8A3 /* SDL.xcodeproj */,
-			);
-			name = SDL;
-			path = /Users/heibalvin/Github/heibalvin/SDL/Xcode/SDL;
-			sourceTree = "<absolute>";
-		};
-		39164CD92FB62330002FC8A3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
+				39164D092FB62B48002FC8A3 /* SDL3.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
+		39164D0A2FB62B51002FC8A3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		39164D1C2FB62C4D002FC8A3 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				39164D152FB62C4D002FC8A3 /* gbbus.hpp */,
+				39164D162FB62C4D002FC8A3 /* gbcomponent.hpp */,
+				39164D172FB62C4D002FC8A3 /* gbcpu.hpp */,
+				39164D182FB62C4D002FC8A3 /* gbdsk.hpp */,
+				39164D192FB62C4D002FC8A3 /* gbemu.hpp */,
+				39164D1A2FB62C4D002FC8A3 /* gbppu.hpp */,
+				39164D1B2FB62C4D002FC8A3 /* sdlemu.hpp */,
+			);
+			path = Include;
+			sourceTree = "<group>";
+		};
+		39164D252FB62C4D002FC8A3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				39164D1C2FB62C4D002FC8A3 /* Include */,
+				39164D1D2FB62C4D002FC8A3 /* gbbus.cpp */,
+				39164D1E2FB62C4D002FC8A3 /* gbcomponent.cpp */,
+				39164D1F2FB62C4D002FC8A3 /* gbcpu.cpp */,
+				39164D202FB62C4D002FC8A3 /* gbdsk.cpp */,
+				39164D212FB62C4D002FC8A3 /* gbemu.cpp */,
+				39164D222FB62C4D002FC8A3 /* gbppu.cpp */,
+				39164D232FB62C4D002FC8A3 /* main.cpp */,
+				39164D242FB62C4D002FC8A3 /* sdlemu.cpp */,
+			);
+			name = Source;
+			path = ../GBEMU/Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		39164D322FB62C75002FC8A3 /* Zelda's Adventure */ = {
+			isa = PBXGroup;
+			children = (
+				39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */,
+				39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */,
+				39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */,
+				39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */,
+			);
+			path = "Zelda's Adventure";
+			sourceTree = "<group>";
+		};
+		39164D332FB62C75002FC8A3 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				39164D322FB62C75002FC8A3 /* Zelda's Adventure */,
+			);
+			name = Assets;
+			path = /Users/heibalvin/Documents/Resources/GameBoy/Assets;
+			sourceTree = "<absolute>";
+		};
 		39EE4F272FB5EAF60001C645 = {
 			isa = PBXGroup;
 			children = (
+				39164D002FB62B47002FC8A3 /* SDL.xcodeproj */,
+				39164D252FB62C4D002FC8A3 /* Source */,
 				39EE4F322FB5EAF60001C645 /* GBEMUMacOS */,
+				39164D0A2FB62B51002FC8A3 /* Frameworks */,
+				39164D332FB62C75002FC8A3 /* Assets */,
 				39EE4F312FB5EAF60001C645 /* Products */,
-				39164CD82FB62330002FC8A3 /* SDL */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,6 +187,7 @@
 				39EE4F2C2FB5EAF60001C645 /* Sources */,
 				39EE4F2D2FB5EAF60001C645 /* Frameworks */,
 				39EE4F2E2FB5EAF60001C645 /* Resources */,
+				39164CFD2FB62978002FC8A3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -191,7 +198,6 @@
 			);
 			name = GBEMUMacOS;
 			packageProductDependencies = (
-				39EE4F4D2FB5F1AD0001C645 /* GBEMU */,
 			);
 			productName = GBEMUMacOS;
 			productReference = 39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */;
@@ -208,6 +214,7 @@
 				TargetAttributes = {
 					39EE4F2F2FB5EAF60001C645 = {
 						CreatedOnToolsVersion = 26.4;
+						LastSwiftMigration = 2640;
 					};
 				};
 			};
@@ -227,8 +234,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 39164CD92FB62330002FC8A3 /* Products */;
-					ProjectRef = 39164CD72FB62330002FC8A3 /* SDL.xcodeproj */;
+					ProductGroup = 39164D032FB62B47002FC8A3 /* Products */;
+					ProjectRef = 39164D002FB62B47002FC8A3 /* SDL.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -238,24 +245,25 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		39164D092FB62B48002FC8A3 /* SDL3.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDL3.framework;
+			remoteRef = 39164D082FB62B48002FC8A3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		39EE4F2E2FB5EAF60001C645 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39164CDB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */,
-				39164CDC2FB62330002FC8A3 /* INSTALL.md in Resources */,
-				39164CDD2FB62330002FC8A3 /* sdl_logo.pdf in Resources */,
-				39164CDE2FB62330002FC8A3 /* SDL3Config.cmake in Resources */,
-				39164CDF2FB62330002FC8A3 /* SDL_DS_Store in Resources */,
-				39164CE02FB62330002FC8A3 /* build.xcconfig in Resources */,
-				39164CE12FB62330002FC8A3 /* SDL.info in Resources */,
-				39164CE22FB62330002FC8A3 /* Info.plist in Resources */,
-				39164CE32FB62330002FC8A3 /* config.xcconfig in Resources */,
-				39164CE42FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */,
-				39164CE52FB62330002FC8A3 /* Info-Framework.plist in Resources */,
-				39164CE62FB62330002FC8A3 /* SDL3Config.cmake in Resources */,
-				39164CE72FB62330002FC8A3 /* INSTALL.md in Resources */,
+				39164D342FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png in Resources */,
+				39164D352FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png in Resources */,
+				39164D362FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png in Resources */,
+				39164D372FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +274,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39164D262FB62C4D002FC8A3 /* gbemu.cpp in Sources */,
+				39164D272FB62C4D002FC8A3 /* gbcpu.cpp in Sources */,
+				39164D282FB62C4D002FC8A3 /* gbbus.cpp in Sources */,
+				39164D292FB62C4D002FC8A3 /* gbppu.cpp in Sources */,
+				39164D2A2FB62C4D002FC8A3 /* main.cpp in Sources */,
+				39164D2B2FB62C4D002FC8A3 /* gbcomponent.cpp in Sources */,
+				39164D2C2FB62C4D002FC8A3 /* sdlemu.cpp in Sources */,
+				39164D2D2FB62C4D002FC8A3 /* gbdsk.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +410,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -417,6 +434,8 @@
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -425,6 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -448,6 +468,7 @@
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -473,13 +494,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		39EE4F4D2FB5F1AD0001C645 /* GBEMU */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GBEMU;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 39EE4F282FB5EAF60001C645 /* Project object */;
 }

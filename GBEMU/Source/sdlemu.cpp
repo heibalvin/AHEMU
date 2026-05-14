@@ -4,11 +4,12 @@ SDLEMU::SDLEMU(const char* title, int width, int height)
     : width(width), height(height) {
     SDL_strlcpy(this->title, title, sizeof(this->title));
 
-    SDL_strlcpy(projectPath, SDL_GetBasePath(), sizeof(projectPath));
+    const char* path = SDL_GetBasePath();
+    SDL_strlcpy(projectPath, path, sizeof(projectPath));
     SDL_Log("SDLEMU: project path: %s", projectPath);
 
     SDL_strlcpy(resourcePath, projectPath, sizeof(resourcePath));
-    SDL_strlcat(resourcePath, "../../Resources/", sizeof(resourcePath));
+    SDL_strlcat(resourcePath, "../Resources/", sizeof(resourcePath));
     SDL_Log("SDLEMU: resource path: %s", resourcePath);
 }
 
@@ -38,7 +39,7 @@ bool SDLEMU::start() {
         return false;
     }
 
-    const char *filePath = "Assets/Zelda's Adventure/23322261-zeldas-adventure-game-boy-title-screen.png";
+    const char *filePath = "23322261-zeldas-adventure-game-boy-title-screen.png";
     char filename[256];
     SDL_strlcpy(filename, resourcePath, sizeof(filename));
     SDL_strlcat(filename, filePath, sizeof(filename));
@@ -67,53 +68,7 @@ bool SDLEMU::start() {
     
     previousTime = SDL_GetTicksNS();
     running = true;
-    return true; // Add missing return statement
-}
-
-    // Create the Window and Renderer
-    if (!SDL_CreateWindowAndRenderer(title, 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-        SDL_Log("SDLEMU: create window and renderer failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    // Set the Logical Presentation Size
-    if (!SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
-        SDL_Log("SDLEMU: render logical presentation failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    const char *filePath = "Assets/Zelda's Adventure/23322261-zeldas-adventure-game-boy-title-screen.png";
-    char filename[256];
-    SDL_strlcpy(filename, resourcePath, sizeof(filename));
-    SDL_strlcat(filename, filePath, sizeof(filename));
-    SDL_Log("SDLEMU: filename path: %s", filename);
-
-    SDL_Surface *surface = SDL_LoadPNG(filename);
-    if (!surface) {
-        SDL_Log("SDLEMU: loading PNG as Surface failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!texture) {
-        SDL_Log("SDLEMU: loading PNG as Texture failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
-
-    // Make it visible
-    SDL_ShowWindow(window);
-
-    // Bring it to the top
-    SDL_RaiseWindow(window); 
-
-    
-    previousTime = SDL_GetTicksNS();
-    running = true;
+    return true;
 }
 
 void SDLEMU::stop() {
