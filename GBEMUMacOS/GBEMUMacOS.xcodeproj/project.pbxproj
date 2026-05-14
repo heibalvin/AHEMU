@@ -1,0 +1,485 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		39164CDB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */; };
+		39164CDC2FB62330002FC8A3 /* INSTALL.md in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC72FB62330002FC8A3 /* INSTALL.md */; };
+		39164CDD2FB62330002FC8A3 /* sdl_logo.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD12FB62330002FC8A3 /* sdl_logo.pdf */; };
+		39164CDE2FB62330002FC8A3 /* SDL3Config.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */; };
+		39164CDF2FB62330002FC8A3 /* SDL_DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC82FB62330002FC8A3 /* SDL_DS_Store */; };
+		39164CE02FB62330002FC8A3 /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCF2FB62330002FC8A3 /* build.xcconfig */; };
+		39164CE12FB62330002FC8A3 /* SDL.info in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD02FB62330002FC8A3 /* SDL.info */; };
+		39164CE22FB62330002FC8A3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD32FB62330002FC8A3 /* Info.plist */; };
+		39164CE32FB62330002FC8A3 /* config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD52FB62330002FC8A3 /* config.xcconfig */; };
+		39164CE42FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */; };
+		39164CE52FB62330002FC8A3 /* Info-Framework.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39164CD62FB62330002FC8A3 /* Info-Framework.plist */; };
+		39164CE62FB62330002FC8A3 /* SDL3Config.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC22FB62330002FC8A3 /* SDL3Config.cmake */; };
+		39164CE72FB62330002FC8A3 /* INSTALL.md in Resources */ = {isa = PBXBuildFile; fileRef = 39164CC52FB62330002FC8A3 /* INSTALL.md */; };
+		39EE4F4E2FB5F1AD0001C645 /* GBEMU in Frameworks */ = {isa = PBXBuildFile; productRef = 39EE4F4D2FB5F1AD0001C645 /* GBEMU */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		39164CC22FB62330002FC8A3 /* SDL3Config.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3Config.cmake; sourceTree = "<group>"; };
+		39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3ConfigVersion.cmake; sourceTree = "<group>"; };
+		39164CC52FB62330002FC8A3 /* INSTALL.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INSTALL.md; sourceTree = "<group>"; };
+		39164CC72FB62330002FC8A3 /* INSTALL.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INSTALL.md; sourceTree = "<group>"; };
+		39164CC82FB62330002FC8A3 /* SDL_DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDL_DS_Store; sourceTree = "<group>"; };
+		39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3Config.cmake; sourceTree = "<group>"; };
+		39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL3ConfigVersion.cmake; sourceTree = "<group>"; };
+		39164CCF2FB62330002FC8A3 /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
+		39164CD02FB62330002FC8A3 /* SDL.info */ = {isa = PBXFileReference; lastKnownFileType = text; path = SDL.info; sourceTree = "<group>"; };
+		39164CD12FB62330002FC8A3 /* sdl_logo.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sdl_logo.pdf; sourceTree = "<group>"; };
+		39164CD32FB62330002FC8A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39164CD52FB62330002FC8A3 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+		39164CD62FB62330002FC8A3 /* Info-Framework.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Framework.plist"; sourceTree = "<group>"; };
+		39164CD72FB62330002FC8A3 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SDL.xcodeproj; sourceTree = "<group>"; };
+		39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBEMUMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		39EE4F322FB5EAF60001C645 /* GBEMUMacOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GBEMUMacOS;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		39EE4F2D2FB5EAF60001C645 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39EE4F4E2FB5F1AD0001C645 /* GBEMU in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		39164CC42FB62330002FC8A3 /* CMake */ = {
+			isa = PBXGroup;
+			children = (
+				39164CC22FB62330002FC8A3 /* SDL3Config.cmake */,
+				39164CC32FB62330002FC8A3 /* SDL3ConfigVersion.cmake */,
+			);
+			path = CMake;
+			sourceTree = "<group>";
+		};
+		39164CC62FB62330002FC8A3 /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				39164CC52FB62330002FC8A3 /* INSTALL.md */,
+			);
+			path = framework;
+			sourceTree = "<group>";
+		};
+		39164CC92FB62330002FC8A3 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				39164CC42FB62330002FC8A3 /* CMake */,
+				39164CC62FB62330002FC8A3 /* framework */,
+				39164CC72FB62330002FC8A3 /* INSTALL.md */,
+				39164CC82FB62330002FC8A3 /* SDL_DS_Store */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		39164CCC2FB62330002FC8A3 /* SDL3 */ = {
+			isa = PBXGroup;
+			children = (
+				39164CCA2FB62330002FC8A3 /* SDL3Config.cmake */,
+				39164CCB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake */,
+			);
+			path = SDL3;
+			sourceTree = "<group>";
+		};
+		39164CCD2FB62330002FC8A3 /* cmake */ = {
+			isa = PBXGroup;
+			children = (
+				39164CCC2FB62330002FC8A3 /* SDL3 */,
+			);
+			path = cmake;
+			sourceTree = "<group>";
+		};
+		39164CCE2FB62330002FC8A3 /* share */ = {
+			isa = PBXGroup;
+			children = (
+				39164CCD2FB62330002FC8A3 /* cmake */,
+			);
+			path = share;
+			sourceTree = "<group>";
+		};
+		39164CD22FB62330002FC8A3 /* pkg-support */ = {
+			isa = PBXGroup;
+			children = (
+				39164CC92FB62330002FC8A3 /* resources */,
+				39164CCE2FB62330002FC8A3 /* share */,
+				39164CCF2FB62330002FC8A3 /* build.xcconfig */,
+				39164CD02FB62330002FC8A3 /* SDL.info */,
+				39164CD12FB62330002FC8A3 /* sdl_logo.pdf */,
+			);
+			path = "pkg-support";
+			sourceTree = "<group>";
+		};
+		39164CD42FB62330002FC8A3 /* SDL3 */ = {
+			isa = PBXGroup;
+			children = (
+				39164CD32FB62330002FC8A3 /* Info.plist */,
+			);
+			path = SDL3;
+			sourceTree = "<group>";
+		};
+		39164CD82FB62330002FC8A3 /* SDL */ = {
+			isa = PBXGroup;
+			children = (
+				39164CD22FB62330002FC8A3 /* pkg-support */,
+				39164CD42FB62330002FC8A3 /* SDL3 */,
+				39164CD52FB62330002FC8A3 /* config.xcconfig */,
+				39164CD62FB62330002FC8A3 /* Info-Framework.plist */,
+				39164CD72FB62330002FC8A3 /* SDL.xcodeproj */,
+			);
+			name = SDL;
+			path = /Users/heibalvin/Github/heibalvin/SDL/Xcode/SDL;
+			sourceTree = "<absolute>";
+		};
+		39164CD92FB62330002FC8A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		39EE4F272FB5EAF60001C645 = {
+			isa = PBXGroup;
+			children = (
+				39EE4F322FB5EAF60001C645 /* GBEMUMacOS */,
+				39EE4F312FB5EAF60001C645 /* Products */,
+				39164CD82FB62330002FC8A3 /* SDL */,
+			);
+			sourceTree = "<group>";
+		};
+		39EE4F312FB5EAF60001C645 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		39EE4F2F2FB5EAF60001C645 /* GBEMUMacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39EE4F422FB5EAF70001C645 /* Build configuration list for PBXNativeTarget "GBEMUMacOS" */;
+			buildPhases = (
+				39EE4F2C2FB5EAF60001C645 /* Sources */,
+				39EE4F2D2FB5EAF60001C645 /* Frameworks */,
+				39EE4F2E2FB5EAF60001C645 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				39EE4F322FB5EAF60001C645 /* GBEMUMacOS */,
+			);
+			name = GBEMUMacOS;
+			packageProductDependencies = (
+				39EE4F4D2FB5F1AD0001C645 /* GBEMU */,
+			);
+			productName = GBEMUMacOS;
+			productReference = 39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		39EE4F282FB5EAF60001C645 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					39EE4F2F2FB5EAF60001C645 = {
+						CreatedOnToolsVersion = 26.4;
+					};
+				};
+			};
+			buildConfigurationList = 39EE4F2B2FB5EAF60001C645 /* Build configuration list for PBXProject "GBEMUMacOS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 39EE4F272FB5EAF60001C645;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 39EE4F312FB5EAF60001C645 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 39164CD92FB62330002FC8A3 /* Products */;
+					ProjectRef = 39164CD72FB62330002FC8A3 /* SDL.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				39EE4F2F2FB5EAF60001C645 /* GBEMUMacOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		39EE4F2E2FB5EAF60001C645 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39164CDB2FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */,
+				39164CDC2FB62330002FC8A3 /* INSTALL.md in Resources */,
+				39164CDD2FB62330002FC8A3 /* sdl_logo.pdf in Resources */,
+				39164CDE2FB62330002FC8A3 /* SDL3Config.cmake in Resources */,
+				39164CDF2FB62330002FC8A3 /* SDL_DS_Store in Resources */,
+				39164CE02FB62330002FC8A3 /* build.xcconfig in Resources */,
+				39164CE12FB62330002FC8A3 /* SDL.info in Resources */,
+				39164CE22FB62330002FC8A3 /* Info.plist in Resources */,
+				39164CE32FB62330002FC8A3 /* config.xcconfig in Resources */,
+				39164CE42FB62330002FC8A3 /* SDL3ConfigVersion.cmake in Resources */,
+				39164CE52FB62330002FC8A3 /* Info-Framework.plist in Resources */,
+				39164CE62FB62330002FC8A3 /* SDL3Config.cmake in Resources */,
+				39164CE72FB62330002FC8A3 /* INSTALL.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		39EE4F2C2FB5EAF60001C645 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		39EE4F402FB5EAF70001C645 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7V6MT62TPQ;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		39EE4F412FB5EAF70001C645 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7V6MT62TPQ;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		39EE4F432FB5EAF70001C645 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7V6MT62TPQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "akashatek.retro-gaming.GBEMUMacOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		39EE4F442FB5EAF70001C645 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7V6MT62TPQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "akashatek.retro-gaming.GBEMUMacOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		39EE4F2B2FB5EAF60001C645 /* Build configuration list for PBXProject "GBEMUMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39EE4F402FB5EAF70001C645 /* Debug */,
+				39EE4F412FB5EAF70001C645 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39EE4F422FB5EAF70001C645 /* Build configuration list for PBXNativeTarget "GBEMUMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39EE4F432FB5EAF70001C645 /* Debug */,
+				39EE4F442FB5EAF70001C645 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		39EE4F4D2FB5F1AD0001C645 /* GBEMU */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GBEMU;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 39EE4F282FB5EAF60001C645 /* Project object */;
+}
