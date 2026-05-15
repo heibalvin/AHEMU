@@ -2,20 +2,27 @@
 #define SDLEMU_HPP
 
 #include <SDL3/SDL.h>
+#include "gbemu.hpp"
 
 class SDLEMU {
 public:
-    SDLEMU(const char* title, int width, int height);
+    SDLEMU(const char* romName, int width, int height);
     ~SDLEMU();
 
+    SDL_Texture* loadPNG(const char *filename);
+    Uint8* loadFile(const char *romname, size_t *romSize);
+    
     bool start();
     void stop();
     void run();
 
-    void update();
-    void render();
+    void update(Uint64 deltaTime);
+    void render(Uint64 deltaTime);
+    
 
 private:
+    GBEMU *emu;
+
     // SDL components
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
@@ -25,9 +32,9 @@ private:
     // File path components
     char projectPath[256];
     char resourcePath[256];
+    char romName[128];
 
     // Window components
-    char title[80];
     int width = 160;
     int height = 144;
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390B36562FB70C4100CE8BBC /* Tetris (JUE) (V1.1) [!].gb in Resources */ = {isa = PBXBuildFile; fileRef = 390B36532FB70C4100CE8BBC /* Tetris (JUE) (V1.1) [!].gb */; };
+		390B36572FB70C4100CE8BBC /* 16032772-gremlins-2-the-new-batch-game-boy-title-screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 390B36512FB70C4100CE8BBC /* 16032772-gremlins-2-the-new-batch-game-boy-title-screen.png */; };
+		390B36582FB70C4100CE8BBC /* Gremlins 2 - The New Batch (World).gb in Resources */ = {isa = PBXBuildFile; fileRef = 390B36522FB70C4100CE8BBC /* Gremlins 2 - The New Batch (World).gb */; };
+		390B36592FB70C4100CE8BBC /* tetris_gameboy_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 390B36542FB70C4100CE8BBC /* tetris_gameboy_00.png */; };
 		39164D0B2FB62B51002FC8A3 /* SDL3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39164D092FB62B48002FC8A3 /* SDL3.framework */; };
 		39164D0C2FB62B51002FC8A3 /* SDL3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 39164D092FB62B48002FC8A3 /* SDL3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		39164D262FB62C4D002FC8A3 /* gbemu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D212FB62C4D002FC8A3 /* gbemu.cpp */; };
@@ -17,10 +21,6 @@
 		39164D2B2FB62C4D002FC8A3 /* gbcomponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D1E2FB62C4D002FC8A3 /* gbcomponent.cpp */; };
 		39164D2C2FB62C4D002FC8A3 /* sdlemu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D242FB62C4D002FC8A3 /* sdlemu.cpp */; };
 		39164D2D2FB62C4D002FC8A3 /* gbdsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39164D202FB62C4D002FC8A3 /* gbdsk.cpp */; };
-		39164D342FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */; };
-		39164D352FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */; };
-		39164D362FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */; };
-		39164D372FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png in Resources */ = {isa = PBXBuildFile; fileRef = 39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +48,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		390B36512FB70C4100CE8BBC /* 16032772-gremlins-2-the-new-batch-game-boy-title-screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "16032772-gremlins-2-the-new-batch-game-boy-title-screen.png"; sourceTree = "<group>"; };
+		390B36522FB70C4100CE8BBC /* Gremlins 2 - The New Batch (World).gb */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gremlins 2 - The New Batch (World).gb"; sourceTree = "<group>"; };
+		390B36532FB70C4100CE8BBC /* Tetris (JUE) (V1.1) [!].gb */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tetris (JUE) (V1.1) [!].gb"; sourceTree = "<group>"; };
+		390B36542FB70C4100CE8BBC /* tetris_gameboy_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tetris_gameboy_00.png; sourceTree = "<group>"; };
 		39164D002FB62B47002FC8A3 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = /Users/heibalvin/Github/heibalvin/SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<absolute>"; };
 		39164D152FB62C4D002FC8A3 /* gbbus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbbus.hpp; sourceTree = "<group>"; };
 		39164D162FB62C4D002FC8A3 /* gbcomponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gbcomponent.hpp; sourceTree = "<group>"; };
@@ -64,10 +68,6 @@
 		39164D222FB62C4D002FC8A3 /* gbppu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gbppu.cpp; sourceTree = "<group>"; };
 		39164D232FB62C4D002FC8A3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		39164D242FB62C4D002FC8A3 /* sdlemu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sdlemu.cpp; sourceTree = "<group>"; };
-		39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322261-zeldas-adventure-game-boy-title-screen.png"; sourceTree = "<group>"; };
-		39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322265-zeldas-adventure-game-boy-starting-area.png"; sourceTree = "<group>"; };
-		39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322269-zeldas-adventure-game-boy-take-the-wand.png"; sourceTree = "<group>"; };
-		39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "23322277-zeldas-adventure-game-boy-slimes-attack.png"; sourceTree = "<group>"; };
 		39EE4F302FB5EAF60001C645 /* GBEMUMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBEMUMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -91,6 +91,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		390B36552FB70C4100CE8BBC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				390B36512FB70C4100CE8BBC /* 16032772-gremlins-2-the-new-batch-game-boy-title-screen.png */,
+				390B36522FB70C4100CE8BBC /* Gremlins 2 - The New Batch (World).gb */,
+				390B36532FB70C4100CE8BBC /* Tetris (JUE) (V1.1) [!].gb */,
+				390B36542FB70C4100CE8BBC /* tetris_gameboy_00.png */,
+			);
+			name = Resources;
+			path = ../GBEMU/Resources;
+			sourceTree = SOURCE_ROOT;
+		};
 		39164D032FB62B47002FC8A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,34 +149,14 @@
 			path = ../GBEMU/Source;
 			sourceTree = SOURCE_ROOT;
 		};
-		39164D322FB62C75002FC8A3 /* Zelda's Adventure */ = {
-			isa = PBXGroup;
-			children = (
-				39164D2E2FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png */,
-				39164D2F2FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png */,
-				39164D302FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png */,
-				39164D312FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png */,
-			);
-			path = "Zelda's Adventure";
-			sourceTree = "<group>";
-		};
-		39164D332FB62C75002FC8A3 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				39164D322FB62C75002FC8A3 /* Zelda's Adventure */,
-			);
-			name = Assets;
-			path = /Users/heibalvin/Documents/Resources/GameBoy/Assets;
-			sourceTree = "<absolute>";
-		};
 		39EE4F272FB5EAF60001C645 = {
 			isa = PBXGroup;
 			children = (
+				390B36552FB70C4100CE8BBC /* Resources */,
 				39164D002FB62B47002FC8A3 /* SDL.xcodeproj */,
 				39164D252FB62C4D002FC8A3 /* Source */,
 				39EE4F322FB5EAF60001C645 /* GBEMUMacOS */,
 				39164D0A2FB62B51002FC8A3 /* Frameworks */,
-				39164D332FB62C75002FC8A3 /* Assets */,
 				39EE4F312FB5EAF60001C645 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -260,10 +252,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39164D342FB62C75002FC8A3 /* 23322261-zeldas-adventure-game-boy-title-screen.png in Resources */,
-				39164D352FB62C75002FC8A3 /* 23322269-zeldas-adventure-game-boy-take-the-wand.png in Resources */,
-				39164D362FB62C75002FC8A3 /* 23322277-zeldas-adventure-game-boy-slimes-attack.png in Resources */,
-				39164D372FB62C75002FC8A3 /* 23322265-zeldas-adventure-game-boy-starting-area.png in Resources */,
+				390B36562FB70C4100CE8BBC /* Tetris (JUE) (V1.1) [!].gb in Resources */,
+				390B36572FB70C4100CE8BBC /* 16032772-gremlins-2-the-new-batch-game-boy-title-screen.png in Resources */,
+				390B36582FB70C4100CE8BBC /* Gremlins 2 - The New Batch (World).gb in Resources */,
+				390B36592FB70C4100CE8BBC /* tetris_gameboy_00.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,24 +10,25 @@ class GBEMU;
 class GBPPU : public GBComponent {
 public:
     explicit GBPPU(GBEMU* emu);
+    ~GBPPU();
 
     void step() override;
-    bool isRefreshRequested() const { return refreshRequested; }
-    void clearRefreshRequest() { refreshRequested = false; }
-    const std::vector<Uint8>& getFrameBuffer() const { return frameBuffer; }
-
-    int width;
-    int height;
+    const Uint8 *getFrameBuffer();
 
 private:
     friend class GBEMU;
     
-    bool refreshRequested = false;
-    std::vector<Uint8> frameBuffer;
-    std::vector<Uint8> internalFrameBuffer;
-    int dot;
-    int line;
-    Uint8 color;
+    // GB Window varaibles
+    const int width = 160;
+    const int height = 144;
+    Uint8 **frameBuffers;
+    int activeFrameBuffer = 0;
+    bool isRefreshRequested = false;
+    
+    // GB PPU varaibles
+    int dot = 0;
+    int line = 0;
+    Uint8 color = 0;
 };
 
 #endif /* GBPPU_HPP */

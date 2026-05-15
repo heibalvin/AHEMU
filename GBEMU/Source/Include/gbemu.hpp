@@ -2,7 +2,6 @@
 #define GBEMU_HPP
 
 #include <SDL3/SDL.h>
-#include <vector>
 #include "gbcomponent.hpp"
 
 class GBCPU;
@@ -15,17 +14,17 @@ public:
     GBEMU();
     ~GBEMU() override;
 
+    void loadRom(const Uint8* romData, size_t romSize);
     void start();
     void pause();
     void stop();
+
     void update(Uint64 deltaTime);
     void step() override;
 
     bool isRefreshRequested() const;
     void clearRefreshRequest();
-    const std::vector<Uint8>& getFrameBuffer() const;
-
-    
+    const Uint8 *getFrameBuffer();
 
 private:
     Uint64 clock;

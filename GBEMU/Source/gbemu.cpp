@@ -19,6 +19,12 @@ GBEMU::~GBEMU() {
     delete bus;
 }
 
+void GBEMU::loadRom(const Uint8* romData, size_t romSize) {
+    // Implementation for loading ROM
+    dsk->loadRom(romData, romSize);
+    dsk->debug();
+}
+
 void GBEMU::start() {
     // Start emulation
 }
@@ -47,13 +53,13 @@ void GBEMU::step() {
 }
 
 bool GBEMU::isRefreshRequested() const {
-    return ppu->refreshRequested;
+    return ppu->isRefreshRequested;
 }
 
 void GBEMU::clearRefreshRequest() {
-    ppu->refreshRequested = false;
+    ppu->isRefreshRequested = false;
 }
 
-const std::vector<Uint8>& GBEMU::getFrameBuffer() const {
+const Uint8 *GBEMU::getFrameBuffer() {
     return ppu->getFrameBuffer();
 }
