@@ -8,7 +8,6 @@ int main(int argc, char *argv[]) {
 
     game.start();
     game.run();
-    game.stop();
 
     return 0;
 }

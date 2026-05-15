@@ -71,3 +71,14 @@ void GBBUS::write(Uint16 address, Uint8 value) {
         emu->cpu->hram[address - 0xFF80] = value;
     }
 }
+
+Uint16 GBBUS::readLE(Uint16 address) {
+    Uint8 low = read(address);
+    Uint8 high = read(address + 1);
+    return (high << 8) | low;
+}
+
+void GBBUS::writeLE(Uint16 address, Uint16 value) {
+    write(address, value & 0xFF);
+    write(address + 1, (value >> 8) & 0xFF);
+}

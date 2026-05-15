@@ -3,7 +3,6 @@
 #include "gbbus.hpp"
 
 GBCPU::GBCPU(GBEMU* emu) : GBComponent(emu) {
-    
     // Initialize HRAM
     hram = (Uint8 *)SDL_malloc(0x80); // 128 bytes of HRAM
     SDL_memset(hram, 0, 0x80); // Clear HRAM
@@ -32,6 +31,37 @@ GBCPU::~GBCPU() {
     }
 }
 
-void GBCPU::step() {
-    // TBD: Implement CPU execution logic, including fetching instructions from memory, decoding them, and executing them. This will involve interacting with the bus to read/write memory and registers, as well as updating the CPU state accordingly.
+void GBCPU::powerOn() {
+    // Reset registers to their default power-on state
+    AF = 0x0000;
+    BC = 0x0000;
+    DE = 0x0000;
+    HL = 0x0000;
+    SP = 0xFFFE; // Stack Pointer starts at the end of WRAM
+    PC = 0x0100; // Program Counter starts at the entry point of the ROM
+
+    // Clear HRAM and WRAM
+    SDL_memset(hram, 0, 0x80);
+    for (int i = 0; i < wramCount; i++) {
+        SDL_memset(wrams[i], 0, 0x1000);
+    }
 }
+
+void GBCPU::step() {
+    fetch();
+    decode();
+    execute();
+}
+
+void GBCPU::fetch() {
+    // TBD: Implement instruction fetching logic, which involves reading the next instruction from memory using the Program Counter (PC) and incrementing the PC accordingly.
+}
+
+void GBCPU::decode() {
+    // TBD: Implement instruction decoding logic, which involves interpreting the fetched instruction and determining which operation to perform, as well as which registers or memory locations are involved.
+}
+
+void GBCPU::execute() {
+    // TBD: Implement instruction execution logic, which involves performing the operation specified by the decoded instruction, updating registers, memory, and flags as necessary.
+}
+
