@@ -71,19 +71,19 @@ bool SDLEMU::start() {
     emu->loadRom(romData, romSize);
     SDL_free((void*)romData);
 
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-    if (!texture) {
-        SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    // texture = loadPNG("tetris_gameboy_00.png");
+    // texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
     // if (!texture) {
-    //     SDL_Log("SDLEMU: load PNG failed: %s", SDL_GetError());
+    //     SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
     //     stop();
     //     return false;
     // }
+
+    texture = loadPNG("tetris_gameboy_00.png");
+    if (!texture) {
+        SDL_Log("SDLEMU: load PNG failed: %s", SDL_GetError());
+        stop();
+        return false;
+    }
 
     // Make it visible
     SDL_ShowWindow(window);
@@ -126,7 +126,7 @@ void SDLEMU::run() {
 }
 
 void SDLEMU::update(double deltaTime) {
-    emu->update(deltaTime);
+    // emu->update(deltaTime);
 }
 
 void SDLEMU::render(double deltaTime) {
@@ -135,12 +135,16 @@ void SDLEMU::render(double deltaTime) {
     SDL_SetRenderDrawColor(renderer, 0x70, 0x01, 0x93, 255);
     SDL_RenderClear(renderer);
 
-    if (emu->isRefreshRequested()) {
-        const Uint8 *frameBuffer = emu->getFrameBuffer();
-        if (frameBuffer && texture) {
-            SDL_UpdateTexture(texture, NULL, frameBuffer, width * height * sizeof(Uint32));
-        }
-        emu->clearRefreshRequest();
+    // if (emu->isRefreshRequested()) {
+    //     const Uint8 *frameBuffer = emu->getFrameBuffer();
+    //     if (frameBuffer && texture) {
+    //         SDL_UpdateTexture(texture, NULL, frameBuffer, width * height * sizeof(Uint32));
+    //     }
+    //     emu->clearRefreshRequest();
+    // }
+
+    if (texture) {
+        SDL_RenderTexture(renderer, texture, NULL, NULL);
     }
 
      SDL_RenderPresent(renderer);
