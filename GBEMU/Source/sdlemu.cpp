@@ -1,16 +1,16 @@
 #include "sdlemu.hpp"
 
-SDLEMU::SDLEMU(const char* romName, int width, int height)
-    : width(width), height(height) {
+SDLEMU::SDLEMU(const char* romName) {
     emu = new GBEMU();
-    performance_frequency = static_cast<double>(SDL_GetPerformanceFrequency());
-
+    
     const char* path = SDL_GetBasePath();
     SDL_strlcpy(projectPath, path, sizeof(projectPath));
     
     SDL_strlcpy(resourcePath, projectPath, sizeof(resourcePath));
     SDL_strlcat(resourcePath, "../Resources/", sizeof(resourcePath));
     SDL_strlcpy(this->romName, romName, sizeof(this->romName));
+
+    previousTime = SDL_GetPerformanceCounter();
 }
 
 SDLEMU::~SDLEMU() {
@@ -55,7 +55,7 @@ bool SDLEMU::start() {
     }
 
     // Set the Logical Presentation Size
-    if (!SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
+    if (!SDL_SetRenderLogicalPresentation(renderer, emu->getWidth(), emu->getHeight(), SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
         SDL_Log("SDLEMU: render logical presentation failed: %s", SDL_GetError());
         stop();
         return false;
@@ -71,19 +71,21 @@ bool SDLEMU::start() {
     emu->loadRom(romData, romSize);
     SDL_free((void*)romData);
 
-    // texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-    // if (!texture) {
-    //     SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
-    //     stop();
-    //     return false;
-    // }
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
+    if (!texture) {
+        SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
+        stop();
+        return false;
+    }
 
+    /* Debug Tetris Image
     texture = loadPNG("tetris_gameboy_00.png");
     if (!texture) {
         SDL_Log("SDLEMU: load PNG failed: %s", SDL_GetError());
         stop();
         return false;
-    }
+    } 
+    */
 
     // Make it visible
     SDL_ShowWindow(window);
@@ -114,41 +116,52 @@ void SDLEMU::run() {
             }
         }
 
-        currentTime = SDL_GetPerformanceCounter();
-        double deltaTime = static_cast<double>(currentTime - previousTime) / performance_frequency;
-        double deltaTimeNs = deltaTime * 1e9;
+currentTime = SDL_GetPerformanceCounter();
+        deltaTime = (currentTime - previousTime) * 1000000000ULL / SDL_GetPerformanceFrequency();
 
-        update(deltaTimeNs);
-        render(deltaTimeNs);
-
+        update(deltaTime);
+        render(deltaTime);
+        
         previousTime = currentTime;
     }
 }
 
-void SDLEMU::update(double deltaTime) {
-    // emu->update(deltaTime);
+void SDLEMU::update(Uint64 deltaTime) {
+    emu->update(deltaTime);
+    // emu->step();
 }
 
-void SDLEMU::render(double deltaTime) {
-    (void)deltaTime;
-    // Clear with black
-    SDL_SetRenderDrawColor(renderer, 0x70, 0x01, 0x93, 255);
-    SDL_RenderClear(renderer);
+void SDLEMU::render(Uint64 deltaTime) {
+    fps += deltaTime;
+    const Uint64 FRAME_NS = 1000000000ULL / 60; // ~60 Hz (16,666,667 ns per frame)
+    if (fps >= FRAME_NS) { // update every 1/60th of a second
+        SDL_SetRenderDrawColor(renderer, 0x70, 0x01, 0x93, 255);
+        SDL_RenderClear(renderer);
 
-    // if (emu->isRefreshRequested()) {
-    //     const Uint8 *frameBuffer = emu->getFrameBuffer();
-    //     if (frameBuffer && texture) {
-    //         SDL_UpdateTexture(texture, NULL, frameBuffer, width * height * sizeof(Uint32));
-    //     }
-    //     emu->clearRefreshRequest();
-    // }
+        /* Debug: Tetris Image
+        if (texture) {
+            SDL_RenderTexture(renderer, texture, NULL, NULL);
+        } 
+        */
 
-    if (texture) {
-        SDL_RenderTexture(renderer, texture, NULL, NULL);
+        const Uint8 *frameBuffer = emu->getFrameBuffer();
+        if (frameBuffer && texture) {
+            void* pixels;
+            int pitch;
+            SDL_LockTexture(texture, NULL, &pixels, &pitch);
+            SDL_memcpy(pixels, frameBuffer, emu->getWidth() * emu->getHeight() * 4);
+            SDL_UnlockTexture(texture);
+
+            // SDL_UpdateTexture(texture, NULL, frameBuffer, emu->getWidth() * 4);
+            SDL_RenderTexture(renderer, texture, NULL, NULL);
+        }
+
+        SDL_RenderPresent(renderer);
+        fps = 0;
     }
-
-     SDL_RenderPresent(renderer);
 }
+    
+
 
 SDL_Texture* SDLEMU::loadPNG(const char *filename) {
     char filepath[256];

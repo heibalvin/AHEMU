@@ -2,11 +2,12 @@
 #include <SDL3/SDL_stdinc.h>
 
 GBPPU::GBPPU(GBEMU* emu) : GBComponent(emu) {
-    // Initialize frame buffers
+    // Initialize frame buffers with red
     for (int i = 0; i < 2; i++) {
         frameBuffers[i] = (Uint8 *)SDL_malloc(width * height * 4); // RGBA format
-        SDL_memset(frameBuffers[i], 0, width * height * 4); // Clear frame buffer
+        SDL_memset(frameBuffers[i], 0xFF, width * height * 4); // Fill with white (255, 255, 255, 255)
     }
+
     frameBufferActive = 0;
     isRefreshRequested = false;
 
@@ -43,29 +44,31 @@ GBPPU::~GBPPU() {
 }
 
 const Uint8 *GBPPU::getFrameBuffer() {
-    return frameBuffers[frameBufferActive];
+    return frameBuffers[(frameBufferActive + 1) % 2]; // Return the non-active buffer for rendering
 }
 
 void GBPPU::step() {
+    // SDL_Log("NESPPU: Dot: %d, Line: %d, Color: %d", dot, line, color);
     int index = (line * width + dot) * 4;
-    int inactiveFrameBuffer = (frameBufferActive + 1) % 2;
     
-    frameBuffers[inactiveFrameBuffer][index + 0] = color;
-    frameBuffers[inactiveFrameBuffer][index + 1] = color;
-    frameBuffers[inactiveFrameBuffer][index + 2] = color;
-    frameBuffers[inactiveFrameBuffer][index + 3] = 0xFF;
-
-    color = (color + 1) % 256;
+    frameBuffers[frameBufferActive][index + 0] = color; // Red
+    frameBuffers[frameBufferActive][index + 1] = color; // Green
+    frameBuffers[frameBufferActive][index + 2] = color; // Blue
+    frameBuffers[frameBufferActive][index + 3] = 0xFF;  // Alpha
 
     dot++;
     if (dot >= width) {
         dot = 0;
         line++;
         if (line >= height) {
-            // Swap frame buffers
-            frameBufferActive = inactiveFrameBuffer;
-            isRefreshRequested = true;
             line = 0;
+            dot = 0;
+            color = (color + 1) % 256;
+
+            // Switch to the cleared buffer for the next frame
+            frameBufferActive = (frameBufferActive + 1) % 2;
+            isRefreshRequested = true;
+            // SDL_Log("NESPPU: Frame completed, switching buffers. Refresh requested.");
         }
     }
 }

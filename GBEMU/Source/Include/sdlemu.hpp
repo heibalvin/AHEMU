@@ -6,7 +6,7 @@
 
 class SDLEMU {
 public:
-    SDLEMU(const char* romName, int width, int height);
+    SDLEMU(const char* romName);
     ~SDLEMU();
 
     SDL_Texture* loadPNG(const char *filename);
@@ -16,8 +16,8 @@ public:
     void stop();
     void run();
 
-    void update(double deltaTime);
-    void render(double deltaTime);
+    void update(Uint64 deltaTime);
+    void render(Uint64 deltaTime);
     
 
 private:
@@ -34,14 +34,11 @@ private:
     char resourcePath[256];
     char romName[128];
 
-    // Window components
-    int width = 160;
-    int height = 144;
-
     // Clock & Timer components
-    double performance_frequency;
     Uint64 previousTime = 0.0;
     Uint64 currentTime = 0.0;
+    Uint64 deltaTime = 0.0;
+    Uint64 fps = 0.0;
 };
 
 #endif /* SDLEMU_HPP */

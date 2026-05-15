@@ -18,6 +18,14 @@ GBEMU::~GBEMU() {
     delete bus;
 }
 
+const int GBEMU::getWidth() {
+    return ppu->width;
+}
+
+const int GBEMU::getHeight() {
+    return ppu->height;
+}
+
 void GBEMU::loadRom(Uint8* romData, size_t romSize) {
     // Implementation for loading ROM
     dsk->loadRom(romData, romSize);
@@ -36,11 +44,16 @@ void GBEMU::stop() {
     // Stop emulation and cleanup
 }
 
-void GBEMU::update(double deltaTimeNs) {
-    Uint64 cyclesToRun = static_cast<Uint64>(deltaTimeNs / CYCLE_NS);
-    if (cyclesToRun == 0) cyclesToRun = 1; // Always run at least 1 cycle
-    for (Uint64 i = 0; i < cyclesToRun; i++) {
-        step();
+void GBEMU::update(Uint64 deltaTime) {
+    time += deltaTime;
+    if (time >= CYCLE_NS) {
+        Uint64 cyclesToRun = time / CYCLE_NS;
+        time -= cyclesToRun * CYCLE_NS;
+
+        SDL_Log("GBEMU: Running %llu cycles (deltaTime: %llu ns)", cyclesToRun, deltaTime);
+        for (Uint64 i = 0; i < cyclesToRun; i++) {
+            step();
+        }
     }
 }
 

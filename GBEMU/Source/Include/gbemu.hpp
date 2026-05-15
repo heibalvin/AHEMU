@@ -19,16 +19,21 @@ public:
     void pause();
     void stop();
 
-    void update(double deltaTime);
+    void update(Uint64 deltaTime);
     void step() override;
 
+    // sub-component helper functions
+    const int getWidth();
+    const int getHeight();
     bool isRefreshRequested() const;
     void clearRefreshRequest();
     const Uint8 *getFrameBuffer();
 
 private:
-    static constexpr double GB_CLOCK_HZ = 4194304.0;
-    static constexpr double CYCLE_NS = 1000000000.0 / GB_CLOCK_HZ;
+    const Uint64 clock = 4194304.0; // 4.194304 MHz for GB
+    const Uint64 SDL_NS_TO_SECONDS = 1000000000; // 1 second in nanoseconds
+    const Uint64 CYCLE_NS = SDL_NS_TO_SECONDS / clock; // Nanoseconds per cycle
+    Uint64 time = 0;
     Uint64 cycleId = 0;
 
     friend class GBBUS;

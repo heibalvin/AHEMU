@@ -30,6 +30,8 @@ private:
     int dot = 0;
     int line = 0;
     Uint8 color = 0;
+
+    // Sprite and VRAM variables
     Uint8* oam = NULL; // Object Attribute Memory (OAM) for sprites
     Uint8 *vrams[2] = { NULL, NULL };
     int vramCount = 1;
