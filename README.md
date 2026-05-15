@@ -1,6 +1,29 @@
 # AHEMU
-
 Emulator & Tools for Retro Consoles (NES, SMS, GB, PCE, ...)
+
+## Applications
+
+This repository contains the following emulator applications:
+
+1. **GBEMU** - Game Boy emulator (SDL3/C++)
+   - Location: `GBEMU/` directory
+   - Cross-platform: Linux, macOS, Windows (via SDL3)
+   - macOS Xcode project: `GBEMUMacOS/`
+   - Target: Classic Game Boy (DMG), extensible to Pocket (MGB), Super Game Boy (SGB), Game Boy Color (CGB)
+
+2. **NESEMU** - NES emulator (C++/SDL3)
+   - Location: `NES/NESEMU/`
+   - Features: Accurate 6502 CPU emulation, PPU rendering, APU sound
+   - Build with: `make` in the NESEMU directory
+
+3. **SwiftUINESEMU** - NES emulator (Swift/SwiftUI)
+   - Location: `SwiftUINESEMU/`
+   - Note: Currently ~800× slower than required for real-time emulation
+   - Kept for comparison and educational purposes
+
+4. **SDL3PerfTest** - SDL3 performance testing utility
+   - Location: `SDL3PerfTest/`
+   - Used to benchmark SDL3 performance for emulation purposes
 
 ## Strategy Change
 
@@ -35,3 +58,35 @@ The SwiftUI-based emulator is available in [`SwiftUINESEMU/`](SwiftUINESEMU/).
 | **CPU Steps per Update** | ~17 cycles | ~17 cycles target | ⚠️ Near target per update |
 
 **Key takeaway:** SDL3 / C++ runs at 0.316 MHz with ~17 cycles per update. However, it still falls ~17× short of the 5.37 MHz target needed for real-time NES emulation.
+
+## Building GBEMU
+
+### Prerequisites
+- SDL3 development libraries
+- C++ compiler with C++17 support
+- Make or CMake
+
+### Build Instructions
+```bash
+# Using Make (if Makefile exists)
+cd GBEMU/Source
+make
+
+# Or using CMake
+cd GBEMU/Source
+mkdir build && cd build
+cmake ..
+make
+```
+
+## Running GBEMU
+
+```bash
+./gbemu <path_to_gameboy_rom>
+```
+
+## References
+
+- [Game Boy CPU Manual](https://archive.org/download/GameBoyManual/GameBoy.pdf)
+- [Pan Docs](https://gbdev.io/pandocs/)
+- [GBEDG (Game Boy Exact Documentation Guide)](https://github.com/GBEDG/gbcdocs)
