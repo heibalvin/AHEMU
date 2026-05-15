@@ -5,7 +5,6 @@
 #include "gbbus.hpp"
 
 GBEMU::GBEMU() : GBComponent(nullptr), bus(nullptr), cpu(nullptr), ppu(nullptr), dsk(nullptr) {
-    clock = 1000 / 4.194304;            // 238.4 nanosec
     cpu = new GBCPU(this);
     ppu = new GBPPU(this);
     dsk = new GBDSK(this);
@@ -19,7 +18,7 @@ GBEMU::~GBEMU() {
     delete bus;
 }
 
-void GBEMU::loadRom(const Uint8* romData, size_t romSize) {
+void GBEMU::loadRom(Uint8* romData, size_t romSize) {
     // Implementation for loading ROM
     dsk->loadRom(romData, romSize);
     dsk->debug();
@@ -37,9 +36,10 @@ void GBEMU::stop() {
     // Stop emulation and cleanup
 }
 
-void GBEMU::update(Uint64 deltaTime) {
-    int steps = static_cast<int>(deltaTime * clock);
-    for (int i = 0; i < steps; i++) {
+void GBEMU::update(double deltaTimeNs) {
+    Uint64 cyclesToRun = static_cast<Uint64>(deltaTimeNs / CYCLE_NS);
+    if (cyclesToRun == 0) cyclesToRun = 1; // Always run at least 1 cycle
+    for (Uint64 i = 0; i < cyclesToRun; i++) {
         step();
     }
 }

@@ -9,8 +9,13 @@ class GBEMU;
 class GBBUS : public GBComponent {
 public:
     explicit GBBUS(GBEMU* emu);
+    ~GBBUS();
+    
     Uint8 read(Uint16 address);
     void write(Uint16 address, Uint8 value);
+
+private:
+    Uint8* ioregisters = NULL; // I/O Registers (0xFF00-0xFF7F)
 };
 
 #endif // GBBUS_HPP

@@ -17,18 +17,23 @@ public:
 
 private:
     friend class GBEMU;
-    
-    // GB Window varaibles
+    friend class GBBUS;
+
+    // GB Window variables
     const int width = 160;
     const int height = 144;
-    Uint8 **frameBuffers;
-    int activeFrameBuffer = 0;
+    Uint8 *frameBuffers[2] = { NULL, NULL};
+    int frameBufferActive = 0;
     bool isRefreshRequested = false;
     
-    // GB PPU varaibles
+    // GB PPU variables
     int dot = 0;
     int line = 0;
     Uint8 color = 0;
+    Uint8* oam = NULL; // Object Attribute Memory (OAM) for sprites
+    Uint8 *vrams[2] = { NULL, NULL };
+    int vramCount = 1;
+    int vramActive = 0;
 };
 
 #endif /* GBPPU_HPP */

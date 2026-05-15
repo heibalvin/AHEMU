@@ -14,12 +14,12 @@ public:
     GBEMU();
     ~GBEMU() override;
 
-    void loadRom(const Uint8* romData, size_t romSize);
+    void loadRom(Uint8* romData, size_t romSize);
     void start();
     void pause();
     void stop();
 
-    void update(Uint64 deltaTime);
+    void update(double deltaTime);
     void step() override;
 
     bool isRefreshRequested() const;
@@ -27,9 +27,8 @@ public:
     const Uint8 *getFrameBuffer();
 
 private:
-    Uint64 clock;
-    Uint64 previousTime = 0.0;
-    Uint64 deltaTime = 0.0;
+    static constexpr double GB_CLOCK_HZ = 4194304.0;
+    static constexpr double CYCLE_NS = 1000000000.0 / GB_CLOCK_HZ;
     Uint64 cycleId = 0;
 
     friend class GBBUS;

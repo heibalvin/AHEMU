@@ -16,8 +16,8 @@ public:
     void stop();
     void run();
 
-    void update(Uint64 deltaTime);
-    void render(Uint64 deltaTime);
+    void update(double deltaTime);
+    void render(double deltaTime);
     
 
 private:
@@ -39,9 +39,9 @@ private:
     int height = 144;
 
     // Clock & Timer components
+    double performance_frequency;
     Uint64 previousTime = 0.0;
     Uint64 currentTime = 0.0;
-    Uint64 deltaTime = 0.0;
 };
 
 #endif /* SDLEMU_HPP */

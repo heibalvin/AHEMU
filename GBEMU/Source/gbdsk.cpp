@@ -3,9 +3,13 @@
 GBDSK::GBDSK(GBEMU* emu) : GBComponent(emu) {}
 
 GBDSK::~GBDSK() {
-    if (rom) {
-        delete[] rom;
-        rom = NULL;
+    if (roms) {
+        SDL_free(roms);
+        roms = nullptr;
+    }
+    if (rams) {
+        SDL_free(rams);
+        rams = nullptr;
     }
 }
 
@@ -18,29 +22,21 @@ void GBDSK::debug() {
     SDL_Log("\tRAM size: %d KB * %d count", ramSizeKB, ramCount);
 }
 
-Uint8 GBDSK::readRom(Uint16 address) {
-    if (rom && address < romSize) {
-        return rom[address];
-    }
-    return 0xFF;
-}
-
-void GBDSK::loadRom(const Uint8* romData, size_t romSize) {
-    this->rom = new Uint8[romSize];
-    SDL_memcpy(this->rom, romData, romSize);
+void GBDSK::loadRom(Uint8* romData, size_t romSize) {
+    this->gamerom = romData;
     this->romSize = romSize;
 
-    parseRom(this->rom, this->romSize);
+    decode();
 }
 
-void GBDSK::parseRom(const Uint8* romData, size_t romSize) {
+void GBDSK::decode() {
     // Implementation for parsing ROM data and extracting information such as title, cartridge type, ROM size, RAM size, etc.
 
     // 0134-0143 — Title (padded with 0)
-    SDL_strlcpy(title, (const char*)(romData + 0x0134), sizeof(title));
+    SDL_strlcpy(title, (const char*)(gamerom + 0x0134), sizeof(title));
 
     // 0143 — CGB flag
-    Uint8 cgbFlag = romData[0x0143];
+    Uint8 cgbFlag = gamerom[0x0143];
     if (cgbFlag == 0x80) {
         isCGBCompatible = true;
         isDMGCompatible = true;
@@ -86,27 +82,45 @@ void GBDSK::parseRom(const Uint8* romData, size_t romSize) {
         0x0F, 0x10, 0x11, 0x12, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E,
         0x20, 0x22, 0xFC, 0xFD
     };
-    Uint8 cartridgeTypeCode = romData[0x0147];
+    Uint8 cartridgeTypeCode = gamerom[0x0147];
     SDL_strlcpy(cartridgeType, cartridgeTypes[cartridgeIndexes[cartridgeTypeCode]], sizeof(cartridgeType));
 
     // 0148 — ROM size
-    if (romData[0x0148] <= 0x08) {
-        romSizeKB = 32;
-        romCount = 2 * (1 << romData[0x0148]);
-    } else if (romData[0x0148] == 0x52) {
-        romSizeKB = 16;
+    romSizeKB = 16;
+    if (gamerom[0x0148] <= 0x08) {
+        romCount = 2 * (1 << gamerom[0x0148]);
+    } else if (gamerom[0x0148] == 0x52) {
         romCount = 72;
-    } else if (romData[0x0148] == 0x53) {
-        romSizeKB = 16;
+    } else if (gamerom[0x0148] == 0x53) {
         romCount = 80;
-    } else if (romData[0x0148] == 0x54) {
-        romSizeKB = 16;
+    } else if (gamerom[0x0148] == 0x54) {
         romCount = 96;
     }
 
+    Uint16 addr = 0x0000;
+    // Setup MBC ROM banking pointers
+    roms = (Uint8 **)SDL_malloc(sizeof(Uint8*) * romCount);
+    for (int i = 0; i < romCount; i++) {
+        roms[i] = &gamerom[addr];
+        addr += romSizeKB * 1024;
+    }
+    
+    // Set active ROM banks: typically bank 0 and the last bank (if available)
+    romActive[0] = 0;
+    romActive[1] = romCount - 1;
+
     // 0149 — RAM size
-    int ramSizes[] = {0, -1, 8, 32, 128, 64};
     int ramCounts[] = {0, -1, 1, 4, 16, 8};
-    ramSizeKB = ramSizes[romData[0x0149]];
-    ramCount = ramCounts[romData[0x0149]];
+    ramSizeKB = 8;
+    ramCount = ramCounts[gamerom[0x0149]];
+    
+    // Setup MBC RAM banking pointers
+    rams = (Uint8 **)SDL_malloc(sizeof(Uint8*) * ramCount);
+    for (int i = 0; i < ramCount; i++) {
+        rams[i] = &gamerom[addr];
+        addr += ramSizeKB * 1024;
+    }
+
+    // Set active RAM bank: typically bank 0
+    ramActive = 0;
 }

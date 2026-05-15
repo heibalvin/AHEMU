@@ -12,40 +12,33 @@ public:
     ~GBDSK();
     void debug();
 
-    void loadRom(const Uint8* romData, size_t romSize);
-    Uint8 readRom(Uint16 address);
-    void parseRom(const Uint8* romData, size_t romSize);
+    void loadRom(Uint8* romData, size_t romSize);
+    void decode();
 
 private:
-    Uint8 *rom;
+    friend class GBBUS;
+
+    // ROM data and metadata
+    Uint8 *gamerom;  // Keep const for MBC banking
     size_t romSize;
 
+    // ROM header information
     char title[16] = "";
     char cartridgeType[128] = "";
     bool isDMGCompatible = false;
     bool isCGBCompatible = false;
+    
+    // MBC ROM banking data
     int romSizeKB = 0;
     int romCount = 0;
+    Uint8 **roms = NULL;
+    int romActive[2] = { 0, 1 };
+
+    // MBC RAM banking data
     int ramSizeKB = 0;
     int ramCount = 0;
-
-    /*
-    Uint8 *entryPoint = NULL;
-    Uint8 *nintendoLogo = NULL;
-    Uint8 *title = NULL;
-    Uint8 *manufacturerCode = NULL;
-    Uint8 cgbFlag = 0;
-    Uint8 *newLicenseeCode = NULL;
-    Uint8 sgbFlag = 0;
-    Uint8 cartridgeType = 0;
-    Uint8 romSizeCode = 0;
-    Uint8 ramSizeCode = 0;
-    Uint8 destinationCode = 0;
-    Uint8 oldLicenseeCode = 0;
-    Uint8 maskRomVersion = 0;
-    Uint8 headerChecksum = 0;
-    Uint16 globalChecksum = 0;
-    */
+    Uint8 **rams = NULL;
+    int ramActive = 0;
 };
 
 #endif /* GBDSK_HPP */
