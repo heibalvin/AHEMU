@@ -16,7 +16,7 @@ public:
     Uint8* loadFile(const char *romname, size_t *romSize);
     
     void loadRom(const char* romName);
-    void exportNESRomsRGBA();
+    void exportCHR2RGBA();
 
     void start();
     void stop();

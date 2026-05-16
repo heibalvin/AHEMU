@@ -113,10 +113,12 @@ void NESDSK::decode() {
     }
 }
 
-Uint8* NESDSK::convert2BPPToRGBA(int chrRomIndex) {
+Uint8* NESDSK::CHR2RGBA(int chrRomIndex, int offset) {
     // Implementation for converting CHR ROM pixel data to RGBA format for rendering
     Uint8 *chrRom = chrRoms[chrRomIndex];
     Uint8 *rgbaBuffer = (Uint8 *)SDL_malloc(128 * 128 * 4);       // 128 width x 128 height x 4 bytes per pixel for RGBA
+
+    int src = offset * 4 * 1024; // Each CHR ROM bank is 32KB (256 tiles * 16 bytes per tile)
 
     for (int tileIndex = 0; tileIndex < 256; ++tileIndex) {
         // Calculate where this tile sits in the 2D grid layout
@@ -127,8 +129,8 @@ Uint8* NESDSK::convert2BPPToRGBA(int chrRomIndex) {
         
         // Loop through the 8 rows of pixels in the tile
         for (int y = 0; y < 8; ++y) {
-            uint8_t lowByte  = chrRom[tileOffset + y];
-            uint8_t highByte = chrRom[tileOffset + y + 8];
+            uint8_t lowByte  = chrRom[src + tileOffset + y];
+            uint8_t highByte = chrRom[src + tileOffset + y + 8];
             
             // Loop through the 8 pixels in this row (left to right)
             for (int x = 0; x < 8; ++x) {
@@ -152,7 +154,7 @@ Uint8* NESDSK::convert2BPPToRGBA(int chrRomIndex) {
                 rgbaBuffer[targetIndex]     = color;
                 rgbaBuffer[targetIndex + 1] = color;
                 rgbaBuffer[targetIndex + 2] = color;
-                rgbaBuffer[targetIndex + 3] = 0xFF;         // Alpha channel (fully opaque)
+                rgbaBuffer[targetIndex + 3] = 0xFF;     // Alpha channel (fully opaque)
             }
         }
     }

@@ -6,8 +6,8 @@
 int main(int argc, char *argv[]) {
     SDLEMU game;
 
-    game.loadRom("1942 (Japan, USA).nes");
-    game.exportNESRomsRGBA();
+    game.loadRom("Xevious (Europe).nes");
+    game.exportCHR2RGBA();
 
     game.start();
     game.run();

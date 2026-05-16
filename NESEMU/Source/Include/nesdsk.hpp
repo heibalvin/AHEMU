@@ -14,7 +14,7 @@ public:
 
     void loadRom(Uint8* romData, size_t romSize);
     void decode();
-    Uint8* convert2BPPToRGBA(int chrRomIndex);
+    Uint8* CHR2RGBA(int chrRomIndex, int offset = 0);
 
 private:
     friend class NESEMU;

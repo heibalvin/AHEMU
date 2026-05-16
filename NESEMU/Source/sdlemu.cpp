@@ -202,24 +202,25 @@ Uint8* SDLEMU::loadFile(const char *romname, size_t *romSize) {
     return romData;
 }
 
-void SDLEMU::exportNESRomsRGBA() {
+void SDLEMU::exportCHR2RGBA() {
     for(int i = 0; i < emu->dsk->chrRomCount; i++) {
-        SDL_Log("SDLEMU: Converting 2BPP to RGBA: %d", i);
-        Uint8* rgbaData = emu->dsk->convert2BPPToRGBA(i);
-        if (rgbaData) {
-            char filename[128];
-            SDL_snprintf(filename, sizeof(filename), "%s_chrrom_%d.png", romName, i);
-            
-            char filepath[256];
-            getFilePath(filepath, sizeof(filepath), outputPath, filename);
-            
-            SDL_Surface *surface = SDL_CreateSurfaceFrom(128, 128, SDL_PIXELFORMAT_ABGR8888, rgbaData, 128 * 4);
-            if (surface) {
-                SDL_Log("SDLEMU: Saving 2BPP to RGBA to %s", filepath);
-                SDL_SavePNG(surface, filepath);
-                SDL_DestroySurface(surface);
+        for(int offset = 0; offset < 2; offset++) {
+            Uint8* rgbaData = emu->dsk->CHR2RGBA(i, offset);
+            if (rgbaData) {
+                char filename[128];
+                SDL_snprintf(filename, sizeof(filename), "%s_chrrom_%d_%d.png", romName, i, offset);
+                
+                char filepath[256];
+                getFilePath(filepath, sizeof(filepath), outputPath, filename);
+                
+                SDL_Surface *surface = SDL_CreateSurfaceFrom(128, 128, SDL_PIXELFORMAT_ABGR8888, rgbaData, 128 * 4);
+                if (surface) {
+                    // SDL_Log("SDLEMU: Saving 2BPP to RGBA to %s", filepath);
+                    SDL_SavePNG(surface, filepath);
+                    SDL_DestroySurface(surface);
+                }
+                SDL_free(rgbaData);
             }
-            SDL_free(rgbaData);
         }
     }
 }
