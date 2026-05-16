@@ -83,7 +83,7 @@ void SDLEMU::start() {
         return;
     }
 
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
     if (!texture) {
         SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
         stop();
@@ -213,7 +213,7 @@ void SDLEMU::exportNESRomsRGBA() {
             char filepath[256];
             getFilePath(filepath, sizeof(filepath), outputPath, filename);
             
-            SDL_Surface *surface = SDL_CreateSurfaceFrom(128, 128, SDL_PIXELFORMAT_RGBA8888, rgbaData, 128 * 4);
+            SDL_Surface *surface = SDL_CreateSurfaceFrom(128, 128, SDL_PIXELFORMAT_ABGR8888, rgbaData, 128 * 4);
             if (surface) {
                 SDL_Log("SDLEMU: Saving 2BPP to RGBA to %s", filepath);
                 SDL_SavePNG(surface, filepath);
