@@ -19,26 +19,35 @@ private:
     friend class NESBUS;
 
     // ROM data and metadata
-    Uint8 *gamerom;  // Keep const for MBC banking
+    Uint8 *gamerom;  // Keep for MBC banking
     size_t romSize;
 
     // ROM header information
-    char title[16] = "";
-    char cartridgeType[128] = "";
-    bool isDMGCompatible = false;
-    bool isCGBCompatible = false;
-    
-    // MBC ROM banking data
-    int romSizeKB = 0;
-    int romCount = 0;
-    Uint8 **roms = NULL;
-    int romActive[2] = { 0, 1 };
+    int mapper = 0;
+    int version = 0;
+    int region = 0;     // 0 for NTSC, 1 for PAL
+    int mirroring = 0;  // 0 for horizontal, 1 for vertical, 2 for four-screen
 
-    // MBC RAM banking data
-    int ramSizeKB = 0;
-    int ramCount = 0;
-    Uint8 **rams = NULL;
-    int ramActive = 0;
+    // TRN ROM management (if present)
+    int trnRomSize = 0;
+    int trnRomCount = 0;
+    Uint8 **trnRoms = NULL;
+
+    // PRG ROM management
+    int prgRomSizeKB = 0;
+    int prgRomCount = 0;
+    Uint8 **prgRoms = NULL; // Pointers to PRG ROM banks
+    int prgRomActive[2] = { 0, 0 }; // Active PRG ROM bank indices for CPU read (if multiple banks are present)
+
+    // CHR ROM management
+    int chrRomSizeKB = 0;
+    int chrRomCount = 0;
+    Uint8 **chrRoms = NULL; // Pointers to CHR ROM banks
+
+    // PRG RAM management  (if present)
+    int prgRamSizeKB = 0;
+    int prgRamCount = 0;
+    Uint8 **prgRams = NULL; // Pointers to PRG RAM banks
 };
 
 #endif /* NESDSK_HPP */

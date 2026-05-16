@@ -50,7 +50,7 @@ void NESEMU::update(Uint64 deltaTime) {
         Uint64 cyclesToRun = time / CYCLE_NS;
         time -= cyclesToRun * CYCLE_NS;
 
-        SDL_Log("NESEMU: Running %llu cycles (deltaTime: %llu ns)", cyclesToRun, deltaTime);
+        // SDL_Log("NESEMU: Running %llu cycles (deltaTime: %llu ns)", cyclesToRun, deltaTime);
         for (Uint64 i = 0; i < cyclesToRun; i++) {
             step();
         }

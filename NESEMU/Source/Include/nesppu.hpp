@@ -19,8 +19,8 @@ private:
     friend class NESBUS;
 
     // NES Window variables
-    const int width = 160;
-    const int height = 144;
+    const int width = 256;
+    const int height = 240;
     Uint8 *frameBuffers[2] = { NULL, NULL};
     int frameBufferActive = 0;
     bool isRefreshRequested = false;
@@ -31,10 +31,10 @@ private:
     Uint8 color = 0;
 
     // Sprite and VRAM variables
-    Uint8* oam = NULL; // Object Attribute Memory (OAM) for sprites
-    Uint8 *vrams[2] = { NULL, NULL };
-    int vramCount = 1;
-    int vramActive = 0;
+    Uint8* palRam = NULL;               // Palette RAM for background and sprites
+    Uint8* oamRam = NULL;               // Object Attribute Memory (OAM) for sprites
+    Uint8* vram = NULL;                 // VRAM for nametables and attribute tables
+    Uint8* registers = NULL;            // PPU I/O registers (0x2000-0x2007)
 };
 
 #endif /* NESPPU_HPP */

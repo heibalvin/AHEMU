@@ -18,7 +18,7 @@ public:
     void writeLE(Uint16 address, Uint16 value);
 
 private:
-    Uint8* ioregisters = NULL; // I/O Registers (0xFF00-0xFF7F)
+    Uint8* ioregisters = NULL;      // I/O Registers (0x4000-0x401F)
 };
 
 #endif // NESBUS_HPP

@@ -11,17 +11,21 @@ NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
     frameBufferActive = 0;
     isRefreshRequested = false;
 
-    // Initialise OAM for 40 sprites
-    oam = (Uint8 *)SDL_malloc(40 * 4); // 40 sprites * 4 bytes each
-    SDL_memset(oam, 0, 40 * 4); // Clear OAM
+    // Initialise palette RAM
+    palRam = (Uint8 *)SDL_malloc(8 * 4);        // 8 palettes of 4 index for background and sprite palettes
+    SDL_memset(palRam, 0, 8 * 4);               // Clear palette RAM
 
-    // Initialise 8KB VRAM
-    vramCount = 1;
-    for (int i = 0; i < vramCount; i++) {
-        vrams[i] = (Uint8 *)SDL_malloc(0x2000); // 8KB of VRAM
-        SDL_memset(vrams[i], 0, 0x2000); // Clear VRAM
-    }
-    vramActive = 0;
+    // Initialise OAM for 40 sprites
+    oamRam = (Uint8 *)SDL_malloc(64 * 4);       // 64 sprites * 4 bytes each
+    SDL_memset(oamRam, 0, 64 * 4);              // Clear OAM
+
+    // Initialise 4KB VRAM
+    vram = (Uint8 *)SDL_malloc(0x1000);         // 4KB of VRAM
+    SDL_memset(vram, 0, 0x1000);                // Clear VRAM
+
+    // Initialise PPU I/O registers
+    registers = (Uint8 *)SDL_malloc(8);          // 8 registers (0x2000-0x2007)
+    SDL_memset(registers, 0, 8);                // Clear registers
 }
 
 NESPPU::~NESPPU() {
@@ -31,15 +35,21 @@ NESPPU::~NESPPU() {
             frameBuffers[i] = NULL;
         }
     }
-    if (oam) {
-        SDL_free(oam);
-        oam = NULL;
+    if (oamRam) {
+        SDL_free(oamRam);
+        oamRam = NULL;
     }
-    for (int i = 0; i < vramCount; i++) {
-        if (vrams[i]) {
-            SDL_free(vrams[i]);
-            vrams[i] = NULL;
-        }
+    if (palRam) {
+        SDL_free(palRam);
+        palRam = NULL;
+    }
+    if (vram) {
+        SDL_free(vram);
+        vram = NULL;
+    }
+    if (registers) {
+        SDL_free(registers);
+        registers = NULL;
     }
 }
 

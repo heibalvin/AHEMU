@@ -30,7 +30,7 @@ public:
     const Uint8 *getFrameBuffer();
 
 private:
-    const Uint64 clock = 4194304.0; // 4.194304 MHz for GB
+    const Uint64 clock = 21.477272 * 100000; // 21.477272 MHz for NES
     const Uint64 SDL_NS_TO_SECONDS = 1000000000; // 1 second in nanoseconds
     const Uint64 CYCLE_NS = SDL_NS_TO_SECONDS / clock; // Nanoseconds per cycle
     Uint64 time = 0;

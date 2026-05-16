@@ -5,9 +5,8 @@
 #include "nesdsk.hpp"
 
 NESBUS::NESBUS(NESEMU* emu) : NESComponent(emu) {
-    // Initialize I/O Registers
-    ioregisters = (Uint8 *)SDL_malloc(0x80); // 128 bytes for I/O registers
-    SDL_memset(ioregisters, 0, 0x80); // Clear I/O registers
+    ioregisters = (Uint8 *)SDL_malloc(0x20);            // 32 bytes for I/O registers (0x4000-0x401F)
+    SDL_memset(ioregisters, 0, 0x20);                   // Clear I/O registers
 }
 
 NESBUS::~NESBUS() {
@@ -18,28 +17,25 @@ NESBUS::~NESBUS() {
 }
 
 Uint8 NESBUS::read(Uint16 address) {
-    if (address < 0x4000) {
-        return emu->dsk->roms[emu->dsk->romActive[0]][address];
-    } else if (address >= 0x4000 && address < 0x8000) {
-        return emu->dsk->roms[emu->dsk->romActive[1]][address - 0x4000];
-    } else if (address >= 0x8000 && address < 0xA000) {
-        return emu->ppu->vrams[emu->ppu->vramActive][address - 0x8000];
-    } else if (address >= 0xA000 && address < 0xC000) {    
-        return emu->dsk->rams[emu->dsk->ramActive][address - 0xA000];
-    } else if (address >= 0xC000 && address < 0xD000) {
-        return emu->cpu->wrams[emu->cpu->wramActive[0]][address - 0xC000];
-    } else if (address >= 0xD000 && address < 0xE000) {
-        return emu->cpu->wrams[emu->cpu->wramActive[1]][address - 0xE000];
-    } else if (address >= 0xE000 && address < 0xF000) {
-        return emu->cpu->wrams[emu->cpu->wramActive[0]][address - 0xE000];
-    } else if (address >= 0xF000 && address < 0xFE00) {
-        return emu->cpu->wrams[emu->cpu->wramActive[1]][address - 0xF000];
-    } else if (address >= 0xFE00 && address < 0xFEA0) {
-        return emu->ppu->oam[address - 0xFE00];
-    } else if (address >= 0xFF00 && address < 0xFF80) {
-        return ioregisters[address - 0xFF00];
-    } else if (address >= 0xFF80 && address < 0xFFFF) {
-        return emu->cpu->hram[address - 0xFF80];
+    if (address >= 0x0000 && address < 0x2000) {
+        // WRAM (mirrored every 2KB)
+        return emu->cpu->wram[address % 0x0800];
+    } else if (address >= 0x2000 && address < 0x4000) {
+        // PPU I/O Registers (mirrored every 8 bytes)
+        return emu->ppu->registers[address % 8];
+    } else if (address >= 0x4000 && address < 0x4020) {
+        // APU and I/O Registers
+        // TBD: Implement APU and I/O register reads
+        return ioregisters[address - 0x4000];
+    } else if (address >= 0x6000 && address < 0x8000) {
+        // Cartridge space (PRG RAM)
+        return emu->dsk->prgRams[0][address - 0x6000]; // Return from first PRG RAM bank if present
+    } else if (address >= 0x8000 && address < 0xC000) {
+        // Cartridge space (PRG ROM)
+        return emu->dsk->prgRoms[emu->dsk->prgRomActive[0]][address - 0x8000];
+    } else if (address >= 0xC000) {
+        // Cartridge space (PRG ROM)
+        return emu->dsk->prgRoms[emu->dsk->prgRomActive[1]][address - 0xC000]; // Return from last PRG ROM bank
     }
 
     // Default return for unimplemented areas
@@ -47,28 +43,26 @@ Uint8 NESBUS::read(Uint16 address) {
 }
 
 void NESBUS::write(Uint16 address, Uint8 value) {
-    if (address < 0x4000) {
-        // ROM area is typically read-only, ignore writes
-    } else if (address >= 0x4000 && address < 0x8000) {
-        // ROM area is typically read-only, ignore writes
-    } else if (address >= 0x8000 && address < 0xA000) {
-        emu->ppu->vrams[emu->ppu->vramActive][address - 0x8000] = value;
-    } else if (address >= 0xA000 && address < 0xC000) {    
-        emu->dsk->rams[emu->dsk->ramActive][address - 0xA000] = value;
-    } else if (address >= 0xC000 && address < 0xD000) {
-        emu->cpu->wrams[emu->cpu->wramActive[0]][address - 0xC000] = value;
-    } else if (address >= 0xD000 && address < 0xE000) {
-        emu->cpu->wrams[emu->cpu->wramActive[1]][address - 0xD000] = value;
-    } else if (address >= 0xE000 && address < 0xF000) {
-        emu->cpu->wrams[emu->cpu->wramActive[0]][address - 0xE000] = value;
-    } else if (address >= 0xF000 && address < 0xFE00) {
-        emu->cpu->wrams[emu->cpu->wramActive[1]][address - 0xF000] = value;
-    } else if (address >= 0xFE00 && address < 0xFEA0) {
-        emu->ppu->oam[address - 0xFE00] = value;
-    } else if (address >= 0xFF00 && address < 0xFF80) {
-        ioregisters[address - 0xFF00] = value;
-    } else if (address >= 0xFF80 && address < 0xFFFF) {
-        emu->cpu->hram[address - 0xFF80] = value;
+    if (address >= 0x0000 && address < 0x2000) {
+        // WRAM (mirrored every 2KB)
+        emu->cpu->wram[address % 0x0800] = value;
+    } else if (address >= 0x2000 && address < 0x4000) {
+        // PPU I/O Registers (mirrored every 8 bytes)
+        emu->ppu->registers[address % 8] = value;
+    } else if (address >= 0x4000 && address < 0x4020) {
+        // APU and I/O Registers
+        // TBD: Implement APU and I/O register reads
+        ioregisters[address - 0x4000] = value;
+    } else if (address >= 0x6000 && address < 0x8000) {
+        // Cartridge space (PRG RAM)
+        emu->dsk->prgRams[0][address - 0x6000] = value; // Write to first PRG RAM bank if present
+    } else if (address >= 0x8000 && address < 0xC000) {
+        // Cartridge space (PRG ROM)
+        // Writes to PRG ROM area are typically ignored or used for mapper control
+        emu->dsk->prgRoms[emu->dsk->prgRomActive[0]][address - 0x8000] = value; // For now, we can allow writes for mapper control, but this may need to be handled differently based on the mapper used
+    }   else if (address >= 0xC000) {
+        // Writes to other areas are typically ignored
+        emu->dsk->prgRoms[emu->dsk->prgRomActive[1]][address - 0xC000] = value; // For now, we can allow writes for mapper control, but this may need to be handled differently based on the mapper used
     }
 }
 

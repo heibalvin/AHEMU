@@ -3,6 +3,10 @@
 GBDSK::GBDSK(GBEMU* emu) : GBComponent(emu) {}
 
 GBDSK::~GBDSK() {
+    if (gamerom) {
+        SDL_free(gamerom);
+        gamerom = NULL;
+    }
     if (roms) {
         SDL_free(roms);
         roms = nullptr;

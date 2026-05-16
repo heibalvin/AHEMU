@@ -14,12 +14,11 @@ SDLEMU::SDLEMU(const char* romName) {
 }
 
 SDLEMU::~SDLEMU() {
-    stop();
-
     if (emu) {
         delete emu;
         emu = NULL;
     }
+    stop();
 }
 
 void SDLEMU::stop() {

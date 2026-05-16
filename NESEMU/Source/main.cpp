@@ -4,7 +4,7 @@
 #include "sdlemu.hpp"
 
 int main(int argc, char *argv[]) {
-    SDLEMU game("Tetris (JUE) (V1.1) [!].gb");
+    SDLEMU game("1942 (Japan, USA).nes");
 
     game.start();
     game.run();
