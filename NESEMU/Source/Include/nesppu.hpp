@@ -12,7 +12,7 @@ public:
     ~NESPPU();
 
     void step() override;
-    const Uint8 *getFrameBuffer();
+    const Uint8 *getFrameBuffer() const;
 
 private:
     friend class NESEMU;

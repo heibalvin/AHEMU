@@ -68,7 +68,6 @@ bool SDLEMU::start() {
         return false;
     }
     emu->loadRom(romData, romSize);
-    SDL_free((void*)romData);
 
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
     if (!texture) {

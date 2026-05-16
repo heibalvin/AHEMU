@@ -53,7 +53,7 @@ NESPPU::~NESPPU() {
     }
 }
 
-const Uint8 *NESPPU::getFrameBuffer() {
+const Uint8 *NESPPU::getFrameBuffer() const {
     return frameBuffers[(frameBufferActive + 1) % 2]; // Return the non-active buffer for rendering
 }
 

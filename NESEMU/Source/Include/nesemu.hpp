@@ -27,10 +27,10 @@ public:
     const int getHeight();
     bool isRefreshRequested() const;
     void clearRefreshRequest();
-    const Uint8 *getFrameBuffer();
+    const Uint8 *getFrameBuffer() const;
 
 private:
-    const Uint64 clock = 21.477272 * 100000; // 21.477272 MHz for NES
+    const Uint64 clock = 3686400; // PPU step rate for 256×240@60fps (3,686,400 steps/sec)
     const Uint64 SDL_NS_TO_SECONDS = 1000000000; // 1 second in nanoseconds
     const Uint64 CYCLE_NS = SDL_NS_TO_SECONDS / clock; // Nanoseconds per cycle
     Uint64 time = 0;

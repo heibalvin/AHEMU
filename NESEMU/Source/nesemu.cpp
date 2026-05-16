@@ -73,6 +73,6 @@ void NESEMU::clearRefreshRequest() {
     ppu->isRefreshRequested = false;
 }
 
-const Uint8 *NESEMU::getFrameBuffer() {
+const Uint8 *NESEMU::getFrameBuffer() const {
     return ppu->getFrameBuffer();
 }
