@@ -2,7 +2,6 @@
 #define GBPPU_HPP
 
 #include <SDL3/SDL.h>
-#include <vector>
 #include "gbcomponent.hpp"
 
 class GBEMU;
