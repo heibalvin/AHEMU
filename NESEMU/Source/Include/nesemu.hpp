@@ -36,6 +36,7 @@ private:
     Uint64 time = 0;
     Uint64 cycleId = 0;
 
+    friend class SDLEMU;
     friend class NESBUS;
     friend class NESCPU;
     friend class NESPPU;

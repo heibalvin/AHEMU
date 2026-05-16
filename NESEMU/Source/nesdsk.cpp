@@ -112,3 +112,50 @@ void NESDSK::decode() {
         }
     }
 }
+
+Uint8* NESDSK::convert2BPPToRGBA(int chrRomIndex) {
+    // Implementation for converting CHR ROM pixel data to RGBA format for rendering
+    Uint8 *chrRom = chrRoms[chrRomIndex];
+    Uint8 *rgbaBuffer = (Uint8 *)SDL_malloc(128 * 128 * 4);       // 128 width x 128 height x 4 bytes per pixel for RGBA
+
+    for (int tileIndex = 0; tileIndex < 256; ++tileIndex) {
+        // Calculate where this tile sits in the 2D grid layout
+        int tileX = tileIndex % 16;
+        int tileY = tileIndex / 16;
+        
+        int tileOffset = tileIndex * 16;
+        
+        // Loop through the 8 rows of pixels in the tile
+        for (int y = 0; y < 8; ++y) {
+            uint8_t lowByte  = chrRom[tileOffset + y];
+            uint8_t highByte = chrRom[tileOffset + y + 8];
+            
+            // Loop through the 8 pixels in this row (left to right)
+            for (int x = 0; x < 8; ++x) {
+                // Pixel 0 is the Most Significant Bit (MSB), pixel 7 is the LSB
+                int bitShift = 7 - x;
+                
+                uint8_t bit0 = (lowByte >> bitShift) & 0x01;
+                uint8_t bit1 = (highByte >> bitShift) & 0x01;
+                
+                // Combine planes to find the 2-bit color palette index
+                int colorIndex = (bit1 << 1) | bit0;
+                Uint8 color = colorIndex * 85; // Scale 0-3 to 0-255 for grayscale (placeholder palette)
+                
+                // Map local tile coordinates to global texture space
+                int pixelX = (tileX * 8) + x;
+                int pixelY = (tileY * 8) + y;
+                
+                // Flatten the 2D coordinate into the 1D RGBA buffer index
+                int targetIndex = (pixelY * 128 + pixelX) * 4;
+                
+                rgbaBuffer[targetIndex]     = color;
+                rgbaBuffer[targetIndex + 1] = color;
+                rgbaBuffer[targetIndex + 2] = color;
+                rgbaBuffer[targetIndex + 3] = 0xFF;         // Alpha channel (fully opaque)
+            }
+        }
+    }
+    
+    return rgbaBuffer;
+}

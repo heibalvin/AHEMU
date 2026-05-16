@@ -4,7 +4,10 @@
 #include "sdlemu.hpp"
 
 int main(int argc, char *argv[]) {
-    SDLEMU game("1942 (Japan, USA).nes");
+    SDLEMU game;
+
+    game.loadRom("1942 (Japan, USA).nes");
+    game.exportNESRomsRGBA();
 
     game.start();
     game.run();

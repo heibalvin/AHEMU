@@ -14,9 +14,12 @@ public:
 
     void loadRom(Uint8* romData, size_t romSize);
     void decode();
+    Uint8* convert2BPPToRGBA(int chrRomIndex);
 
 private:
+    friend class NESEMU;
     friend class NESBUS;
+    friend class SDLEMU;
 
     // ROM data and metadata
     Uint8 *gamerom;  // Keep for MBC banking

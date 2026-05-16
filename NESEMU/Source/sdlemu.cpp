@@ -1,14 +1,14 @@
 #include "sdlemu.hpp"
+#include "nesdsk.hpp"
 
-SDLEMU::SDLEMU(const char* romName) {
+SDLEMU::SDLEMU() {
     emu = new NESEMU();
     
     const char* path = SDL_GetBasePath();
     SDL_strlcpy(projectPath, path, sizeof(projectPath));
     
-    SDL_strlcpy(resourcePath, projectPath, sizeof(resourcePath));
-    SDL_strlcat(resourcePath, "../Resources/", sizeof(resourcePath));
-    SDL_strlcpy(this->romName, romName, sizeof(this->romName));
+    getDirectoryPath(resourcePath, sizeof(resourcePath), "../Resources/");
+    getDirectoryPath(outputPath, sizeof(outputPath), "../Output/");
 
     previousTime = SDL_GetPerformanceCounter();
 }
@@ -19,6 +19,17 @@ SDLEMU::~SDLEMU() {
         emu = NULL;
     }
     stop();
+}
+
+void SDLEMU::getDirectoryPath(char* dest, size_t destSize, const char* directory) {
+    const char* basePath = SDL_GetBasePath();
+    SDL_strlcpy(dest, basePath, destSize);
+    SDL_strlcat(dest, directory, destSize);
+}
+
+void SDLEMU::getFilePath(char* dest, size_t destSize, const char* path, const char* filename) {
+    SDL_strlcpy(dest, path, destSize);
+    SDL_strlcat(dest, filename, destSize);
 }
 
 void SDLEMU::stop() {
@@ -38,42 +49,45 @@ void SDLEMU::stop() {
     running = false;
 }
 
-bool SDLEMU::start() {
+void SDLEMU::loadRom(const char* romName) {
+    SDL_strlcpy(this->romName, romName, sizeof(this->romName));
+
+    size_t romSize = 0;
+    Uint8 *romData = loadFile(romName, &romSize);
+    if (!romData) {
+        SDL_Log("SDLEMU: load ROM failed: %s", SDL_GetError());
+        return;
+    }
+    emu->loadRom(romData, romSize);
+}
+
+void SDLEMU::start() {
     // Initialize SDL Subsystems
     if (SDL_Init(SDL_INIT_VIDEO) == false) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         stop();
-        return false;
+        return;
     }
 
     // Create the Window and Renderer
     if (!SDL_CreateWindowAndRenderer(romName, 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         SDL_Log("SDLEMU: create window and renderer failed: %s", SDL_GetError());
         stop();
-        return false;
+        return;
     }
 
     // Set the Logical Presentation Size
     if (!SDL_SetRenderLogicalPresentation(renderer, emu->getWidth(), emu->getHeight(), SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
         SDL_Log("SDLEMU: render logical presentation failed: %s", SDL_GetError());
         stop();
-        return false;
+        return;
     }
-
-    size_t romSize = 0;
-    Uint8 *romData = loadFile(romName, &romSize);
-    if (!romData) {
-        SDL_Log("SDLEMU: load ROM failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-    emu->loadRom(romData, romSize);
 
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
     if (!texture) {
         SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
         stop();
-        return false;
+        return;
     }
 
     /* Debug Tetris Image
@@ -81,7 +95,7 @@ bool SDLEMU::start() {
     if (!texture) {
         SDL_Log("SDLEMU: load PNG failed: %s", SDL_GetError());
         stop();
-        return false;
+        return;
     } 
     */
 
@@ -96,8 +110,6 @@ bool SDLEMU::start() {
 
     // Set initial window title
     SDL_SetWindowTitle(window, romName);
-    
-    return true;
 }
 
 void SDLEMU::run() {
@@ -156,8 +168,6 @@ void SDLEMU::render(Uint64 deltaTime) {
         fps = 0;
     }
 }
-    
-
 
 SDL_Texture* SDLEMU::loadPNG(const char *filename) {
     char filepath[256];
@@ -190,4 +200,26 @@ Uint8* SDLEMU::loadFile(const char *romname, size_t *romSize) {
 
     Uint8 *romData = (Uint8*)SDL_LoadFile(filename, romSize);
     return romData;
+}
+
+void SDLEMU::exportNESRomsRGBA() {
+    for(int i = 0; i < emu->dsk->chrRomCount; i++) {
+        SDL_Log("SDLEMU: Converting 2BPP to RGBA: %d", i);
+        Uint8* rgbaData = emu->dsk->convert2BPPToRGBA(i);
+        if (rgbaData) {
+            char filename[128];
+            SDL_snprintf(filename, sizeof(filename), "%s_chrrom_%d.png", romName, i);
+            
+            char filepath[256];
+            getFilePath(filepath, sizeof(filepath), outputPath, filename);
+            
+            SDL_Surface *surface = SDL_CreateSurfaceFrom(128, 128, SDL_PIXELFORMAT_RGBA8888, rgbaData, 128 * 4);
+            if (surface) {
+                SDL_Log("SDLEMU: Saving 2BPP to RGBA to %s", filepath);
+                SDL_SavePNG(surface, filepath);
+                SDL_DestroySurface(surface);
+            }
+            SDL_free(rgbaData);
+        }
+    }
 }
