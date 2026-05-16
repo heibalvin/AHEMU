@@ -12,9 +12,10 @@ This repository contains the following emulator applications:
    - Target: Classic Game Boy (DMG), extensible to Pocket (MGB), Super Game Boy (SGB), Game Boy Color (CGB)
 
 2. **NESEMU** - NES emulator (C++/SDL3)
-   - Location: `NES/NESEMU/`
-   - Features: Accurate 6502 CPU emulation, PPU rendering, APU sound
-   - Build with: `make` in the NESEMU directory
+    - Location: `NESEMU/`
+    - Features: Accurate 6502 CPU emulation, PPU rendering, APU sound
+    - Build with: `make` in the NESEMU directory
+    - macOS Xcode project: `NESEMUMacOS/`
 
 3. **SwiftUINESEMU** - NES emulator (Swift/SwiftUI)
    - Location: `SwiftUINESEMU/`
