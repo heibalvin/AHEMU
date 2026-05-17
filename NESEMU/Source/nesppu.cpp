@@ -1,5 +1,7 @@
 #include "nesppu.hpp"
 #include <SDL3/SDL_stdinc.h>
+#include "nesemu.hpp"
+#include "nesdsk.hpp"
 
 NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
     // Initialize frame buffers with red
@@ -20,8 +22,8 @@ NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
     SDL_memset(oamRam, 0, 64 * 4);              // Clear OAM
 
     // Initialise 4KB VRAM
-    vram = (Uint8 *)SDL_malloc(0x1000);         // 4KB of VRAM
-    SDL_memset(vram, 0, 0x1000);                // Clear VRAM
+    vram = (Uint8 *)SDL_malloc(4 * 1024);         // 4KB of VRAM
+    SDL_memset(vram, 0, 4 * 1024);                // Clear VRAM
 
     // Initialise PPU I/O registers
     registers = (Uint8 *)SDL_malloc(8);          // 8 registers (0x2000-0x2007)
@@ -53,6 +55,24 @@ NESPPU::~NESPPU() {
     }
 }
 
+void NESPPU::powerOn() {
+    SDL_Log("NESPPU: powerOn()...");
+
+    // Reset PPU state
+    cycles = 0;
+    scanline = 0;
+    dot = 0;
+    line = 0;
+    color = 0;
+
+    // Clear frame buffers
+    for (int i = 0; i < 2; i++) {
+        SDL_memset(frameBuffers[i], 0xFF, width * height * 4); // Fill with white (255, 255, 255, 255)
+    }
+
+    isRefreshRequested = false;
+}
+
 const Uint8 *NESPPU::getFrameBuffer() const {
     return frameBuffers[(frameBufferActive + 1) % 2]; // Return the non-active buffer for rendering
 }
@@ -81,4 +101,35 @@ void NESPPU::step() {
             // SDL_Log("NESPPU: Frame completed, switching buffers. Refresh requested.");
         }
     }
+}
+
+Uint8 NESPPU::read(Uint16 address) {
+    if (address >= 0x0000 && address < 0x1FFF) {
+        return emu->dsk->chrRoms[0][address];
+    } else if (address >= 0x2000 && address <= 0x2FFF) {
+        return vram[address - 0x2000];
+    } else if (address >= 0x3F00 && address <= 0x3FFF) {
+        return palRam[(address - 0x3F00) % 0x0020];
+    }
+}
+
+void NESPPU::write(Uint16 address, Uint8 value) {
+    if (address >= 0x0000 && address < 0x1FFF) {
+        emu->dsk->chrRoms[0][address] = value;
+    } else if (address >= 0x2000 && address <= 0x2FFF) {
+        vram[address - 0x2000] = value;
+    } else if (address >= 0x3F00 && address <= 0x3FFF) {
+        palRam[(address - 0x3F00) % 0x0020] = value;
+    }
+}
+
+void NESPPU::experimental() {
+    SDL_Log("NESPPU: Experimental function called. Dot: %d, Line: %d", dot, line);
+    
+    // if (cycle % 8 == 0) {
+    //     nameTableByte = vram[];
+    // }
+    
+
+    cycles += 1; // Increment cycle count
 }

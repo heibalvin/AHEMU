@@ -12,7 +12,6 @@ public:
     
     // Power management functions
     virtual void powerOn() {}
-    virtual void powerOff() {}
     virtual void reset() {}
     
     // Main execution function

@@ -12,18 +12,15 @@ public:
     ~NESDSK();
     void debug();
 
-    void loadRom(Uint8* romData, size_t romSize);
-    void decode();
+    void loadRom(Uint8* gameRom);
+
     Uint8* CHR2RGBA(int chrRomIndex, int offset = 0);
 
 private:
     friend class NESEMU;
     friend class NESBUS;
     friend class SDLEMU;
-
-    // ROM data and metadata
-    Uint8 *gamerom;  // Keep for MBC banking
-    size_t romSize;
+    friend class NESPPU;
 
     // ROM header information
     int mapper = 0;
@@ -34,7 +31,7 @@ private:
     // TRN ROM management (if present)
     int trnRomSize = 0;
     int trnRomCount = 0;
-    Uint8 **trnRoms = NULL;
+    Uint8 *trnRom = NULL;
 
     // PRG ROM management
     int prgRomSizeKB = 0;

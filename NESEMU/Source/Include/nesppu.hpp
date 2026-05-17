@@ -11,14 +11,20 @@ public:
     explicit NESPPU(NESEMU* emu);
     ~NESPPU();
 
+    void powerOn() override;
     void step() override;
+    void experimental();
+
+    Uint8 read(Uint16 address);
+    void write(Uint16 address, Uint8 vlue);
+
     const Uint8 *getFrameBuffer() const;
 
 private:
     friend class NESEMU;
     friend class NESBUS;
 
-    // NES Window variables
+    // SDLEMU variables
     const int width = 256;
     const int height = 240;
     Uint8 *frameBuffers[2] = { NULL, NULL};
@@ -26,6 +32,14 @@ private:
     bool isRefreshRequested = false;
     
     // NES PPU variables
+    int cycles = 0;                     // Current cycle (dot) within the scanline
+    int scanline = 0;                   // Current scanline (0-261)
+    int nameTableByte = 0x00;
+    int attributeTableByte = 0x00;
+    int patternTableHigh = 0x00;
+    int patternTableLow = 0x00;
+
+    // NES PPU debug image
     int dot = 0;
     int line = 0;
     Uint8 color = 0;

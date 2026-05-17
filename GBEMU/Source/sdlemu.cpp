@@ -2,12 +2,7 @@
 
 SDLEMU::SDLEMU(const char* romName) {
     emu = new GBEMU();
-    
-    const char* path = SDL_GetBasePath();
-    SDL_strlcpy(projectPath, path, sizeof(projectPath));
-    
-    SDL_strlcpy(resourcePath, projectPath, sizeof(resourcePath));
-    SDL_strlcat(resourcePath, "../Resources/", sizeof(resourcePath));
+
     SDL_strlcpy(this->romName, romName, sizeof(this->romName));
 
     previousTime = SDL_GetPerformanceCounter();
@@ -22,7 +17,45 @@ SDLEMU::~SDLEMU() {
     }
 }
 
-void SDLEMU::stop() {
+/*──────────────────────────────────────────────
+    SDL initialisation — subsystems, window,
+    renderer, texture and filepath.
+─────────────────────────────────────────────*/
+bool SDLEMU::SDLinit() {
+    if (SDL_Init(SDL_INIT_VIDEO) == false) {
+        SDL_Log("SDL_Init failed: %s", SDL_GetError());
+        return false;
+    }
+
+    SDL_strlcpy(projectPath, SDL_GetBasePath(), sizeof(projectPath));
+    SDL_strlcpy(resourcePath, projectPath, sizeof(resourcePath));
+    SDL_strlcat(resourcePath, "../Resources/", sizeof(resourcePath));
+
+    if (!SDL_CreateWindowAndRenderer(" ", 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+        SDL_Log("SDLEMU::SDLinit: create window/renderer failed: %s", SDL_GetError());
+        SDLrelease();
+        return false;
+    }
+
+    if (!SDL_SetRenderLogicalPresentation(renderer, emu->getWidth(), emu->getHeight(),
+                                          SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
+        SDL_Log("SDLEMU::SDLinit: logical presentation failed: %s", SDL_GetError());
+        SDLrelease();
+        return false;
+    }
+
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
+                                SDL_TEXTUREACCESS_STREAMING, 160, 144);
+    if (!texture) {
+        SDL_Log("SDLEMU::SDLinit: create texture failed: %s", SDL_GetError());
+        SDLrelease();
+        return false;
+    }
+
+    return true;
+}
+
+void SDLEMU::SDLrelease() {
     if (texture) {
         SDL_DestroyTexture(texture);
         texture = NULL;
@@ -36,28 +69,16 @@ void SDLEMU::stop() {
         window = NULL;
     }
     SDL_Quit();
+}
+
+void SDLEMU::stop() {
+    SDLrelease();
     running = false;
 }
 
 bool SDLEMU::start() {
-    // Initialize SDL Subsystems
-    if (SDL_Init(SDL_INIT_VIDEO) == false) {
-        SDL_Log("SDL_Init failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    // Create the Window and Renderer
-    if (!SDL_CreateWindowAndRenderer(romName, 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-        SDL_Log("SDLEMU: create window and renderer failed: %s", SDL_GetError());
-        stop();
-        return false;
-    }
-
-    // Set the Logical Presentation Size
-    if (!SDL_SetRenderLogicalPresentation(renderer, emu->getWidth(), emu->getHeight(), SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
-        SDL_Log("SDLEMU: render logical presentation failed: %s", SDL_GetError());
-        stop();
+    if (!SDLinit()) {
+        SDL_Log("SDLEMU: SDLinit failed");
         return false;
     }
 
@@ -71,7 +92,17 @@ bool SDLEMU::start() {
     emu->loadRom(romData, romSize);
     SDL_free((void*)romData);
 
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, emu->getWidth(), emu->getHeight());
+    if (!SDL_SetRenderLogicalPresentation(renderer, emu->getWidth(), emu->getHeight(),
+                                          SDL_LOGICAL_PRESENTATION_LETTERBOX)) {
+        SDL_Log("SDLEMU: render logical presentation failed: %s", SDL_GetError());
+        stop();
+        return false;
+    }
+
+    SDL_DestroyTexture(texture);
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
+                                SDL_TEXTUREACCESS_STREAMING,
+                                emu->getWidth(), emu->getHeight());
     if (!texture) {
         SDL_Log("SDLEMU: create texture failed: %s", SDL_GetError());
         stop();
@@ -84,21 +115,16 @@ bool SDLEMU::start() {
         SDL_Log("SDLEMU: load PNG failed: %s", SDL_GetError());
         stop();
         return false;
-    } 
+    }
     */
 
-    // Make it visible
     SDL_ShowWindow(window);
+    SDL_RaiseWindow(window);
 
-    // Bring it to the top
-    SDL_RaiseWindow(window); 
-    
     previousTime = SDL_GetPerformanceCounter();
     running = true;
-
-    // Set initial window title
     SDL_SetWindowTitle(window, romName);
-    
+
     return true;
 }
 

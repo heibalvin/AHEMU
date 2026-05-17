@@ -26,22 +26,16 @@ const int NESEMU::getHeight() {
     return ppu->height;
 }
 
-void NESEMU::loadRom(Uint8* romData, size_t romSize) {
+void NESEMU::loadRom(Uint8* romData) {
     // Implementation for loading ROM
-    dsk->loadRom(romData, romSize);
+    dsk->loadRom(romData);
     dsk->debug();
 }
 
-void NESEMU::start() {
+void NESEMU::powerOn() {
     // Start emulation
-}
-
-void NESEMU::pause() {
-    // Pause emulation
-}
-
-void NESEMU::stop() {
-    // Stop emulation and cleanup
+    cpu->powerOn();
+    ppu->powerOn();
 }
 
 void NESEMU::update(Uint64 deltaTime) {
@@ -58,11 +52,15 @@ void NESEMU::update(Uint64 deltaTime) {
 }
 
 void NESEMU::step() {
-    if (cycleId % 4 == 0)
-        cpu->step();
+    // DEBUG: simplified CPU steps    
+    cpu->step();
 
-    ppu->step();
-    cycleId++;
+    // Accurante CPU & PPU step cycles
+    // if (cycles %4 == 0) {
+    //     cpu->step();
+    // }
+    // ppu->step();
+    // cycleId++;
 }
 
 bool NESEMU::isRefreshRequested() const {

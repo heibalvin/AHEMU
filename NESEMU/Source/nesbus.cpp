@@ -66,13 +66,13 @@ void NESBUS::write(Uint16 address, Uint8 value) {
     }
 }
 
-Uint16 NESBUS::readLE(Uint16 address) {
+Uint16 NESBUS::readWord(Uint16 address) {
     Uint8 low = read(address);
     Uint8 high = read(address + 1);
     return (high << 8) | low;
 }
 
-void NESBUS::writeLE(Uint16 address, Uint16 value) {
+void NESBUS::writeWord(Uint16 address, Uint16 value) {
     write(address, value & 0xFF);
     write(address + 1, (value >> 8) & 0xFF);
 }

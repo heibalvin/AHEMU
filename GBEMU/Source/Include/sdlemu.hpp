@@ -12,6 +12,9 @@ public:
     SDL_Texture* loadPNG(const char *filename);
     Uint8* loadFile(const char *romname, size_t *romSize);
     
+    // SDL component management
+    bool SDLinit();
+    void SDLrelease();
     bool start();
     void stop();
     void run();

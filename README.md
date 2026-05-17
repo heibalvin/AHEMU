@@ -6,25 +6,25 @@ Emulator & Tools for Retro Consoles (NES, SMS, GB, PCE, ...)
 This repository contains the following emulator applications:
 
 1. **GBEMU** - Game Boy emulator (SDL3/C++)
-   - Location: `GBEMU/` directory
-   - Cross-platform: Linux, macOS, Windows (via SDL3)
-   - macOS Xcode project: `GBEMUMacOS/`
-   - Target: Classic Game Boy (DMG), extensible to Pocket (MGB), Super Game Boy (SGB), Game Boy Color (CGB)
+    - Location: [GBEMU/](GBEMU/) directory
+    - Cross-platform: Linux, macOS, Windows (via SDL3)
+    - macOS Xcode project: [GBEMUMacOS/](GBEMUMacOS/)
+    - Target: Classic Game Boy (DMG), extensible to Pocket (MGB), Super Game Boy (SGB), Game Boy Color (CGB)
 
 2. **NESEMU** - NES emulator (C++/SDL3)
-    - Location: `NESEMU/`
+    - Location: [NESEMU/](NESEMU/)
     - Features: Accurate 6502 CPU emulation, PPU rendering, APU sound
     - Build with: `make` in the NESEMU directory
-    - macOS Xcode project: `NESEMUMacOS/`
+
 
 3. **SwiftUINESEMU** - NES emulator (Swift/SwiftUI)
-   - Location: `SwiftUINESEMU/`
-   - Note: Currently ~800× slower than required for real-time emulation
-   - Kept for comparison and educational purposes
+    - Location: [SwiftUINESEMU/](SwiftUINESEMU/)
+    - Note: Currently ~800× slower than required for real-time emulation
+    - Kept for comparison and educational purposes
 
 4. **SDL3PerfTest** - SDL3 performance testing utility
-   - Location: `SDL3PerfTest/`
-   - Used to benchmark SDL3 performance for emulation purposes
+    - Location: [SDL3PerfTest/](SDL3PerfTest/)
+    - Used to benchmark SDL3 performance for emulation purposes
 
 ## Strategy Change
 

@@ -14,10 +14,8 @@ public:
     NESEMU();
     ~NESEMU() override;
 
-    void loadRom(Uint8* romData, size_t romSize);
-    void start();
-    void pause();
-    void stop();
+    void loadRom(Uint8* romData);
+    void powerOn() override;
 
     void update(Uint64 deltaTime);
     void step() override;

@@ -6,24 +6,124 @@
 
 class NESEMU;
 
+enum NESCPUFLAGS: Uint8 {
+    CARRY_FLAG              = 0x01,
+    ZERO_FLAG               = 0x02,
+    INTERRUPT_DISABLE_FLAG  = 0x04,
+    DECIMAL_MODE_FLAG       = 0x08,
+    BREAK_COMMAND_FLAG      = 0x10,
+    UNUSED_FLAG             = 0x20,
+    OVERFLOW_FLAG           = 0x40,
+    NEGATIVE_FLAG           = 0x80
+};
+
+enum NESCPUADDRMODE {
+    IMPLIED,
+    ACCUMULATOR,
+    IMMEDIATE,
+    ZERO_PAGE,
+    ZERO_PAGE_X,
+    ZERO_PAGE_Y,
+    RELATIVE,
+    ABSOLUTE,
+    ABSOLUTE_X,
+    ABSOLUTE_Y,
+    INDIRECT,
+    INDEXED_INDIRECT,
+    INDIRECT_INDEXED
+};
+
+/**
+ * @class NESCPU
+ * @brief Emulates the MOS 6502 central processing unit w/ 4KB Work RAM (WRAM).
+ */
 class NESCPU : public NESComponent {
 public:
     explicit NESCPU(NESEMU* emu);
     ~NESCPU();
 
     void powerOn() override;
-    void step() override;
+    void reset() override;
 
+    /**
+     * @brief Initialise all 256 opcodes into a NESOPCODE structure (and set to UNKNOWN if not implemented)
+     */
+    void opcodesInit();
+
+    /**
+     * @brief Emulator moves 1 CPU cycle step. Taking into account waitCycles and moving to nextPC.
+     */
+    void step() override;
     void fetch();
     void decode();
     void execute();
+
+    void NMIInterrupt();
+    void IRQInterrupt();
+
+    void checkZero(Uint8 value);
+    void checkNegative(Uint8 value);
+    Uint16 getAddressMode();
+
+    // Access LDA STA LDX STX LDY STY
+    void LDX();
+
+    /**
+     * @brief Emulated CPU Jump: JMP JSR RTS BRK RTI
+     */
+    void JMP();
+    void JSR();
+    void RTS();
+    void BRK();
+    void RTI();
+
+    // Stack: PHA PLA PHP PLP TXS TSX
+    void PHA();
+    void PLA();
+    void PHP();
+    void PLP();
+    void TXS();
+    void TSX();
+
+    // Flags: CLC SEC CLI SEI CLD SED CLV
+    void CLC();
+    void SEC();
+    void CLI();
+    void SEI();
+    void CLD();
+    void SED();
+    void CLV();
 
 private:
     friend class NESEMU;
     friend class NESBUS;
 
     // Work RAM (WRAM) management
-    Uint8 *wram = NULL; // Work RAM (WRAM) for the main memory
+    Uint8 *wram = NULL;             // Work RAM (WRAM) for the main memory
+    Uint8 A = 0x00;                 // Accumulator
+    Uint8 X = 0x00;                 // X Register
+    Uint8 Y = 0x00;                 // Y Register
+    Uint8 P = 0x00;                 // Processor Status
+    Uint8 SP = 0x00;                // Stack Pointer
+    Uint16 PC = 0x0000;             // Program Counter
+
+    Uint16 nextPC = 0x0000;         // Next Program Counter
+    Uint8 bytes[3] = {0};           // Buffer to hold the raw instruction bytes for debugging
+    int waitCycles = 0;             // Cycles to wait for the current instruction to complete
+    char debugger[80];              // Buffer for formatted debugging output
+    char program[80];               // Buffer for formatted program bytes for debugging
+    char mnemonic[80];              // Buffer for formatted mnemonic for debugging
+
+    struct NESCPUOPCODE {
+        const char* nmemonic;
+        void (NESCPU::*operation)();
+        NESCPUADDRMODE addrMode;
+        int length;
+        int cycles;
+    };
+
+    NESCPUOPCODE opcodes[256];      // Opcode lookup table for instruction decoding
+    NESCPUOPCODE* opcode = NULL;    // Pointer to the currently executing opcode 
 };
 
 #endif /* NESCPU_HPP */
