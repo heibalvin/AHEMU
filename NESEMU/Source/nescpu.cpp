@@ -45,6 +45,15 @@ void NESCPU::reset() {
     SDL_Log("NESCPU: PC start address %04X", PC);
 }
 
+Uint8 NESCPU::read(Uint16 address) {
+    // Treat incoming addresses here as targeting CPU WRAM space ($0000-$1FFF mirrored)
+    return wram[address % 0x0800];
+}
+
+void NESCPU::write(Uint16 address, Uint8 value) {
+    wram[address % 0x0800] = value;
+}
+
 void NESCPU::opcodesInit() {
     // TBD: Initialize the opcodes with the appropriate mnemonics, operation function pointers, and cycle counts for each of the 256 opcodes.
     for(int i = 0; i < 256; i++) {

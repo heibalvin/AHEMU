@@ -53,6 +53,9 @@ public:
     void powerOn() override;
     void reset() override;
 
+    Uint8 read(Uint16 address) override;
+    void write(Uint16 address, Uint8 value) override;
+    
     /**
      * @brief Initialise all 256 opcodes into a NESOPCODE structure (and set to UNKNOWN if not implemented)
      */

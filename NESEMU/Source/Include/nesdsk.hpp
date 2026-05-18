@@ -12,6 +12,9 @@ public:
     ~NESDSK();
     void debug();
 
+    Uint8 read(Uint16 address) override;
+    void write(Uint16 address, Uint8 value) override;
+
     void loadRom(Uint8* gameRom);
 
     Uint8* CHR2RGBA(int chrRomIndex, int offset = 0);

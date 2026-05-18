@@ -17,6 +17,10 @@ public:
     // Main execution function
     virtual void step() {}
 
+    // Central Hardware Memory Interface
+    virtual Uint8 read(Uint16 address) { return 0x00; }
+    virtual void write(Uint16 address, Uint8 value) {}
+
 protected:
     NESEMU* emu;
 };

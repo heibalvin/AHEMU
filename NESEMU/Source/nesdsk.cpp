@@ -48,6 +48,49 @@ void NESDSK::debug() {
     }
 }
 
+Uint8 NESDSK::read(Uint16 address) {
+    if (address >= 0x6000 && address < 0x8000) {
+        // Cartridge space Save/Work RAM (PRG RAM)
+        if (prgRams && prgRamCount > 0) {
+            return prgRams[0][address - 0x6000];
+        }
+        return 0x00;
+    } 
+    
+    if (address >= 0x8000 && address < 0xC000) {
+        // PRG ROM Lower Bank
+        if (prgRoms && prgRomActive[0] < prgRomCount) {
+            return prgRoms[prgRomActive[0]][address - 0x8000];
+        }
+        return 0x00;
+    } 
+    
+    if (address >= 0xC000) { // Goes up to 0xFFFF
+        // PRG ROM Upper Bank
+        if (prgRoms && prgRomActive[1] < prgRomCount) {
+            return prgRoms[prgRomActive[1]][address - 0xC000];
+        }
+        return 0x00;
+    }
+
+    return 0x00; // Fallback for safely ignoring out-of-bounds cartridge queries
+}
+
+void NESDSK::write(Uint16 address, Uint8 value) {
+    if (address >= 0x6000 && address < 0x8000) {
+        // Cartridge space Save/Work RAM (PRG RAM) - Writable
+        if (prgRams && prgRamCount > 0) {
+            prgRams[0][address - 0x6000] = value;
+        }
+    } 
+    else if (address >= 0x8000) {
+        // CPU writing to PRG ROM area ($8000-$FFFF). 
+        // Physical ROM chips cannot be overwritten, so these writes are captured 
+        // entirely by memory mappers inside the cartridge to switch game banks!
+        // TBD: Route 'value' to custom Mapper registers here later.
+    }
+}
+
 void NESDSK::loadRom(Uint8* gamerom) {
     // Implementation for parsing ROM data and extracting information such as title, cartridge type, ROM size, RAM size, etc.
     if (gamerom[0x00] != 'N' || gamerom[0x01] != 'E' || gamerom[0x02] != 'S' || gamerom[0x03] != 0x1A) {

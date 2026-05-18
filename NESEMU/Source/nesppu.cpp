@@ -25,10 +25,6 @@ NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
     // Initialise 4KB VRAM
     vram = (Uint8 *)SDL_malloc(4 * 1024);         // 4KB of VRAM
     SDL_memset(vram, 0, 4 * 1024);                // Clear VRAM
-
-    // Initialise PPU I/O registers
-    registers = (Uint8 *)SDL_malloc(8);          // 8 registers (0x2000-0x2007)
-    SDL_memset(registers, 0, 8);                // Clear registers
 }
 
 NESPPU::~NESPPU() {
@@ -49,10 +45,6 @@ NESPPU::~NESPPU() {
     if (vram) {
         SDL_free(vram);
         vram = NULL;
-    }
-    if (registers) {
-        SDL_free(registers);
-        registers = NULL;
     }
 }
 

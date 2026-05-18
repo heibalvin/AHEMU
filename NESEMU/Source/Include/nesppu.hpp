@@ -15,8 +15,8 @@ public:
     void powerOn() override;
     void step() override;
 
-    Uint8 read(Uint16 address);
-    void write(Uint16 address, Uint8 vlue);
+    Uint8 read(Uint16 address) override;
+    void write(Uint16 address, Uint8 value) override;
 
     const Uint8 *getFrameBuffer() const;
 
@@ -49,7 +49,6 @@ private:
     Uint8* palRam = NULL;               // Palette RAM for background and sprites
     Uint8* oamRam = NULL;               // Object Attribute Memory (OAM) for sprites
     Uint8* vram = NULL;                 // VRAM for nametables and attribute tables
-    Uint8* registers = NULL;            // PPU I/O registers (0x2000-0x2007)
 };
 
 #endif /* NESPPU_HPP */
