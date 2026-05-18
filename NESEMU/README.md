@@ -65,7 +65,8 @@ Input and Sound.
 
 ### Description
 
-Emulates the MOS 6502 central processing unit. It handles instruction decoding, execution, and cycles.
+Emulates the MOS 6502 central processing unit. It handles instruction decoding, execution, and cycles.   
+/!\ Does not emulate cycles if page crossed. /!\
 
 ### Status
 
@@ -79,6 +80,13 @@ Functionalities:
  * execute()
 
 Opcodes: [NESDEV Instruction Reference](https://www.nesdev.org/wiki/Instruction_reference#CLD)
+ * Access LDA STA LDX STX LDY STY
+ * Transfer TAX TXA TAY TYA
+ * Arithmetic ADC SBC INC DEC INX DEX INY DEY
+ * Shift ASL LSR ROL ROR
+ * Branch BCC BCS BEQ BNE BPL BMI BVC BVS
+ * Bitwise AND ORA EOR BIT
+ * Compare CMP CPX CPY	
  * Jump: JMP JSR RTS BRK RTI
  * Stack: PHA PLA PHP PLP TXS TSX
  * Flags: CLC SEC CLI SEI CLD SED CLV
@@ -90,14 +98,6 @@ Functionality:
  * NMIInterrupt()
  * IRQInterrupt()
 
-Opcodes:
- * Access LDA STA LDX STX LDY STY		
- * Transfer TAX TXA TAY TYA				
- * Arithmetic ADC SBC INC DEC INX DEX INY DEY
- * Shift ASL LSR ROL ROR				
- * Bitwise AND ORA EOR BIT				
- * Compare CMP CPX CPY					
- * Branch BCC BCS BEQ BNE BPL BMI BVC BVS
 
 ### NESEMU
  * **Description:** Main emulator core that coordinates CPU and PPU steps, synchronizing timing and handling interrupts.

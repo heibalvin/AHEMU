@@ -4,6 +4,14 @@
 #include <SDL3/SDL.h>
 #include "nescomponent.hpp"
 
+// Macros for mask manipulation
+#define MASK_SET(var, mask)    ((var) |= (mask))
+#define MASK_CLEAR(var, mask)  ((var) &= ~(mask))
+#define MASK_TOGGLE(var, mask) ((var) ^= (mask))
+#define MASK_CHECK_SET(var, mask) (((var) & (mask)) == (mask))
+#define MASK_CHECK_CLEAR(var, mask) (((var) & (mask)) == 0)
+#define MASK_ASSIGN(var, mask, condition) ((var) = ((var) & ~(mask)) | ((condition) ? (mask) : 0))
+
 class NESEMU;
 
 enum NESCPUFLAGS: Uint8 {
@@ -61,12 +69,58 @@ public:
     void NMIInterrupt();
     void IRQInterrupt();
 
-    void checkZero(Uint8 value);
-    void checkNegative(Uint8 value);
     Uint16 getAddressMode();
 
     // Access LDA STA LDX STX LDY STY
+    void LDA();
+    void STA();
     void LDX();
+    void STX();
+    void LDY();
+    void STY();
+
+    // Transfer TAX TXA TAY TYA
+    void TAX();
+    void TXA();
+    void TAY();
+    void TYA();
+
+    // Arithmetic ADC SBC INC DEC INX DEX INY DEY
+    void ADC();
+    void SBC();
+    void INC();
+    void DEC();
+    void INX();
+    void DEX();
+    void INY();
+    void DEY();
+
+    // Shift ASL LSR ROL ROR
+    void ASL();
+    void LSR();
+    void ROL();
+    void ROR();
+
+    // Bitwise AND ORA EOR BIT
+    void AND();
+    void ORA();
+    void EOR();
+    void BIT();
+
+    // Compare CMP CPX CPY
+    void CMP();
+    void CPX();
+    void CPY();
+
+    // Branch BCC BCS BEQ BNE BPL BMI BVC BVS
+    void BCC();
+    void BCS();
+    void BEQ();
+    void BNE();
+    void BPL();
+    void BMI();
+    void BVC();
+    void BVS();
 
     /**
      * @brief Emulated CPU Jump: JMP JSR RTS BRK RTI

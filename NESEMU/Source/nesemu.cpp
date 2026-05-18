@@ -34,8 +34,8 @@ void NESEMU::loadRom(Uint8* romData) {
 
 void NESEMU::powerOn() {
     // Start emulation
-    cpu->powerOn();
     ppu->powerOn();
+    cpu->powerOn();
 }
 
 void NESEMU::update(Uint64 deltaTime) {
