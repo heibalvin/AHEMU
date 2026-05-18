@@ -263,20 +263,32 @@ void NESCPU::opcodesInit() {
     opcodes[0xB8] = {"CLV - Clear Overflow", &NESCPU::CLV, IMPLIED, 1, 2};
 
     // Other
-    opcodes[0xEA] = {"NOP - No Operation", NULL, IMPLIED, 1, 2};               
-
+    opcodes[0xEA] = {"NOP - No Operation", NULL, IMPLIED, 1, 2};
 }
 
 void NESCPU::step() {
-    // DEBUG: commented to avoid wait
-    /*
-    // Decrement wait cycles if we're still waiting for the current instruction to complete
+    // 0. Decrement wait cycles if we're still waiting for the current instruction to complete
     if (waitCycles > 0) {
         waitCycles--; 
         return; 
     }
-    */
 
+    // 1. Check for Non-Maskable Interrupt first (NMI takes priority)
+    if (nmi_asserted) {
+        nmi_asserted = false; // Acknowledge edge-triggered NMI
+        NMIInterrupt();
+        return; // Processing NMI takes up the entire instruction window cycle
+    }
+
+    // 2. Check for regular hardware IRQ (Respects the disable flag)
+    if (irq_asserted && MASK_CHECK_CLEAR(P, INTERRUPT_DISABLE_FLAG)) {
+        // Note: We do NOT clear irq_asserted here because level-sensitive IRQ lines 
+        // stay low until the external device (like APU/Mapper) is explicitly acknowledged by code.
+        IRQInterrupt();
+        return;
+    }
+
+    // 3. Normal execution flow if no hardware interrupts are hijacking the cycle
     fetch();
     decode();
     execute();
@@ -332,11 +344,37 @@ void NESCPU::execute() {
 }
 
 void NESCPU::NMIInterrupt() {
-    // TBD: Implement Non-Maskable Interrupt (NMI) handling logic, which involves pushing the current PC and P onto the stack, setting the appropriate flags, and jumping to the NMI vector address.
+    wram[0x0100 + SP] = (PC >> 8) & 0xFF;
+    wram[0x0100 + SP - 1] = PC & 0xFF;
+    SP -= 2;
+
+    Uint8 statusToPush = (P & ~BREAK_COMMAND_FLAG) | UNUSED_FLAG;
+    wram[0x0100 + SP] = statusToPush;
+    SP -= 1;
+
+    MASK_SET(P, INTERRUPT_DISABLE_FLAG);
+
+    PC = emu->bus->readWord(0xFFFA);
+    nextPC = PC;
+    
+    waitCycles = 7;
 }
 
 void NESCPU::IRQInterrupt() {
-    // TBD: Implement Interrupt Request (IRQ) handling logic, which involves checking the Interrupt Disable flag, and if interrupts are enabled, pushing the current PC and P onto the stack, setting the appropriate flags, and jumping to the IRQ vector address.
+    wram[0x0100 + SP] = (PC >> 8) & 0xFF;
+    wram[0x0100 + SP - 1] = PC & 0xFF;
+    SP -= 2;
+
+    Uint8 statusToPush = (P & ~BREAK_COMMAND_FLAG) | UNUSED_FLAG;
+    wram[0x0100 + SP] = statusToPush;
+    SP -= 1;
+
+    MASK_SET(P, INTERRUPT_DISABLE_FLAG);
+
+    PC = emu->bus->readWord(0xFFFE);
+    nextPC = PC;
+    
+    waitCycles = 7;
 }
 
 //

@@ -151,6 +151,11 @@ public:
 private:
     friend class NESEMU;
     friend class NESBUS;
+    friend class NESPPU;
+
+    // Interrupt signal lines
+    bool nmi_asserted = false;
+    bool irq_asserted = false;
 
     // Work RAM (WRAM) management
     Uint8 *wram = NULL;             // Work RAM (WRAM) for the main memory

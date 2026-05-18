@@ -111,6 +111,8 @@ Uint8 NESPPU::read(Uint16 address) {
     } else if (address >= 0x3F00 && address <= 0x3FFF) {
         return palRam[(address - 0x3F00) % 0x0020];
     }
+
+    return 0x00;
 }
 
 void NESPPU::write(Uint16 address, Uint8 value) {
