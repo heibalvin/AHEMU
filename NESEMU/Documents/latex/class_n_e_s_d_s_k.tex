@@ -1,0 +1,104 @@
+\doxysection{NESDSK Class Reference}
+\hypertarget{class_n_e_s_d_s_k}{}\label{class_n_e_s_d_s_k}\index{NESDSK@{NESDSK}}
+
+
+Inheritance diagram for NESDSK:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_d_s_k__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for NESDSK:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{class_n_e_s_d_s_k__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a6c3e3eac995dc716814ff65cc2a4c1f1}\label{class_n_e_s_d_s_k_a6c3e3eac995dc716814ff65cc2a4c1f1} 
+{\bfseries NESDSK} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a7c457e6701920532a0d8bf1ab06152fa}\label{class_n_e_s_d_s_k_a7c457e6701920532a0d8bf1ab06152fa} 
+void {\bfseries debug} ()
+\item 
+Uint8 \doxymbox{\hyperlink{class_n_e_s_d_s_k_adc019eb1918f03d20afcdb73e99a1fa1}{read}} (Uint16 address) override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_d_s_k_a5d8e1f2d148767aacb3f4a35a1cec440}{write}} (Uint16 address, Uint8 value) override
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a8105a239a51213fb8196800e49d63d28}\label{class_n_e_s_d_s_k_a8105a239a51213fb8196800e49d63d28} 
+void {\bfseries load\+Rom} (Uint8 \texorpdfstring{$\ast$}{*}game\+Rom)
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a34d5a24b1158dff01e02c1104f51583d}\label{class_n_e_s_d_s_k_a34d5a24b1158dff01e02c1104f51583d} 
+Uint8 \texorpdfstring{$\ast$}{*} {\bfseries CHR2\+RGBA} (int chr\+Rom\+Index, int offset=0)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries NESComponent} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+virtual void {\bfseries power\+On} ()
+\item 
+virtual void {\bfseries reset} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_n_e_s_component_a1a6d44731f205c136768bfc4c2d9121a}{step}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_d_s_k_ac611387459b5f734b6ec58b9fcd014ea}\label{class_n_e_s_d_s_k_ac611387459b5f734b6ec58b9fcd014ea} 
+class {\bfseries NESEMU}
+\item 
+\Hypertarget{class_n_e_s_d_s_k_add2f9934febfb9e56819e69e45e1345a}\label{class_n_e_s_d_s_k_add2f9934febfb9e56819e69e45e1345a} 
+class {\bfseries NESBUS}
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a8d6a776676864a344f2460473f602298}\label{class_n_e_s_d_s_k_a8d6a776676864a344f2460473f602298} 
+class {\bfseries SDLEMU}
+\item 
+\Hypertarget{class_n_e_s_d_s_k_a4699690b3a764283a8a3cce00b401412}\label{class_n_e_s_d_s_k_a4699690b3a764283a8a3cce00b401412} 
+class {\bfseries NESPPU}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*} {\bfseries emu}
+\end{DoxyCompactItemize}
+
+
+\label{class_n_e_s_d_s_k_doc-func-members}
+\Hypertarget{class_n_e_s_d_s_k_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_n_e_s_d_s_k_adc019eb1918f03d20afcdb73e99a1fa1}\index{NESDSK@{NESDSK}!read@{read}}
+\index{read@{read}!NESDSK@{NESDSK}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \label{class_n_e_s_d_s_k_adc019eb1918f03d20afcdb73e99a1fa1} 
+Uint8 NESDSK::\+read (\begin{DoxyParamCaption}\item[{Uint16}]{address}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_d_s_k_a5d8e1f2d148767aacb3f4a35a1cec440}\index{NESDSK@{NESDSK}!write@{write}}
+\index{write@{write}!NESDSK@{NESDSK}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{class_n_e_s_d_s_k_a5d8e1f2d148767aacb3f4a35a1cec440} 
+void NESDSK::\+write (\begin{DoxyParamCaption}\item[{Uint16}]{address}{, }\item[{Uint8}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+nesdsk.\+hpp\item 
+Source/\+nesdsk.\+cpp\end{DoxyCompactItemize}

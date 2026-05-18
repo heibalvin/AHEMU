@@ -1,0 +1,324 @@
+\doxysection{NESCPU Class Reference}
+\hypertarget{class_n_e_s_c_p_u}{}\label{class_n_e_s_c_p_u}\index{NESCPU@{NESCPU}}
+
+
+Emulates the MOS 6502 central processing unit w/\+ 4KB Work RAM (WRAM).  
+
+
+
+
+{\ttfamily \+\#include $<$nescpu.\+hpp$>$}
+
+
+
+Inheritance diagram for NESCPU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_c_p_u__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for NESCPU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{class_n_e_s_c_p_u__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a75605ad04872ae7df6a80ea630e12c0b}\label{class_n_e_s_c_p_u_a75605ad04872ae7df6a80ea630e12c0b} 
+{\bfseries NESCPU} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_c_p_u_a58e950ebd395b510d0e5e914e8665fb4}{power\+On}} () override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_c_p_u_ac4f0e1bf7ac9ee8dbad0e099d571bc00}{reset}} () override
+\item 
+Uint8 \doxymbox{\hyperlink{class_n_e_s_c_p_u_a91193cdf69aee693781c85771b1c39d4}{read}} (Uint16 address) override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_c_p_u_a491f364bb2fcca3db5da8616b4d0b112}{write}} (Uint16 address, Uint8 value) override
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a03cbe6db0942a4562058272f260c6332}\label{class_n_e_s_c_p_u_a03cbe6db0942a4562058272f260c6332} 
+void {\bfseries opcodes\+Init} ()
+\begin{DoxyCompactList}\small\item\em Initialise all 256 opcodes into a NESOPCODE structure (and set to UNKNOWN if not implemented). \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_n_e_s_c_p_u_ad685ac63a3e69f1e464e79265d1aa28f}{step}} () override
+\begin{DoxyCompactList}\small\item\em Emulator moves 1 CPU cycle step. Taking into account wait\+Cycles and moving to next\+PC. \end{DoxyCompactList}\item 
+\Hypertarget{class_n_e_s_c_p_u_a88ceafb4278e4892f712b97578488441}\label{class_n_e_s_c_p_u_a88ceafb4278e4892f712b97578488441} 
+void {\bfseries fetch} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a9f99d2682be241434e3205ef05cc2128}\label{class_n_e_s_c_p_u_a9f99d2682be241434e3205ef05cc2128} 
+void {\bfseries decode} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a8fad27a94e7a4f6e4340e5659d9faeaa}\label{class_n_e_s_c_p_u_a8fad27a94e7a4f6e4340e5659d9faeaa} 
+void {\bfseries execute} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a43d08e811e9ed8aa53047e8e471f6452}\label{class_n_e_s_c_p_u_a43d08e811e9ed8aa53047e8e471f6452} 
+void {\bfseries NMIInterrupt} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a13a31f484a549545841132b173418c26}\label{class_n_e_s_c_p_u_a13a31f484a549545841132b173418c26} 
+void {\bfseries IRQInterrupt} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a662eda933333f9fe48e5fcbb89305ad8}\label{class_n_e_s_c_p_u_a662eda933333f9fe48e5fcbb89305ad8} 
+Uint16 {\bfseries get\+Address\+Mode} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a2555dd53f348ec30e87f90904527072d}\label{class_n_e_s_c_p_u_a2555dd53f348ec30e87f90904527072d} 
+void {\bfseries LDA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a2d6acd6a12aa400cafe1c43d5d8bb356}\label{class_n_e_s_c_p_u_a2d6acd6a12aa400cafe1c43d5d8bb356} 
+void {\bfseries STA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a78db22671067752c664e679df3b05bfb}\label{class_n_e_s_c_p_u_a78db22671067752c664e679df3b05bfb} 
+void {\bfseries LDX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ae4c627289799401d887464d44c92abec}\label{class_n_e_s_c_p_u_ae4c627289799401d887464d44c92abec} 
+void {\bfseries STX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_adf006fccae55a89e43774e0adbea15fc}\label{class_n_e_s_c_p_u_adf006fccae55a89e43774e0adbea15fc} 
+void {\bfseries LDY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_adefad438979e5c6c5a1331ab0b41df89}\label{class_n_e_s_c_p_u_adefad438979e5c6c5a1331ab0b41df89} 
+void {\bfseries STY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_affc19e87794a7c10aca5b3efafc2c8a8}\label{class_n_e_s_c_p_u_affc19e87794a7c10aca5b3efafc2c8a8} 
+void {\bfseries TAX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ad98e187fa089dd6d8770489957ba1c41}\label{class_n_e_s_c_p_u_ad98e187fa089dd6d8770489957ba1c41} 
+void {\bfseries TXA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a0a88f544d31243ce277d340c3424274e}\label{class_n_e_s_c_p_u_a0a88f544d31243ce277d340c3424274e} 
+void {\bfseries TAY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a63a9ab42ffe05483fd619ea7c1137ed0}\label{class_n_e_s_c_p_u_a63a9ab42ffe05483fd619ea7c1137ed0} 
+void {\bfseries TYA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a6e02eea8b5022f44b211fa230b2e3a7e}\label{class_n_e_s_c_p_u_a6e02eea8b5022f44b211fa230b2e3a7e} 
+void {\bfseries ADC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aef44a11e6183a35cc87a90f109faf2b7}\label{class_n_e_s_c_p_u_aef44a11e6183a35cc87a90f109faf2b7} 
+void {\bfseries SBC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a1844a8969b3f71ce8c77c398c63f12d2}\label{class_n_e_s_c_p_u_a1844a8969b3f71ce8c77c398c63f12d2} 
+void {\bfseries INC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_abbadca0d3c4e4005867c08d95e5c4233}\label{class_n_e_s_c_p_u_abbadca0d3c4e4005867c08d95e5c4233} 
+void {\bfseries DEC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a745ab48d52ae6874b6441cb302e5ea86}\label{class_n_e_s_c_p_u_a745ab48d52ae6874b6441cb302e5ea86} 
+void {\bfseries INX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_afaa0b69f09999e37c0dba6f8842457fb}\label{class_n_e_s_c_p_u_afaa0b69f09999e37c0dba6f8842457fb} 
+void {\bfseries DEX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a2ede954f3a87b9cace357118b715de53}\label{class_n_e_s_c_p_u_a2ede954f3a87b9cace357118b715de53} 
+void {\bfseries INY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_adddab7639d2426ad82b0239feb436dd4}\label{class_n_e_s_c_p_u_adddab7639d2426ad82b0239feb436dd4} 
+void {\bfseries DEY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aa3ed5ef56749b48917ec08ec292117c9}\label{class_n_e_s_c_p_u_aa3ed5ef56749b48917ec08ec292117c9} 
+void {\bfseries ASL} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ae723ed0ef99161bea4c917bcafba8e50}\label{class_n_e_s_c_p_u_ae723ed0ef99161bea4c917bcafba8e50} 
+void {\bfseries LSR} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_af5033d2b480bca67b535c098488d5d41}\label{class_n_e_s_c_p_u_af5033d2b480bca67b535c098488d5d41} 
+void {\bfseries ROL} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aebf85d8a2386f09fe2fbde9917be19ae}\label{class_n_e_s_c_p_u_aebf85d8a2386f09fe2fbde9917be19ae} 
+void {\bfseries ROR} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a5916dc36a65686e73ef5ca9757d4241c}\label{class_n_e_s_c_p_u_a5916dc36a65686e73ef5ca9757d4241c} 
+void {\bfseries AND} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a99926e8e0a8f88219818102afc9c0b3b}\label{class_n_e_s_c_p_u_a99926e8e0a8f88219818102afc9c0b3b} 
+void {\bfseries ORA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a319d323757ebdc0ca40d23e9df8bbcf1}\label{class_n_e_s_c_p_u_a319d323757ebdc0ca40d23e9df8bbcf1} 
+void {\bfseries EOR} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_acc6a65d35d083e2c2498c0fa23b8d4e6}\label{class_n_e_s_c_p_u_acc6a65d35d083e2c2498c0fa23b8d4e6} 
+void {\bfseries BIT} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a79154957992bc064914eeb2337694cd6}\label{class_n_e_s_c_p_u_a79154957992bc064914eeb2337694cd6} 
+void {\bfseries CMP} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a033ebbaee1d34eb167ae68095b6a7eba}\label{class_n_e_s_c_p_u_a033ebbaee1d34eb167ae68095b6a7eba} 
+void {\bfseries CPX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a37f3abdd3259a77866c91cc3f6fd4abe}\label{class_n_e_s_c_p_u_a37f3abdd3259a77866c91cc3f6fd4abe} 
+void {\bfseries CPY} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a944829439d4a9b81b0e7e24d644f2555}\label{class_n_e_s_c_p_u_a944829439d4a9b81b0e7e24d644f2555} 
+void {\bfseries BCC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a5a055aaf513c94470105d5474f11f04f}\label{class_n_e_s_c_p_u_a5a055aaf513c94470105d5474f11f04f} 
+void {\bfseries BCS} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aa1e94b1bac00af7eb362392b3adcd787}\label{class_n_e_s_c_p_u_aa1e94b1bac00af7eb362392b3adcd787} 
+void {\bfseries BEQ} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a9d75b86d2a2b10f28d82713bea6d380b}\label{class_n_e_s_c_p_u_a9d75b86d2a2b10f28d82713bea6d380b} 
+void {\bfseries BNE} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a0cefdf5d5056ef438d34def430a1c2fd}\label{class_n_e_s_c_p_u_a0cefdf5d5056ef438d34def430a1c2fd} 
+void {\bfseries BPL} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a0477d8aae1dcfeb82dafe40b0b2e5013}\label{class_n_e_s_c_p_u_a0477d8aae1dcfeb82dafe40b0b2e5013} 
+void {\bfseries BMI} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a50e80a76d442d23af476f48b642ea685}\label{class_n_e_s_c_p_u_a50e80a76d442d23af476f48b642ea685} 
+void {\bfseries BVC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aad541efd73ee787042232e22484154e0}\label{class_n_e_s_c_p_u_aad541efd73ee787042232e22484154e0} 
+void {\bfseries BVS} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a491fe88f78d60b24181fe92c771bd912}\label{class_n_e_s_c_p_u_a491fe88f78d60b24181fe92c771bd912} 
+void {\bfseries JMP} ()
+\begin{DoxyCompactList}\small\item\em Emulated CPU Jump:\+ JMP JSR RTS BRK RTI. \end{DoxyCompactList}\item 
+\Hypertarget{class_n_e_s_c_p_u_a022781b1f58c19a8e957097c357907dd}\label{class_n_e_s_c_p_u_a022781b1f58c19a8e957097c357907dd} 
+void {\bfseries JSR} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a864960eb244e765d73fcdf7bdea597f3}\label{class_n_e_s_c_p_u_a864960eb244e765d73fcdf7bdea597f3} 
+void {\bfseries RTS} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ada164e8d76c647ee552a4f4bb8d35145}\label{class_n_e_s_c_p_u_ada164e8d76c647ee552a4f4bb8d35145} 
+void {\bfseries BRK} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a165a6e23d25dbebdfc8e193880a2de55}\label{class_n_e_s_c_p_u_a165a6e23d25dbebdfc8e193880a2de55} 
+void {\bfseries RTI} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_afe3464a7eec44644c2cc5383da48a2fd}\label{class_n_e_s_c_p_u_afe3464a7eec44644c2cc5383da48a2fd} 
+void {\bfseries PHA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ade1f81b4d03badc47afe4dca7821672d}\label{class_n_e_s_c_p_u_ade1f81b4d03badc47afe4dca7821672d} 
+void {\bfseries PLA} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_abaeffbae4a58f1574e4c9b27be074c08}\label{class_n_e_s_c_p_u_abaeffbae4a58f1574e4c9b27be074c08} 
+void {\bfseries PHP} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a103318b750f4f42d6a190e37c87234f4}\label{class_n_e_s_c_p_u_a103318b750f4f42d6a190e37c87234f4} 
+void {\bfseries PLP} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a196020b7e6b06809644b29b435a02066}\label{class_n_e_s_c_p_u_a196020b7e6b06809644b29b435a02066} 
+void {\bfseries TXS} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a686458eb1e522e013febf85b190d6bf6}\label{class_n_e_s_c_p_u_a686458eb1e522e013febf85b190d6bf6} 
+void {\bfseries TSX} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_adcdc7ff4de597c78d290139caf0e4b5a}\label{class_n_e_s_c_p_u_adcdc7ff4de597c78d290139caf0e4b5a} 
+void {\bfseries CLC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a2dc7240dd26c317116999e7d52b943a2}\label{class_n_e_s_c_p_u_a2dc7240dd26c317116999e7d52b943a2} 
+void {\bfseries SEC} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_aa9fd511d2285c4e4fb0a0d46a0a871eb}\label{class_n_e_s_c_p_u_aa9fd511d2285c4e4fb0a0d46a0a871eb} 
+void {\bfseries CLI} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a689013d1593cb5a873f62bc49f846926}\label{class_n_e_s_c_p_u_a689013d1593cb5a873f62bc49f846926} 
+void {\bfseries SEI} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ae33142bc2a8e909e30cb1d27508b430d}\label{class_n_e_s_c_p_u_ae33142bc2a8e909e30cb1d27508b430d} 
+void {\bfseries CLD} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a265095af22a5179d919839adbdd50a9c}\label{class_n_e_s_c_p_u_a265095af22a5179d919839adbdd50a9c} 
+void {\bfseries SED} ()
+\item 
+\Hypertarget{class_n_e_s_c_p_u_af48c53827f719019ace901498e99f5e0}\label{class_n_e_s_c_p_u_af48c53827f719019ace901498e99f5e0} 
+void {\bfseries CLV} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries NESComponent} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_c_p_u_ac611387459b5f734b6ec58b9fcd014ea}\label{class_n_e_s_c_p_u_ac611387459b5f734b6ec58b9fcd014ea} 
+class {\bfseries NESEMU}
+\item 
+\Hypertarget{class_n_e_s_c_p_u_add2f9934febfb9e56819e69e45e1345a}\label{class_n_e_s_c_p_u_add2f9934febfb9e56819e69e45e1345a} 
+class {\bfseries NESBUS}
+\item 
+\Hypertarget{class_n_e_s_c_p_u_a4699690b3a764283a8a3cce00b401412}\label{class_n_e_s_c_p_u_a4699690b3a764283a8a3cce00b401412} 
+class {\bfseries NESPPU}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*} {\bfseries emu}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Emulates the MOS 6502 central processing unit w/\+ 4KB Work RAM (WRAM). 
+
+\label{class_n_e_s_c_p_u_doc-func-members}
+\Hypertarget{class_n_e_s_c_p_u_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_n_e_s_c_p_u_a58e950ebd395b510d0e5e914e8665fb4}\index{NESCPU@{NESCPU}!powerOn@{powerOn}}
+\index{powerOn@{powerOn}!NESCPU@{NESCPU}}
+\doxysubsubsection{\texorpdfstring{powerOn()}{powerOn()}}
+{\footnotesize\ttfamily \label{class_n_e_s_c_p_u_a58e950ebd395b510d0e5e914e8665fb4} 
+void NESCPU::\+power\+On (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_c_p_u_a91193cdf69aee693781c85771b1c39d4}\index{NESCPU@{NESCPU}!read@{read}}
+\index{read@{read}!NESCPU@{NESCPU}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \label{class_n_e_s_c_p_u_a91193cdf69aee693781c85771b1c39d4} 
+Uint8 NESCPU::\+read (\begin{DoxyParamCaption}\item[{Uint16}]{address}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_c_p_u_ac4f0e1bf7ac9ee8dbad0e099d571bc00}\index{NESCPU@{NESCPU}!reset@{reset}}
+\index{reset@{reset}!NESCPU@{NESCPU}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \label{class_n_e_s_c_p_u_ac4f0e1bf7ac9ee8dbad0e099d571bc00} 
+void NESCPU::\+reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_c_p_u_ad685ac63a3e69f1e464e79265d1aa28f}\index{NESCPU@{NESCPU}!step@{step}}
+\index{step@{step}!NESCPU@{NESCPU}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily \label{class_n_e_s_c_p_u_ad685ac63a3e69f1e464e79265d1aa28f} 
+void NESCPU::\+step (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Emulator moves 1 CPU cycle step. Taking into account wait\+Cycles and moving to next\+PC. 
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_c_p_u_a491f364bb2fcca3db5da8616b4d0b112}\index{NESCPU@{NESCPU}!write@{write}}
+\index{write@{write}!NESCPU@{NESCPU}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{class_n_e_s_c_p_u_a491f364bb2fcca3db5da8616b4d0b112} 
+void NESCPU::\+write (\begin{DoxyParamCaption}\item[{Uint16}]{address}{, }\item[{Uint8}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+nescpu.\+hpp\item 
+Source/\+nescpu.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,83 @@
+\doxysection{nesemu.\+hpp}
+\hypertarget{nesemu_8hpp_source}{}\label{nesemu_8hpp_source}\index{Source/nesemu.hpp@{Source/nesemu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ NESEMU\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ NESEMU\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SDL3/SDL.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}nescomponent.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_c_p_u}{NESCPU}};}
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_p_p_u}{NESPPU}};}
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_d_s_k}{NESDSK}};}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_b_u_s}{NESBUS}};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{enum\ class}\ NESEvent\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ NONE,}
+\DoxyCodeLine{00014\ \ \ \ \ CYCLE\_STEP,\ \ \ \ \ \ \ \ \textcolor{comment}{//\ A\ single\ clock\ cycle\ ticked}}
+\DoxyCodeLine{00015\ \ \ \ \ INSTRUCTION\_STEP,\ \ \textcolor{comment}{//\ An\ entire\ instruction\ finished\ execution}}
+\DoxyCodeLine{00016\ \ \ \ \ VBLANK\_START,\ \ \ \ \ \ \textcolor{comment}{//\ PPU\ entered\ scanline\ 241}}
+\DoxyCodeLine{00017\ \ \ \ \ FRAME\_COMPLETE,\ \ \ \ \textcolor{comment}{//\ PPU\ finished\ scanline\ 261}}
+\DoxyCodeLine{00018\ \ \ \ \ NMI\_TRIGGERED,\ \ \ \ \ \textcolor{comment}{//\ NMI\ Interrupt\ Vector\ was\ entered}}
+\DoxyCodeLine{00019\ \ \ \ \ IRQ\_TRIGGERED\ \ \ \ \ \ \textcolor{comment}{//\ IRQ\ Interrupt\ Vector\ was\ entered}}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }NESEMU\ :\ \textcolor{keyword}{public}\ NESComponent\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ NESEMU();}
+\DoxyCodeLine{00025\ \ \ \ \ \string~NESEMU()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ loadRom(Uint8*\ romData);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ powerOn()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ update(Uint64\ deltaTime);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ step()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ sub-\/component\ helper\ functions}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ getWidth();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ getHeight();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRefreshRequested()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ clearRefreshRequest();}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ Uint8\ *getFrameBuffer()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ Debugging\ controls}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ setHaltTarget(NESEvent\ target)\ \{\ haltTarget\ =\ target;\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ resume()\ \{\ isHalted\ =\ \textcolor{keyword}{false};\ lastTriggeredEvent\ =\ NESEvent::NONE;\ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ halted()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ isHalted;\ \}}
+\DoxyCodeLine{00044\ \ \ \ \ NESEvent\ getLastEvent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ lastTriggeredEvent;\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ This\ is\ the\ core\ loop\ called\ by\ SDLEMU}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ runUntilEvent();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ AUTONOMOUS\ GATEWAY:\ Sub-\/components\ call\ this\ to\ raise\ an\ event}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ raiseEvent(NESEvent\ event);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{const}\ Uint64\ clock\ =\ 3686400;\ \textcolor{comment}{//\ PPU\ step\ rate\ for\ 256×240@60fps\ (3,686,400\ steps/sec)}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ Uint64\ SDL\_NS\_TO\_SECONDS\ =\ 1000000000;\ \textcolor{comment}{//\ 1\ second\ in\ nanoseconds}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ Uint64\ CYCLE\_NS\ =\ SDL\_NS\_TO\_SECONDS\ /\ clock;\ \textcolor{comment}{//\ Nanoseconds\ per\ cycle}}
+\DoxyCodeLine{00056\ \ \ \ \ Uint64\ time\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ Uint64\ cycleId\ =\ 0;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }SDLEMU;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESBUS;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESCPU;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESPPU;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESDSK;}
+\DoxyCodeLine{00064\ \ \ \ \ NESBUS*\ bus;}
+\DoxyCodeLine{00065\ \ \ \ \ NESCPU*\ cpu;}
+\DoxyCodeLine{00066\ \ \ \ \ NESPPU*\ ppu;}
+\DoxyCodeLine{00067\ \ \ \ \ NESDSK*\ dsk;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ isHalted\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00070\ \ \ \ \ NESEvent\ haltTarget\ =\ NESEvent::FRAME\_COMPLETE;}
+\DoxyCodeLine{00071\ \ \ \ \ NESEvent\ lastTriggeredEvent\ =\ NESEvent::NONE;}
+\DoxyCodeLine{00072\ \ \ \ \ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ Core\ system\ clock\ counters}}
+\DoxyCodeLine{00074\ \ \ \ \ Uint64\ totalMasterCycles\ =\ 0;}
+\DoxyCodeLine{00075\ \};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ NESEMU\_HPP\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

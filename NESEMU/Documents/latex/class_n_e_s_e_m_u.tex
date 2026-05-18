@@ -1,0 +1,134 @@
+\doxysection{NESEMU Class Reference}
+\hypertarget{class_n_e_s_e_m_u}{}\label{class_n_e_s_e_m_u}\index{NESEMU@{NESEMU}}
+
+
+Inheritance diagram for NESEMU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_e_m_u__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for NESEMU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_e_m_u__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a55e591b249ac74a0c7cfce8eb011faa1}\label{class_n_e_s_e_m_u_a55e591b249ac74a0c7cfce8eb011faa1} 
+void {\bfseries load\+Rom} (Uint8 \texorpdfstring{$\ast$}{*}rom\+Data)
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_e_m_u_ad5968499d615bb211142d122aa55d009}{power\+On}} () override
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a08523f8ace98a17476f5581e112c2f55}\label{class_n_e_s_e_m_u_a08523f8ace98a17476f5581e112c2f55} 
+void {\bfseries update} (Uint64 delta\+Time)
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_e_m_u_a992f9aa3f2151767ecaf838c25988373}{step}} () override
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a0cb891fe73c9b8f9f4adacfb59f81779}\label{class_n_e_s_e_m_u_a0cb891fe73c9b8f9f4adacfb59f81779} 
+const int {\bfseries get\+Width} ()
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a45d19ca4e5e2a7bdf4ccd1b87042c7ff}\label{class_n_e_s_e_m_u_a45d19ca4e5e2a7bdf4ccd1b87042c7ff} 
+const int {\bfseries get\+Height} ()
+\item 
+\Hypertarget{class_n_e_s_e_m_u_ab34c1591801309b1714290c37c50216c}\label{class_n_e_s_e_m_u_ab34c1591801309b1714290c37c50216c} 
+bool {\bfseries is\+Refresh\+Requested} () const
+\item 
+\Hypertarget{class_n_e_s_e_m_u_ac7587291b14a484e7b966bfa1bf8de4b}\label{class_n_e_s_e_m_u_ac7587291b14a484e7b966bfa1bf8de4b} 
+void {\bfseries clear\+Refresh\+Request} ()
+\item 
+\Hypertarget{class_n_e_s_e_m_u_ac6170b1c6e39794f17754f9f4d379c79}\label{class_n_e_s_e_m_u_ac6170b1c6e39794f17754f9f4d379c79} 
+const Uint8 \texorpdfstring{$\ast$}{*} {\bfseries get\+Frame\+Buffer} () const
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a8f7550f0ee47436f5adfe235364a4f02}\label{class_n_e_s_e_m_u_a8f7550f0ee47436f5adfe235364a4f02} 
+void {\bfseries set\+Halt\+Target} (NESEvent target)
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a4809f66033e05b4a5a36055095e7e5a4}\label{class_n_e_s_e_m_u_a4809f66033e05b4a5a36055095e7e5a4} 
+void {\bfseries resume} ()
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a5e343eaed3dfdc52ae37fed72fd0a564}\label{class_n_e_s_e_m_u_a5e343eaed3dfdc52ae37fed72fd0a564} 
+bool {\bfseries halted} () const
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a8f2a7d1431ad1fad28f34c604956b16b}\label{class_n_e_s_e_m_u_a8f2a7d1431ad1fad28f34c604956b16b} 
+NESEvent {\bfseries get\+Last\+Event} () const
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a7724d9181c8851ae7e829a50df33ce61}\label{class_n_e_s_e_m_u_a7724d9181c8851ae7e829a50df33ce61} 
+void {\bfseries run\+Until\+Event} ()
+\item 
+\Hypertarget{class_n_e_s_e_m_u_ae02d6885c182e9e41e4add9124644f83}\label{class_n_e_s_e_m_u_ae02d6885c182e9e41e4add9124644f83} 
+void {\bfseries raise\+Event} (NESEvent event)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries NESComponent} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+virtual void {\bfseries reset} ()
+\item 
+virtual Uint8 {\bfseries read} (Uint16 address)
+\item 
+virtual void {\bfseries write} (Uint16 address, Uint8 value)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a8d6a776676864a344f2460473f602298}\label{class_n_e_s_e_m_u_a8d6a776676864a344f2460473f602298} 
+class {\bfseries SDLEMU}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_add2f9934febfb9e56819e69e45e1345a}\label{class_n_e_s_e_m_u_add2f9934febfb9e56819e69e45e1345a} 
+class {\bfseries NESBUS}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a064b19315ecfaeb9b7feb98bc3ddd5a2}\label{class_n_e_s_e_m_u_a064b19315ecfaeb9b7feb98bc3ddd5a2} 
+class {\bfseries NESCPU}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_a4699690b3a764283a8a3cce00b401412}\label{class_n_e_s_e_m_u_a4699690b3a764283a8a3cce00b401412} 
+class {\bfseries NESPPU}
+\item 
+\Hypertarget{class_n_e_s_e_m_u_ab40f76e566dbecc5f628a934b03667dd}\label{class_n_e_s_e_m_u_ab40f76e566dbecc5f628a934b03667dd} 
+class {\bfseries NESDSK}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*} {\bfseries emu}
+\end{DoxyCompactItemize}
+
+
+\label{class_n_e_s_e_m_u_doc-func-members}
+\Hypertarget{class_n_e_s_e_m_u_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_n_e_s_e_m_u_ad5968499d615bb211142d122aa55d009}\index{NESEMU@{NESEMU}!powerOn@{powerOn}}
+\index{powerOn@{powerOn}!NESEMU@{NESEMU}}
+\doxysubsubsection{\texorpdfstring{powerOn()}{powerOn()}}
+{\footnotesize\ttfamily \label{class_n_e_s_e_m_u_ad5968499d615bb211142d122aa55d009} 
+void NESEMU::\+power\+On (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_e_m_u_a992f9aa3f2151767ecaf838c25988373}\index{NESEMU@{NESEMU}!step@{step}}
+\index{step@{step}!NESEMU@{NESEMU}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily \label{class_n_e_s_e_m_u_a992f9aa3f2151767ecaf838c25988373} 
+void NESEMU::\+step (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+nesemu.\+hpp\item 
+Source/\+nesemu.\+cpp\end{DoxyCompactItemize}

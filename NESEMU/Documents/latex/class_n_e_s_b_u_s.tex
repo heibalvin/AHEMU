@@ -1,0 +1,86 @@
+\doxysection{NESBUS Class Reference}
+\hypertarget{class_n_e_s_b_u_s}{}\label{class_n_e_s_b_u_s}\index{NESBUS@{NESBUS}}
+
+
+Inheritance diagram for NESBUS:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_b_u_s__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for NESBUS:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{class_n_e_s_b_u_s__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_b_u_s_a179e0f0cd0a4dd3b267e27e99851ba04}\label{class_n_e_s_b_u_s_a179e0f0cd0a4dd3b267e27e99851ba04} 
+{\bfseries NESBUS} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+Uint8 \doxymbox{\hyperlink{class_n_e_s_b_u_s_a61b5b96c2351fc468d7bc9f230866d1b}{read}} (Uint16 address) override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_b_u_s_af45c0c0b2205ec0cddcf29c04187f05a}{write}} (Uint16 address, Uint8 value) override
+\item 
+\Hypertarget{class_n_e_s_b_u_s_a7a297238c1c1c995d3dd0ca66904dcb4}\label{class_n_e_s_b_u_s_a7a297238c1c1c995d3dd0ca66904dcb4} 
+Uint16 {\bfseries read\+Word} (Uint16 address)
+\item 
+\Hypertarget{class_n_e_s_b_u_s_aad6f9f032b8615f2093a4e68b6fa94ec}\label{class_n_e_s_b_u_s_aad6f9f032b8615f2093a4e68b6fa94ec} 
+void {\bfseries write\+Word} (Uint16 address, Uint16 value)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries NESComponent} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+virtual void {\bfseries power\+On} ()
+\item 
+virtual void {\bfseries reset} ()
+\item 
+virtual void \doxymbox{\hyperlink{class_n_e_s_component_a1a6d44731f205c136768bfc4c2d9121a}{step}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*} {\bfseries emu}
+\end{DoxyCompactItemize}
+
+
+\label{class_n_e_s_b_u_s_doc-func-members}
+\Hypertarget{class_n_e_s_b_u_s_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_n_e_s_b_u_s_a61b5b96c2351fc468d7bc9f230866d1b}\index{NESBUS@{NESBUS}!read@{read}}
+\index{read@{read}!NESBUS@{NESBUS}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \label{class_n_e_s_b_u_s_a61b5b96c2351fc468d7bc9f230866d1b} 
+Uint8 NESBUS::\+read (\begin{DoxyParamCaption}\item[{Uint16}]{address}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_b_u_s_af45c0c0b2205ec0cddcf29c04187f05a}\index{NESBUS@{NESBUS}!write@{write}}
+\index{write@{write}!NESBUS@{NESBUS}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{class_n_e_s_b_u_s_af45c0c0b2205ec0cddcf29c04187f05a} 
+void NESBUS::\+write (\begin{DoxyParamCaption}\item[{Uint16}]{address}{, }\item[{Uint8}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+nesbus.\+hpp\item 
+Source/\+nesbus.\+cpp\end{DoxyCompactItemize}

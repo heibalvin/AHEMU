@@ -1,0 +1,67 @@
+\doxysection{sdlemu.\+hpp}
+\hypertarget{sdlemu_8hpp_source}{}\label{sdlemu_8hpp_source}\index{Source/sdlemu.hpp@{Source/sdlemu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ SDLEMU\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ SDLEMU\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SDL3/SDL.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}nesemu.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }SDLEMU\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ SDLEMU();}
+\DoxyCodeLine{00010\ \ \ \ \ \string~SDLEMU();}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{comment}{//\ SDL\ component\ management}}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{void}\ initSDL();}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ releaseSDL();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//\ File\ management}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ getDirectoryPath(\textcolor{keywordtype}{char}*\ dest,\ \textcolor{keywordtype}{size\_t}\ destSize,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ directory);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ getFilePath(\textcolor{keywordtype}{char}*\ dest,\ \textcolor{keywordtype}{size\_t}\ destSize,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename);}
+\DoxyCodeLine{00019\ \ \ \ \ SDL\_Texture*\ loadPNG(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *filename);}
+\DoxyCodeLine{00020\ \ \ \ \ Uint8*\ loadFile(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *romname,\ \textcolor{keywordtype}{size\_t}\ *romSize);}
+\DoxyCodeLine{00021\ \ \ \ \ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ Rom\ management}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ loadRom(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ romName);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ exportCHR2RGBA();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ Application\ LifeCycle}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRunning\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ powerOn();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ run();}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ update(Uint64\ deltaTime);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ render(Uint64\ deltaTime);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ Application\ LifeCycle\ -\/\ for\ debugging\ step\ by\ step}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ isUpdate\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ input();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ update();}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ render();}
+\DoxyCodeLine{00038\ \ \ \ \ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESEMU;}
+\DoxyCodeLine{00041\ \ \ \ \ NESEMU\ *emu;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ SDL\ components}}
+\DoxyCodeLine{00044\ \ \ \ \ SDL\_Window*\ window\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00045\ \ \ \ \ SDL\_Renderer*\ renderer\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00046\ \ \ \ \ SDL\_Texture*\ texture\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ File\ path\ components}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{char}\ projectPath[256];}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{char}\ resourcePath[256];}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{char}\ outputPath[256];}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{char}\ romName[128];}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ Clock\ \&\ Timer\ components}}
+\DoxyCodeLine{00055\ \ \ \ \ Uint64\ previousTime\ =\ 0.0;}
+\DoxyCodeLine{00056\ \ \ \ \ Uint64\ currentTime\ =\ 0.0;}
+\DoxyCodeLine{00057\ \ \ \ \ Uint64\ deltaTime\ =\ 0.0;}
+\DoxyCodeLine{00058\ \ \ \ \ Uint64\ fps\ =\ 0.0;}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ SDLEMU\_HPP\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

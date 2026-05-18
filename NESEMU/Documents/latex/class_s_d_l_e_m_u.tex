@@ -1,0 +1,71 @@
+\doxysection{SDLEMU Class Reference}
+\hypertarget{class_s_d_l_e_m_u}{}\label{class_s_d_l_e_m_u}\index{SDLEMU@{SDLEMU}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_s_d_l_e_m_u_aff4f34977d68fa6ff0b986bb9c3b039b}\label{class_s_d_l_e_m_u_aff4f34977d68fa6ff0b986bb9c3b039b} 
+void {\bfseries init\+SDL} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a54cc8292fcaa75568bc17d42a00befda}\label{class_s_d_l_e_m_u_a54cc8292fcaa75568bc17d42a00befda} 
+void {\bfseries release\+SDL} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ad6b293999dfbc5ab5d6d1104b7208c5a}\label{class_s_d_l_e_m_u_ad6b293999dfbc5ab5d6d1104b7208c5a} 
+void {\bfseries get\+Directory\+Path} (char \texorpdfstring{$\ast$}{*}dest, size\+\_\+t dest\+Size, const char \texorpdfstring{$\ast$}{*}directory)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a2bf6e06a8ee3970b44dcf3e2199c0d9f}\label{class_s_d_l_e_m_u_a2bf6e06a8ee3970b44dcf3e2199c0d9f} 
+void {\bfseries get\+File\+Path} (char \texorpdfstring{$\ast$}{*}dest, size\+\_\+t dest\+Size, const char \texorpdfstring{$\ast$}{*}path, const char \texorpdfstring{$\ast$}{*}filename)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a78c140920561b2032458def6c9ab70d4}\label{class_s_d_l_e_m_u_a78c140920561b2032458def6c9ab70d4} 
+SDL\+\_\+\+Texture \texorpdfstring{$\ast$}{*} {\bfseries load\+PNG} (const char \texorpdfstring{$\ast$}{*}filename)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ae886b6370c02f2314136e9c5831b1e09}\label{class_s_d_l_e_m_u_ae886b6370c02f2314136e9c5831b1e09} 
+Uint8 \texorpdfstring{$\ast$}{*} {\bfseries load\+File} (const char \texorpdfstring{$\ast$}{*}romname, size\+\_\+t \texorpdfstring{$\ast$}{*}rom\+Size)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ad428572497285edda51b89c18c143349}\label{class_s_d_l_e_m_u_ad428572497285edda51b89c18c143349} 
+void {\bfseries load\+Rom} (const char \texorpdfstring{$\ast$}{*}rom\+Name)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_af536bb5083c86425fb6647b429916d44}\label{class_s_d_l_e_m_u_af536bb5083c86425fb6647b429916d44} 
+void {\bfseries export\+CHR2\+RGBA} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ac1cc371d9044eb36f2d315f589f06509}\label{class_s_d_l_e_m_u_ac1cc371d9044eb36f2d315f589f06509} 
+void {\bfseries power\+On} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a4e7340d6ace0539741bd19f096d87b86}\label{class_s_d_l_e_m_u_a4e7340d6ace0539741bd19f096d87b86} 
+void {\bfseries run} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a0d13980823e1d40417388f2c184822b0}\label{class_s_d_l_e_m_u_a0d13980823e1d40417388f2c184822b0} 
+void {\bfseries update} (Uint64 delta\+Time)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ab6cd8ea09dfb36684765da66eaa10c88}\label{class_s_d_l_e_m_u_ab6cd8ea09dfb36684765da66eaa10c88} 
+void {\bfseries render} (Uint64 delta\+Time)
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ae9290d9a6145777df7dd84f23ec1abdf}\label{class_s_d_l_e_m_u_ae9290d9a6145777df7dd84f23ec1abdf} 
+void {\bfseries input} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_acef9b60a35dc28ffb91ee3481e06c9d9}\label{class_s_d_l_e_m_u_acef9b60a35dc28ffb91ee3481e06c9d9} 
+void {\bfseries update} ()
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a03d80d5ffff563912eda1f277d9f74ee}\label{class_s_d_l_e_m_u_a03d80d5ffff563912eda1f277d9f74ee} 
+void {\bfseries render} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_s_d_l_e_m_u_a074016b84e6852e6ee36ba14f90ecacb}\label{class_s_d_l_e_m_u_a074016b84e6852e6ee36ba14f90ecacb} 
+bool {\bfseries is\+Running} = false
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ac17b4315359cad13150cb01b89e2378a}\label{class_s_d_l_e_m_u_ac17b4315359cad13150cb01b89e2378a} 
+bool {\bfseries is\+Update} = false
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_s_d_l_e_m_u_ac611387459b5f734b6ec58b9fcd014ea}\label{class_s_d_l_e_m_u_ac611387459b5f734b6ec58b9fcd014ea} 
+class {\bfseries NESEMU}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+sdlemu.\+hpp\item 
+Source/\+sdlemu.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,6 @@
+<map id="NESComponent" name="NESComponent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,122,31"/>
+<area shape="rect" id="Node000002" href="$class_n_e_s_e_m_u.html" title=" " alt="" coords="24,102,103,128"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="62,44,63,55,63,78,65,102,60,101,58,78,58,55,60,49"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,86,61,33,66,30,66,87"/>
+</map>

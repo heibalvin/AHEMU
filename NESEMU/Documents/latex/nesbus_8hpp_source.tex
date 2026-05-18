@@ -1,0 +1,30 @@
+\doxysection{nesbus.\+hpp}
+\hypertarget{nesbus_8hpp_source}{}\label{nesbus_8hpp_source}\index{Source/nesbus.hpp@{Source/nesbus.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ NESBUS\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ NESBUS\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SDL3/SDL.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}nescomponent.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}};}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }NESBUS\ :\ \textcolor{keyword}{public}\ NESComponent\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{explicit}\ NESBUS(\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}}*\ emu);}
+\DoxyCodeLine{00012\ \ \ \ \ \string~NESBUS();}
+\DoxyCodeLine{00013\ \ \ \ \ }
+\DoxyCodeLine{00014\ \ \ \ \ Uint8\ read(Uint16\ address)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{void}\ write(Uint16\ address,\ Uint8\ value)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ Uint16\ readWord(Uint16\ address);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ writeWord(Uint16\ address,\ Uint16\ value);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00021\ \ \ \ \ Uint8*\ ioregisters\ =\ NULL;\ \ \ \ \ \ \textcolor{comment}{//\ I/O\ Registers\ (0x4000-\/0x401F)}}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ NESBUS\_HPP}}
+
+\end{DoxyCode}

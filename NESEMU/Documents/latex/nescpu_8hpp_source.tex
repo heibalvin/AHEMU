@@ -1,0 +1,184 @@
+\doxysection{nescpu.\+hpp}
+\hypertarget{nescpu_8hpp_source}{}\label{nescpu_8hpp_source}\index{Source/nescpu.hpp@{Source/nescpu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ NESCPU\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ NESCPU\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SDL3/SDL.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}nescomponent.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Macros\ for\ mask\ manipulation}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ MASK\_SET(var,\ mask)\ \ \ \ ((var)\ |=\ (mask))}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MASK\_CLEAR(var,\ mask)\ \ ((var)\ \&=\ \string~(mask))}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ MASK\_TOGGLE(var,\ mask)\ ((var)\ \string^=\ (mask))}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ MASK\_CHECK\_SET(var,\ mask)\ (((var)\ \&\ (mask))\ ==\ (mask))}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ MASK\_CHECK\_CLEAR(var,\ mask)\ (((var)\ \&\ (mask))\ ==\ 0)}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ MASK\_ASSIGN(var,\ mask,\ condition)\ ((var)\ =\ ((var)\ \&\ \string~(mask))\ |\ ((condition)\ ?\ (mask)\ :\ 0))}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{enum}\ NESCPUFLAGS:\ Uint8\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ CARRY\_FLAG\ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0x01,}
+\DoxyCodeLine{00019\ \ \ \ \ ZERO\_FLAG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0x02,}
+\DoxyCodeLine{00020\ \ \ \ \ INTERRUPT\_DISABLE\_FLAG\ \ =\ 0x04,}
+\DoxyCodeLine{00021\ \ \ \ \ DECIMAL\_MODE\_FLAG\ \ \ \ \ \ \ =\ 0x08,}
+\DoxyCodeLine{00022\ \ \ \ \ BREAK\_COMMAND\_FLAG\ \ \ \ \ \ =\ 0x10,}
+\DoxyCodeLine{00023\ \ \ \ \ UNUSED\_FLAG\ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0x20,}
+\DoxyCodeLine{00024\ \ \ \ \ OVERFLOW\_FLAG\ \ \ \ \ \ \ \ \ \ \ =\ 0x40,}
+\DoxyCodeLine{00025\ \ \ \ \ NEGATIVE\_FLAG\ \ \ \ \ \ \ \ \ \ \ =\ 0x80}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{enum}\ NESCPUADDRMODE\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ IMPLIED,}
+\DoxyCodeLine{00030\ \ \ \ \ ACCUMULATOR,}
+\DoxyCodeLine{00031\ \ \ \ \ IMMEDIATE,}
+\DoxyCodeLine{00032\ \ \ \ \ ZERO\_PAGE,}
+\DoxyCodeLine{00033\ \ \ \ \ ZERO\_PAGE\_X,}
+\DoxyCodeLine{00034\ \ \ \ \ ZERO\_PAGE\_Y,}
+\DoxyCodeLine{00035\ \ \ \ \ RELATIVE,}
+\DoxyCodeLine{00036\ \ \ \ \ ABSOLUTE,}
+\DoxyCodeLine{00037\ \ \ \ \ ABSOLUTE\_X,}
+\DoxyCodeLine{00038\ \ \ \ \ ABSOLUTE\_Y,}
+\DoxyCodeLine{00039\ \ \ \ \ INDIRECT,}
+\DoxyCodeLine{00040\ \ \ \ \ INDEXED\_INDIRECT,}
+\DoxyCodeLine{00041\ \ \ \ \ INDIRECT\_INDEXED}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }NESCPU\ :\ \textcolor{keyword}{public}\ NESComponent\ \{}
+\DoxyCodeLine{00049\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{explicit}\ NESCPU(NESEMU*\ emu);}
+\DoxyCodeLine{00051\ \ \ \ \ \string~NESCPU();}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ powerOn()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ reset()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ Uint8\ read(Uint16\ address)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ write(Uint16\ address,\ Uint8\ value)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_n_e_s_c_p_u_a03cbe6db0942a4562058272f260c6332}{opcodesInit}}();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_n_e_s_c_p_u_ad685ac63a3e69f1e464e79265d1aa28f}{step}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ fetch();}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ decode();}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ execute();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ NMIInterrupt();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ IRQInterrupt();}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ Uint16\ getAddressMode();}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{comment}{//\ Access\ LDA\ STA\ LDX\ STX\ LDY\ STY}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ LDA();}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ STA();}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ LDX();}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{void}\ STX();}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ LDY();}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ STY();}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ Transfer\ TAX\ TXA\ TAY\ TYA}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ TAX();}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{void}\ TXA();}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{void}\ TAY();}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ TYA();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ Arithmetic\ ADC\ SBC\ INC\ DEC\ INX\ DEX\ INY\ DEY}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ ADC();}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{void}\ SBC();}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{void}\ INC();}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{void}\ DEC();}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ INX();}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{void}\ DEX();}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ INY();}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ DEY();}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ Shift\ ASL\ LSR\ ROL\ ROR}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ ASL();}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ LSR();}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{void}\ ROL();}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ ROR();}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ Bitwise\ AND\ ORA\ EOR\ BIT}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ AND();}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ ORA();}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{void}\ EOR();}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ BIT();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ Compare\ CMP\ CPX\ CPY}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{void}\ CMP();}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ CPX();}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{void}\ CPY();}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ Branch\ BCC\ BCS\ BEQ\ BNE\ BPL\ BMI\ BVC\ BVS}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ BCC();}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ BCS();}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ BEQ();}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ BNE();}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{void}\ BPL();}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{void}\ BMI();}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{void}\ BVC();}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ BVS();}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_n_e_s_c_p_u_a491fe88f78d60b24181fe92c771bd912}{JMP}}();}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ JSR();}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{void}\ RTS();}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ BRK();}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{void}\ RTI();}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//\ Stack:\ PHA\ PLA\ PHP\ PLP\ TXS\ TSX}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{void}\ PHA();}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{void}\ PLA();}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{void}\ PHP();}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{void}\ PLP();}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{void}\ TXS();}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{void}\ TSX();}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ Flags:\ CLC\ SEC\ CLI\ SEI\ CLD\ SED\ CLV}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{void}\ CLC();}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{void}\ SEC();}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{void}\ CLI();}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{void}\ SEI();}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{void}\ CLD();}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordtype}{void}\ SED();}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordtype}{void}\ CLV();}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESEMU;}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESBUS;}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }NESPPU;}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//\ Interrupt\ signal\ lines}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{bool}\ nmi\_asserted\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ irq\_asserted\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//\ Work\ RAM\ (WRAM)\ management}}
+\DoxyCodeLine{00164\ \ \ \ \ Uint8\ *wram\ =\ NULL;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Work\ RAM\ (WRAM)\ for\ the\ main\ memory}}
+\DoxyCodeLine{00165\ \ \ \ \ Uint8\ A\ =\ 0x00;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Accumulator}}
+\DoxyCodeLine{00166\ \ \ \ \ Uint8\ X\ =\ 0x00;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ X\ Register}}
+\DoxyCodeLine{00167\ \ \ \ \ Uint8\ Y\ =\ 0x00;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Y\ Register}}
+\DoxyCodeLine{00168\ \ \ \ \ Uint8\ P\ =\ 0x00;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Processor\ Status}}
+\DoxyCodeLine{00169\ \ \ \ \ Uint8\ SP\ =\ 0x00;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Stack\ Pointer}}
+\DoxyCodeLine{00170\ \ \ \ \ Uint16\ PC\ =\ 0x0000;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Program\ Counter}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ Uint16\ nextPC\ =\ 0x0000;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Next\ Program\ Counter}}
+\DoxyCodeLine{00173\ \ \ \ \ Uint8\ bytes[3]\ =\ \{0\};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Buffer\ to\ hold\ the\ raw\ instruction\ bytes\ for\ debugging}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{int}\ waitCycles\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Cycles\ to\ wait\ for\ the\ current\ instruction\ to\ complete}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordtype}{char}\ debugger[80];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Buffer\ for\ formatted\ debugging\ output}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{char}\ program[80];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Buffer\ for\ formatted\ program\ bytes\ for\ debugging}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{char}\ mnemonic[80];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Buffer\ for\ formatted\ mnemonic\ for\ debugging}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{struct\ }NESCPUOPCODE\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ nmemonic;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ void\ (NESCPU::*operation)();}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ NESCPUADDRMODE\ addrMode;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ length;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cycles;}
+\DoxyCodeLine{00185\ \ \ \ \ \};}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ NESCPUOPCODE\ opcodes[256];\ \ \ \ \ \ \textcolor{comment}{//\ Opcode\ lookup\ table\ for\ instruction\ decoding}}
+\DoxyCodeLine{00188\ \ \ \ \ NESCPUOPCODE*\ opcode\ =\ NULL;\ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ currently\ executing\ opcode\ }}
+\DoxyCodeLine{00189\ \};}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ NESCPU\_HPP\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

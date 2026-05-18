@@ -1,0 +1,122 @@
+\doxysection{NESPPU Class Reference}
+\hypertarget{class_n_e_s_p_p_u}{}\label{class_n_e_s_p_p_u}\index{NESPPU@{NESPPU}}
+
+
+Inheritance diagram for NESPPU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_n_e_s_p_p_u__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for NESPPU:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{class_n_e_s_p_p_u__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_p_p_u_a8fe9f82e9d2f8b77ea111a37e02a4fd1}\label{class_n_e_s_p_p_u_a8fe9f82e9d2f8b77ea111a37e02a4fd1} 
+{\bfseries NESPPU} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_p_p_u_a7ad223b5fe67e866d355e2e84234811e}{power\+On}} () override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_p_p_u_a141cfdcb10458ea7c531a1d69b0715ab}{reset}} () override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_p_p_u_a3018c1c3969857019e0dfa2b038a0a7c}{step}} () override
+\item 
+Uint8 \doxymbox{\hyperlink{class_n_e_s_p_p_u_a8539ab2228671387b9e558006a910d17}{read}} (Uint16 address) override
+\item 
+void \doxymbox{\hyperlink{class_n_e_s_p_p_u_a5d1c919cf534d0fcb1166242c0378724}{write}} (Uint16 address, Uint8 value) override
+\item 
+\Hypertarget{class_n_e_s_p_p_u_a1d0ba69311bb7db4d761864f0fcc6e06}\label{class_n_e_s_p_p_u_a1d0ba69311bb7db4d761864f0fcc6e06} 
+const Uint8 \texorpdfstring{$\ast$}{*} {\bfseries get\+Frame\+Buffer} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries NESComponent} (\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*}emu)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_n_e_s_p_p_u_ac611387459b5f734b6ec58b9fcd014ea}\label{class_n_e_s_p_p_u_ac611387459b5f734b6ec58b9fcd014ea} 
+class {\bfseries NESEMU}
+\item 
+\Hypertarget{class_n_e_s_p_p_u_add2f9934febfb9e56819e69e45e1345a}\label{class_n_e_s_p_p_u_add2f9934febfb9e56819e69e45e1345a} 
+class {\bfseries NESBUS}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_n_e_s_e_m_u}{NESEMU}} \texorpdfstring{$\ast$}{*} {\bfseries emu}
+\end{DoxyCompactItemize}
+
+
+\label{class_n_e_s_p_p_u_doc-func-members}
+\Hypertarget{class_n_e_s_p_p_u_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_n_e_s_p_p_u_a7ad223b5fe67e866d355e2e84234811e}\index{NESPPU@{NESPPU}!powerOn@{powerOn}}
+\index{powerOn@{powerOn}!NESPPU@{NESPPU}}
+\doxysubsubsection{\texorpdfstring{powerOn()}{powerOn()}}
+{\footnotesize\ttfamily \label{class_n_e_s_p_p_u_a7ad223b5fe67e866d355e2e84234811e} 
+void NESPPU::\+power\+On (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_p_p_u_a8539ab2228671387b9e558006a910d17}\index{NESPPU@{NESPPU}!read@{read}}
+\index{read@{read}!NESPPU@{NESPPU}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \label{class_n_e_s_p_p_u_a8539ab2228671387b9e558006a910d17} 
+Uint8 NESPPU::\+read (\begin{DoxyParamCaption}\item[{Uint16}]{address}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_p_p_u_a141cfdcb10458ea7c531a1d69b0715ab}\index{NESPPU@{NESPPU}!reset@{reset}}
+\index{reset@{reset}!NESPPU@{NESPPU}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \label{class_n_e_s_p_p_u_a141cfdcb10458ea7c531a1d69b0715ab} 
+void NESPPU::\+reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_p_p_u_a3018c1c3969857019e0dfa2b038a0a7c}\index{NESPPU@{NESPPU}!step@{step}}
+\index{step@{step}!NESPPU@{NESPPU}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily \label{class_n_e_s_p_p_u_a3018c1c3969857019e0dfa2b038a0a7c} 
+void NESPPU::\+step (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+\Hypertarget{class_n_e_s_p_p_u_a5d1c919cf534d0fcb1166242c0378724}\index{NESPPU@{NESPPU}!write@{write}}
+\index{write@{write}!NESPPU@{NESPPU}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily \label{class_n_e_s_p_p_u_a5d1c919cf534d0fcb1166242c0378724} 
+void NESPPU::\+write (\begin{DoxyParamCaption}\item[{Uint16}]{address}{, }\item[{Uint8}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_n_e_s_component}{NESComponent}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Source/\+nesppu.\+hpp\item 
+Source/\+nesppu.\+cpp\end{DoxyCompactItemize}
