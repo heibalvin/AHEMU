@@ -2,6 +2,7 @@
 #include <SDL3/SDL_stdinc.h>
 #include "nesemu.hpp"
 #include "nesdsk.hpp"
+#include "nescpu.hpp"
 
 NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
     // Initialize frame buffers with red
@@ -77,61 +78,118 @@ const Uint8 *NESPPU::getFrameBuffer() const {
     return frameBuffers[(frameBufferActive + 1) % 2]; // Return the non-active buffer for rendering
 }
 
-void NESPPU::step() {
-    // SDL_Log("NESPPU: Dot: %d, Line: %d, Color: %d", dot, line, color);
-    int index = (line * width + dot) * 4;
-    
-    frameBuffers[frameBufferActive][index + 0] = color; // Red
-    frameBuffers[frameBufferActive][index + 1] = color; // Green
-    frameBuffers[frameBufferActive][index + 2] = color; // Blue
-    frameBuffers[frameBufferActive][index + 3] = 0xFF;  // Alpha
+Uint8 NESPPU::read(Uint16 address) {
+    // 1. Check if the read request is targeting CPU memory-mapped registers ($2000-$3FFF)
+    // The 8 hardware registers are mirrored every 8 bytes across this region.
+    Uint16 regOffset = address % 8;
 
+    switch (regOffset) {
+        case 2: { // $2002 PPUSTATUS
+            Uint8 temp = ppu_status;
+            // CRITICAL SIDE EFFECT: Reading PPUSTATUS clears bit 7 (V-Blank status flag)
+            // and resets the internal PPU scroll/address latch flip-flop.
+            ppu_status &= ~0x80; 
+            return temp;
+        }
+        case 7: { // $2007 PPUDATA
+            // Reading from PPUDATA retrieves bytes out of PPU VRAM.
+            // TBD: Implement VRAM buffered read sequencing here later.
+            return 0x00;
+        }
+        default:
+            // Most other PPU registers ($2000, $2001, $2003, $2004, $2005, $2006) are write-only.
+            // Reading them typically returns an open-bus data state or 0.
+            return 0x00;
+    }
+}
+
+void NESPPU::write(Uint16 address, Uint8 value) {
+    Uint16 regOffset = address % 8;
+
+    switch (regOffset) {
+        case 0: // $2000 PPUCTRL
+            ppu_ctrl = value;
+            // If the CPU enables NMIs while the PPU is already in a V-Blank period,
+            // an NMI is generated immediately.
+            if ((ppu_ctrl & 0x80) && (ppu_status & 0x80)) {
+                emu->cpu->nmi_asserted = true;
+            }
+            break;
+
+        case 1: // $2001 PPUMASK
+            ppu_mask = value;
+            break;
+
+        case 2: // $2002 PPUSTATUS (Hardware Read-Only, writes ignored)
+            break;
+
+        case 5: // $2005 PPUSCROLL
+            // TBD: Feed scroll offsets into internal registers (X/Y latching)
+            break;
+
+        case 6: // $2006 PPUADDR
+            // TBD: Sequence high byte then low byte to update the current VRAM pointer address
+            break;
+
+        case 7: // $2007 PPUDATA
+            // TBD: Write value directly to PPU VRAM via the current internal PPUADDR register pointer, 
+            // then automatically increment the register pointer by either 1 or 32 based on PPUCTRL.
+            break;
+
+        default:
+            break;
+    }
+}
+
+void NESPPU::step() {
+    // 1. Advance the fine internal clock components
+    cycles++; // Cycle acts as the current horizontal dot (0-340)
+    if (cycles >= 341) {
+        cycles = 0;
+        scanline++; // Progress to next vertical scanline (0-261)
+        
+        if (scanline >= 262) {
+            scanline = 0;
+            isRefreshRequested = true;
+            // Toggle active frame buffers at the bottom of the loop
+            frameBufferActive = (frameBufferActive + 1) % 2;
+        }
+    }
+
+    // 2. Check Scanline Boundaries for Interrupt Processing
+    if (scanline == 241 && cycles == 1) {
+        // Set the V-Blank Flag inside our status register representation (Bit 7)
+        ppu_status |= 0x80;
+
+        // If Bit 7 of PPUCTRL ($2000) is set, generate a hard hardware NMI signal!
+        if ((ppu_ctrl & 0x80) != 0) {
+            emu->cpu->nmi_asserted = true; 
+            SDL_Log("NESPPU: V-Blank reached on line 241. Triggering CPU NMI!");
+        }
+    }
+
+    if (scanline == 261 && cycles == 1) {
+        // Clear the V-Blank flag on the pre-render scanline preparation loop
+        ppu_status &= ~0x80;
+    }
+
+    // 3. Keep your existing procedural test pattern generation drawing safely tied to the grid:
+    if (scanline < height && cycles < width) {
+        int index = (scanline * width + cycles) * 4;
+        frameBuffers[frameBufferActive][index + 0] = color; // Red
+        frameBuffers[frameBufferActive][index + 1] = 0x00;  // Green
+        frameBuffers[frameBufferActive][index + 2] = color; // Blue
+        frameBuffers[frameBufferActive][index + 3] = 0xFF;  // Alpha
+    }
+
+    // Color shifting sequence loop wrapper 
     dot++;
     if (dot >= width) {
         dot = 0;
         line++;
         if (line >= height) {
             line = 0;
-            dot = 0;
             color = (color + 1) % 256;
-
-            // Switch to the cleared buffer for the next frame
-            frameBufferActive = (frameBufferActive + 1) % 2;
-            isRefreshRequested = true;
-            // SDL_Log("NESPPU: Frame completed, switching buffers. Refresh requested.");
         }
     }
-}
-
-Uint8 NESPPU::read(Uint16 address) {
-    if (address >= 0x0000 && address < 0x1FFF) {
-        return emu->dsk->chrRoms[0][address];
-    } else if (address >= 0x2000 && address <= 0x2FFF) {
-        return vram[address - 0x2000];
-    } else if (address >= 0x3F00 && address <= 0x3FFF) {
-        return palRam[(address - 0x3F00) % 0x0020];
-    }
-
-    return 0x00;
-}
-
-void NESPPU::write(Uint16 address, Uint8 value) {
-    if (address >= 0x0000 && address < 0x1FFF) {
-        emu->dsk->chrRoms[0][address] = value;
-    } else if (address >= 0x2000 && address <= 0x2FFF) {
-        vram[address - 0x2000] = value;
-    } else if (address >= 0x3F00 && address <= 0x3FFF) {
-        palRam[(address - 0x3F00) % 0x0020] = value;
-    }
-}
-
-void NESPPU::experimental() {
-    SDL_Log("NESPPU: Experimental function called. Dot: %d, Line: %d", dot, line);
-    
-    // if (cycle % 8 == 0) {
-    //     nameTableByte = vram[];
-    // }
-    
-
-    cycles += 1; // Increment cycle count
 }

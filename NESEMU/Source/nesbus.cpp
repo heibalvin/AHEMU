@@ -21,8 +21,9 @@ Uint8 NESBUS::read(Uint16 address) {
         // WRAM (mirrored every 2KB)
         return emu->cpu->wram[address % 0x0800];
     } else if (address >= 0x2000 && address < 0x4000) {
-        // PPU I/O Registers (mirrored every 8 bytes)
-        return emu->ppu->registers[address % 8];
+        // Central dispatcher hands off to the PPU component.
+        // It mirrors every 8 bytes ($2000-$2007)
+        return emu->ppu->read(address);
     } else if (address >= 0x4000 && address < 0x4020) {
         // APU and I/O Registers
         // TBD: Implement APU and I/O register reads
@@ -47,8 +48,8 @@ void NESBUS::write(Uint16 address, Uint8 value) {
         // WRAM (mirrored every 2KB)
         emu->cpu->wram[address % 0x0800] = value;
     } else if (address >= 0x2000 && address < 0x4000) {
-        // PPU I/O Registers (mirrored every 8 bytes)
-        emu->ppu->registers[address % 8] = value;
+        // Central dispatcher passes register writes straight to the PPU
+        emu->ppu->write(address, value);
     } else if (address >= 0x4000 && address < 0x4020) {
         // APU and I/O Registers
         // TBD: Implement APU and I/O register reads

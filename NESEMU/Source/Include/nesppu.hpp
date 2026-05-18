@@ -5,6 +5,7 @@
 #include "nescomponent.hpp"
 
 class NESEMU;
+class NESCPU;
 
 class NESPPU : public NESComponent {
 public:
@@ -13,7 +14,6 @@ public:
 
     void powerOn() override;
     void step() override;
-    void experimental();
 
     Uint8 read(Uint16 address);
     void write(Uint16 address, Uint8 vlue);
@@ -34,15 +34,16 @@ private:
     // NES PPU variables
     int cycles = 0;                     // Current cycle (dot) within the scanline
     int scanline = 0;                   // Current scanline (0-261)
-    int nameTableByte = 0x00;
-    int attributeTableByte = 0x00;
-    int patternTableHigh = 0x00;
-    int patternTableLow = 0x00;
 
     // NES PPU debug image
     int dot = 0;
     int line = 0;
     Uint8 color = 0;
+
+    // CPU-facing register tracking variables
+    Uint8 ppu_ctrl = 0x00;    // $2000
+    Uint8 ppu_mask = 0x00;    // $2001
+    Uint8 ppu_status = 0x00;  // $2002
 
     // Sprite and VRAM variables
     Uint8* palRam = NULL;               // Palette RAM for background and sprites
