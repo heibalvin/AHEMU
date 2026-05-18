@@ -13,6 +13,7 @@ public:
     ~NESPPU();
 
     void powerOn() override;
+    void reset() override;
     void step() override;
 
     Uint8 read(Uint16 address) override;

@@ -9,6 +9,16 @@ class NESPPU;
 class NESDSK;
 class NESBUS;
 
+enum class NESEvent {
+    NONE,
+    CYCLE_STEP,        // A single clock cycle ticked
+    INSTRUCTION_STEP,  // An entire instruction finished execution
+    VBLANK_START,      // PPU entered scanline 241
+    FRAME_COMPLETE,    // PPU finished scanline 261
+    NMI_TRIGGERED,     // NMI Interrupt Vector was entered
+    IRQ_TRIGGERED      // IRQ Interrupt Vector was entered
+};
+
 class NESEMU : public NESComponent {
 public:
     NESEMU();
@@ -27,6 +37,18 @@ public:
     void clearRefreshRequest();
     const Uint8 *getFrameBuffer() const;
 
+    // Debugging controls
+    void setHaltTarget(NESEvent target) { haltTarget = target; }
+    void resume() { isHalted = false; lastTriggeredEvent = NESEvent::NONE; }
+    bool halted() const { return isHalted; }
+    NESEvent getLastEvent() const { return lastTriggeredEvent; }
+
+    // This is the core loop called by SDLEMU
+    void runUntilEvent();
+
+    // AUTONOMOUS GATEWAY: Sub-components call this to raise an event
+    void raiseEvent(NESEvent event);
+
 private:
     const Uint64 clock = 3686400; // PPU step rate for 256×240@60fps (3,686,400 steps/sec)
     const Uint64 SDL_NS_TO_SECONDS = 1000000000; // 1 second in nanoseconds
@@ -43,6 +65,13 @@ private:
     NESCPU* cpu;
     NESPPU* ppu;
     NESDSK* dsk;
+
+    bool isHalted = true;
+    NESEvent haltTarget = NESEvent::FRAME_COMPLETE;
+    NESEvent lastTriggeredEvent = NESEvent::NONE;
+    
+    // Core system clock counters
+    Uint64 totalMasterCycles = 0;
 };
 
 #endif /* NESEMU_HPP */

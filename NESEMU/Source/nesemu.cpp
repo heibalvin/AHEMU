@@ -52,15 +52,15 @@ void NESEMU::update(Uint64 deltaTime) {
 }
 
 void NESEMU::step() {
-    // DEBUG: simplified CPU steps    
+    // 1. Advance the CPU by one system step clock cycle
     cpu->step();
 
-    // Accurante CPU & PPU step cycles
-    // if (cycles %4 == 0) {
-    //     cpu->step();
-    // }
-    // ppu->step();
-    // cycleId++;
+    // 2. The PPU runs exactly 3 times faster than the CPU master clock sequence
+    ppu->step();
+    ppu->step();
+    ppu->step();
+    
+    // 3. Handle additional peripheral timing intervals (like APU or Mapper counters)
 }
 
 bool NESEMU::isRefreshRequested() const {
@@ -73,4 +73,29 @@ void NESEMU::clearRefreshRequest() {
 
 const Uint8 *NESEMU::getFrameBuffer() const {
     return ppu->getFrameBuffer();
+}
+
+void NESEMU::raiseEvent(NESEvent event) {
+    // If this event matches our current debugging focus, halt the entire motherboard instantly!
+    if (event == haltTarget || event == NESEvent::FRAME_COMPLETE) {
+        isHalted = true;
+        lastTriggeredEvent = event;
+    }
+}
+
+void NESEMU::runUntilEvent() {
+    resume(); // Clear old event states and arm the engine
+
+    // Keep running the hardware clock at a 1:3 ratio autonomously
+    while (!isHalted) {
+        // 1. Tick CPU
+        cpu->step();
+
+        // 2. Tick PPU 3 times for every 1 CPU cycle
+        ppu->step();
+        ppu->step();
+        ppu->step();
+
+        totalMasterCycles++;
+    }
 }

@@ -278,14 +278,20 @@ void NESCPU::opcodesInit() {
 void NESCPU::step() {
     // 0. Decrement wait cycles if we're still waiting for the current instruction to complete
     if (waitCycles > 0) {
-        waitCycles--; 
+        waitCycles--;
+        // Autonomously raise a raw cycle event if the user wants cycle-by-cycle debugging
+        emu->raiseEvent(NESEvent::CYCLE_STEP);
         return; 
     }
+
+    // --- Executed ONLY when waitCycles == 0 (Instruction Boundary) ---
+    emu->raiseEvent(NESEvent::INSTRUCTION_STEP);
 
     // 1. Check for Non-Maskable Interrupt first (NMI takes priority)
     if (nmi_asserted) {
         nmi_asserted = false; // Acknowledge edge-triggered NMI
         NMIInterrupt();
+        emu->raiseEvent(NESEvent::NMI_TRIGGERED);
         return; // Processing NMI takes up the entire instruction window cycle
     }
 
@@ -294,13 +300,14 @@ void NESCPU::step() {
         // Note: We do NOT clear irq_asserted here because level-sensitive IRQ lines 
         // stay low until the external device (like APU/Mapper) is explicitly acknowledged by code.
         IRQInterrupt();
+        emu->raiseEvent(NESEvent::IRQ_TRIGGERED);
         return;
     }
 
     // 3. Normal execution flow if no hardware interrupts are hijacking the cycle
     fetch();
     decode();
-    execute();
+    execute(); // sets PC and waitCycles for the next operation
 }
 
 void NESCPU::fetch() {

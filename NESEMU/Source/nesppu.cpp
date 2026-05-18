@@ -50,20 +50,45 @@ NESPPU::~NESPPU() {
 
 void NESPPU::powerOn() {
     SDL_Log("NESPPU: powerOn()...");
+// 1. Hard power-up clears control registers completely
+    ppu_ctrl = 0x00;
+    ppu_mask = 0x00;
+    
+    // Bit 7 is cold-booted as 0. Often bits 5 or 6 can contain stale hardware noise,
+    // but 0x00 is the safest starting point for emulators.
+    ppu_status = 0x00;
 
-    // Reset PPU state
+    // 2. Initialize internal location coordinates
     cycles = 0;
     scanline = 0;
     dot = 0;
     line = 0;
     color = 0;
 
-    // Clear frame buffers
-    for (int i = 0; i < 2; i++) {
-        SDL_memset(frameBuffers[i], 0xFF, width * height * 4); // Fill with white (255, 255, 255, 255)
-    }
-
+    // 3. Reset hardware frame pointers
+    frameBufferActive = 0;
     isRefreshRequested = false;
+
+    // 4. Wipe internal memory domains to ensure no residual data
+    if (palRam) SDL_memset(palRam, 0, 8 * 4);
+    if (oamRam) SDL_memset(oamRam, 0, 64 * 4);
+    if (vram)   SDL_memset(vram, 0, 4 * 1024);
+}
+
+void NESPPU::reset() {
+    SDL_Log("NESPPU: reset()...");
+
+    // 1. Control and Mask registers are forcefully cleared on warm reset
+    ppu_ctrl = 0x00;
+    ppu_mask = 0x00;
+
+    // 2. Clear V-Blank flag (Bit 7), Sprite 0 Hit (Bit 6), and Sprite Overflow (Bit 5).
+    // We mask with 0x1F to leave any remaining lower bits untouched.
+    ppu_status &= 0x1F;
+
+    // 3. Bring the scanning alignment back to the top of the display pipeline frame
+    cycles = 0;
+    scanline = 0;
 }
 
 const Uint8 *NESPPU::getFrameBuffer() const {
@@ -143,8 +168,10 @@ void NESPPU::step() {
         if (scanline >= 262) {
             scanline = 0;
             isRefreshRequested = true;
-            // Toggle active frame buffers at the bottom of the loop
             frameBufferActive = (frameBufferActive + 1) % 2;
+
+            // Frame is completely done rendering!
+            emu->raiseEvent(NESEvent::FRAME_COMPLETE);
         }
     }
 
@@ -153,6 +180,9 @@ void NESPPU::step() {
         // Set the V-Blank Flag inside our status register representation (Bit 7)
         ppu_status |= 0x80;
 
+        // Signal VBlank arrival autonomously
+        emu->raiseEvent(NESEvent::VBLANK_START);
+        
         // If Bit 7 of PPUCTRL ($2000) is set, generate a hard hardware NMI signal!
         if ((ppu_ctrl & 0x80) != 0) {
             emu->cpu->nmi_asserted = true; 

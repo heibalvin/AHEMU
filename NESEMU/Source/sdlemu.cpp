@@ -244,18 +244,60 @@ void SDLEMU::input() {
         if (event.type == SDL_EVENT_QUIT) {
             isRunning = false;
         } else if (event.type == SDL_EVENT_KEY_DOWN) {
-            if (event.key.key == SDLK_ESCAPE) {
-                isRunning = false;
-            } else if (event.key.key == SDLK_SPACE) {
-                isUpdate = true;
+            switch (event.key.key) {
+                case SDLK_ESCAPE:
+                    isRunning = false;
+                    break;
+
+                // Debug configurations: Tell NESEMU what to listen for
+                case SDLK_C:
+                    emu->setHaltTarget(NESEvent::CYCLE_STEP);
+                    SDL_Log("Halt Target Set: Single Master Cycle");
+                    break;
+                case SDLK_I:
+                    emu->setHaltTarget(NESEvent::INSTRUCTION_STEP);
+                    SDL_Log("Halt Target Set: Full CPU Opcode Instruction");
+                    break;
+                case SDLK_V:
+                    emu->setHaltTarget(NESEvent::VBLANK_START);
+                    SDL_Log("Halt Target Set: V-Blank Start");
+                    break;
+                case SDLK_F:
+                    emu->setHaltTarget(NESEvent::FRAME_COMPLETE);
+                    SDL_Log("Halt Target Set: Full Frame Loop");
+                    break;
+
+                // TRIGGER SPACEBAR: Unfreeze the autonomous loop runner!
+                case SDLK_SPACE:
+                    isUpdate = true; 
+                    break;
             }
         }
     }
 }
 
 void SDLEMU::update() {
-    emu->step();
-    isUpdate = false;
+    if (!isUpdate) return;
+
+    // Call the central runner. Components will autonomously break this loop.
+    emu->runUntilEvent();
+
+    // Log the reason the emulator paused for your debugger terminal
+    switch (emu->getLastEvent()) {
+        case NESEvent::INSTRUCTION_STEP:
+            // Perfect place to print register traces: PC, A, X, Y
+            break;
+        case NESEvent::VBLANK_START:
+            SDL_Log("Debugger: Stopped on V-Blank Start!");
+            break;
+        case NESEvent::FRAME_COMPLETE:
+            // Standard frame complete pass
+            break;
+        default:
+            break;
+    }
+
+    isUpdate = false; // Wait for the next spacebar tap
 }
 
 void SDLEMU::render() {
