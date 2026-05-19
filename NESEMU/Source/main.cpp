@@ -11,9 +11,7 @@ int main(int argc, char *argv[]) {
 
     while (game.isRunning) {
         game.input();
-        if (game.isUpdate) {
-            game.update();
-        }
+        game.update();
         game.render();
     }
 

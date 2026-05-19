@@ -215,3 +215,7 @@ void NESPPU::step() {
         }
     }
 }
+
+// void NESPPU::experimental() {
+//     if 
+// }

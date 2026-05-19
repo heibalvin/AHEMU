@@ -86,12 +86,17 @@ void NESEMU::raiseEvent(NESEvent event) {
 void NESEMU::runUntilEvent() {
     resume(); // Clear old event states and arm the engine
 
-    // Keep running the hardware clock at a 1:3 ratio autonomously
-    while (!isHalted) {
-        // 1. Tick CPU
+    while (true) {
+        // Exit: halted and NOT in continuous-run mode (step-by-step stop)
+        if (isHalted && !isContinuousRun) break;
+
+        // Auto-resume: keep the pipeline flowing in Run mode
+        if (isHalted && isContinuousRun) resume();
+
+        // ── 1 CPU master cycle ──────────────────────────────────
         cpu->step();
 
-        // 2. Tick PPU 3 times for every 1 CPU cycle
+        // ── 3 PPU ticks per CPU cycle (1:3 ratio) ──────────────
         ppu->step();
         ppu->step();
         ppu->step();

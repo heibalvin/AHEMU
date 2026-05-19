@@ -39,6 +39,7 @@ public:
 
     // Debugging controls
     void setHaltTarget(NESEvent target) { haltTarget = target; }
+    void setContinuousRun(bool enable) { isContinuousRun = enable; }
     void resume() { isHalted = false; lastTriggeredEvent = NESEvent::NONE; }
     bool halted() const { return isHalted; }
     NESEvent getLastEvent() const { return lastTriggeredEvent; }
@@ -67,6 +68,7 @@ private:
     NESDSK* dsk;
 
     bool isHalted = true;
+    bool isContinuousRun = false;
     NESEvent haltTarget = NESEvent::FRAME_COMPLETE;
     NESEvent lastTriggeredEvent = NESEvent::NONE;
     

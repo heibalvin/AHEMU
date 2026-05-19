@@ -41,7 +41,7 @@ make run   # Spins up the graphic context and boots the assigned cartridge image
 
 The framework utilizes an **Autonomous Event-Driven Debugging Model**. Rather than forcing the main thread loop to blindly poll sub-units, the internal hardware sub-components (`NESCPU`, `NESPPU`) step naturally and autonomously halt the execution line by signaling milestones back up to the console core via an event gate interface.
 
-You can configure what explicit hardware milestone the engine should pause on using the keyboard. Pressing the **Spacebar** resumes autonomous clock ticking until that chosen target flag condition trips.
+You can configure what explicit hardware milestone the engine should pause on using the keyboard. Press **`R` (Run)** to enter continuous run mode — execution proceeds without breakpoints until you press `R` again to return to step-by-step mode or press any breakpoint key (`C`, `I`, `V`, `F`) to set a new target and step to it.
 
 ### Hardware Milestone Hotkeys
 
@@ -51,7 +51,7 @@ Configure the active structural event listener at runtime using the following ho
 * **`I` (Instruction Step)**: Runs components continuously until the CPU completes its current operation opcode, pausing directly at the next opcode fetch phase (`waitCycles == 0`). Ideal for reviewing changes to registers ($A, X, Y, PC, P, SP$).
 * **`V` (V-Blank Start)**: Unrolls the clock rapidly until the PPU hits scanline 241, dot 1, which sets the vertical blanking flag status bit inside the `$2002` register.
 * **`F` (Frame Complete) [Default]**: Resolves execution loops cleanly until an entire 262-scanline frame matrix is evaluated and the frame buffer pointers swap. This mode matches normal frame rate updates.
-* **`SPACEBAR` (Execute to Halt)**: Dispatches the clock loop runner to advance components asynchronously until your designated milestone is triggered.
+* **`R` (Run / Resume)**: Toggles continuous run mode. While active, execution proceeds without breakpoints — the clock loop runs outside the stepping model. Press `R` again to return to step-by-step mode, or press any breakpoint key (`C`, `I`, `V`, `F`) to exit continuous mode and step directly to the next matching event.
 
 ---
 

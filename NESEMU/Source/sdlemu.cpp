@@ -249,27 +249,36 @@ void SDLEMU::input() {
                     isRunning = false;
                     break;
 
-                // Debug configurations: Tell NESEMU what to listen for
+                // CYCLE breakpoint
                 case SDLK_C:
                     emu->setHaltTarget(NESEvent::CYCLE_STEP);
                     SDL_Log("Halt Target Set: Single Master Cycle");
+                    isUpdate = true;
                     break;
+                // INSTRUCTION breakpoint
                 case SDLK_I:
                     emu->setHaltTarget(NESEvent::INSTRUCTION_STEP);
                     SDL_Log("Halt Target Set: Full CPU Opcode Instruction");
+                    isUpdate = true;
                     break;
+                // VBLANK breakpoint
                 case SDLK_V:
                     emu->setHaltTarget(NESEvent::VBLANK_START);
                     SDL_Log("Halt Target Set: V-Blank Start");
+                    isUpdate = true;
                     break;
+                // FRAME breakpoint
                 case SDLK_F:
                     emu->setHaltTarget(NESEvent::FRAME_COMPLETE);
                     SDL_Log("Halt Target Set: Full Frame Loop");
+                    isUpdate = true;
+                    emu->isContinuousRun = false;
                     break;
 
-                // TRIGGER SPACEBAR: Unfreeze the autonomous loop runner!
-                case SDLK_SPACE:
-                    isUpdate = true; 
+                // RUN without breakpoints
+                case SDLK_R:
+                    emu->setContinuousRun(!emu->isContinuousRun);
+                    SDL_Log(emu->isContinuousRun ? "Continuous Run: ON" : "Continuous Run: OFF");
                     break;
             }
         }
@@ -277,6 +286,12 @@ void SDLEMU::input() {
 }
 
 void SDLEMU::update() {
+    if (emu->isContinuousRun) {
+        // Run freely without chopping on any breakpoint target
+        emu->runUntilEvent();
+        return;
+    }
+
     if (!isUpdate) return;
 
     // Call the central runner. Components will autonomously break this loop.
@@ -297,7 +312,7 @@ void SDLEMU::update() {
             break;
     }
 
-    isUpdate = false; // Wait for the next spacebar tap
+    isUpdate = false; // Wait for the next breakpoint key press
 }
 
 void SDLEMU::render() {
