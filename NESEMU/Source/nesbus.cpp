@@ -35,6 +35,9 @@ void NESBUS::write(Uint16 address, Uint8 value) {
     } else if (address >= 0x2000 && address < 0x4000) {
         emu->ppu->write(address, value);
     } else if (address >= 0x4000 && address < 0x4020) {
+        if (address == 0x4014) {
+            emu->ppu->writeDMA(value);
+        }
         ioregisters[address - 0x4000] = value;
     } else if (address >= 0x4020) {
         emu->dsk->write(address, value);

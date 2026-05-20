@@ -33,8 +33,6 @@ public:
     // sub-component helper functions
     const int getWidth();
     const int getHeight();
-    bool isRefreshRequested() const;
-    void clearRefreshRequest();
     const Uint8 *getFrameBuffer() const;
 
     // Debugging controls

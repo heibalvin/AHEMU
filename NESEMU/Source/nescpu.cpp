@@ -340,7 +340,7 @@ void NESCPU::decode() {
         SDL_snprintf(mnemonic, sizeof(mnemonic), opcode->nmemonic, Uint16(bytes[2]) << 8 | Uint16(bytes[1]));
     }
 
-    SDL_Log("%s | %s | %s", debugger, program, mnemonic); // Log the current CPU state, program bytes, and mnemonic for debugging
+    // SDL_Log("%s | %s | %s", debugger, program, mnemonic); // Log the current CPU state, program bytes, and mnemonic for debugging
 }
 
 void NESCPU::execute() {

@@ -252,25 +252,25 @@ void SDLEMU::input() {
                 // CYCLE breakpoint
                 case SDLK_C:
                     emu->setHaltTarget(NESEvent::CYCLE_STEP);
-                    SDL_Log("Halt Target Set: Single Master Cycle");
+                    // SDL_Log("Halt Target Set: Single Master Cycle");
                     isUpdate = true;
                     break;
                 // INSTRUCTION breakpoint
                 case SDLK_I:
                     emu->setHaltTarget(NESEvent::INSTRUCTION_STEP);
-                    SDL_Log("Halt Target Set: Full CPU Opcode Instruction");
+                    // SDL_Log("Halt Target Set: Full CPU Opcode Instruction");
                     isUpdate = true;
                     break;
                 // VBLANK breakpoint
                 case SDLK_V:
                     emu->setHaltTarget(NESEvent::VBLANK_START);
-                    SDL_Log("Halt Target Set: V-Blank Start");
+                    // SDL_Log("Halt Target Set: V-Blank Start");
                     isUpdate = true;
                     break;
                 // FRAME breakpoint
                 case SDLK_F:
                     emu->setHaltTarget(NESEvent::FRAME_COMPLETE);
-                    SDL_Log("Halt Target Set: Full Frame Loop");
+                    // SDL_Log("Halt Target Set: Full Frame Loop");
                     isUpdate = true;
                     emu->isContinuousRun = false;
                     break;
@@ -278,7 +278,7 @@ void SDLEMU::input() {
                 // RUN without breakpoints
                 case SDLK_R:
                     emu->setContinuousRun(!emu->isContinuousRun);
-                    SDL_Log(emu->isContinuousRun ? "Continuous Run: ON" : "Continuous Run: OFF");
+                    // SDL_Log(emu->isContinuousRun ? "Continuous Run: ON" : "Continuous Run: OFF");
                     break;
             }
         }
@@ -307,6 +307,7 @@ void SDLEMU::update() {
             break;
         case NESEvent::FRAME_COMPLETE:
             // Standard frame complete pass
+            SDL_Log("Debugger: Frame Complete Start!");
             break;
         default:
             break;
@@ -316,7 +317,7 @@ void SDLEMU::update() {
 }
 
 void SDLEMU::render() {
-    if (emu->isRefreshRequested()) {
+    if (emu->getLastEvent() == NESEvent::FRAME_COMPLETE) {
         SDL_SetRenderDrawColor(renderer, 0x70, 0x01, 0x93, 255);
         SDL_RenderClear(renderer);
 
@@ -331,6 +332,5 @@ void SDLEMU::render() {
         }
 
         SDL_RenderPresent(renderer);
-        emu->clearRefreshRequest();
     }
 }

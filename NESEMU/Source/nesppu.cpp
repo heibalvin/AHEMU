@@ -4,95 +4,82 @@
 #include "nesdsk.hpp"
 #include "nescpu.hpp"
 
+// TBD: latch between CPU and PPU bus implementation
+
 NESPPU::NESPPU(NESEMU* emu) : NESComponent(emu) {
-    // Initialize frame buffers with red
+    SDL_memset(palette, 0x00, sizeof(palette));
+    SDL_memset(oam, 0x00, sizeof(oam));
+    SDL_memset(vram, 0x00, sizeof(vram));
+
+    // Initialize frame buffers with black
     for (int i = 0; i < 2; i++) {
-        frameBuffers[i] = (Uint8 *)SDL_malloc(width * height * 4); // RGBA format
-        SDL_memset(frameBuffers[i], 0xFF, width * height * 4); // Fill with white (255, 255, 255, 255)
+        frameBuffers[i] = (Uint8 *)SDL_malloc(sizeof(Uint8) * width * height * 4);
+        SDL_memset(frameBuffers[i], 0x00, sizeof(Uint8) * width * height * 4); // Fill with black (0, 0, 0, 0)
     }
-
-    frameBufferActive = 0;
-    isRefreshRequested = false;
-
-    // Initialise palette RAM
-    palRam = (Uint8 *)SDL_malloc(8 * 4);        // 8 palettes of 4 index for background and sprite palettes
-    SDL_memset(palRam, 0, 8 * 4);               // Clear palette RAM
-
-    // Initialise OAM for 40 sprites
-    oamRam = (Uint8 *)SDL_malloc(64 * 4);       // 64 sprites * 4 bytes each
-    SDL_memset(oamRam, 0, 64 * 4);              // Clear OAM
-
-    // Initialise 4KB VRAM
-    vram = (Uint8 *)SDL_malloc(4 * 1024);         // 4KB of VRAM
-    SDL_memset(vram, 0, 4 * 1024);                // Clear VRAM
 }
 
 NESPPU::~NESPPU() {
-    for (int i = 0; i < 2; i++) {
-        if (frameBuffers[i]) {
-            SDL_free(frameBuffers[i]);
-            frameBuffers[i] = NULL;
-        }
-    }
-    if (oamRam) {
-        SDL_free(oamRam);
-        oamRam = NULL;
-    }
-    if (palRam) {
-        SDL_free(palRam);
-        palRam = NULL;
-    }
-    if (vram) {
-        SDL_free(vram);
-        vram = NULL;
+    for(int i = 0; i < 2; i++) {
+        SDL_free(frameBuffers[i]);
     }
 }
 
 void NESPPU::powerOn() {
     SDL_Log("NESPPU: powerOn()...");
-// 1. Hard power-up clears control registers completely
-    ppu_ctrl = 0x00;
-    ppu_mask = 0x00;
-    
-    // Bit 7 is cold-booted as 0. Often bits 5 or 6 can contain stale hardware noise,
-    // but 0x00 is the safest starting point for emulators.
-    ppu_status = 0x00;
 
-    // 2. Initialize internal location coordinates
+    // Clears registers completely
+    PPUCTRL       = 0x00;     // $2000
+    PPUMASK       = 0x00;     // $2001
+    PPUSTATUS     = 0x00;     // $2002
+    OAMADDR       = 0x00;     // $2003
+    OAMDATA       = 0x00;     // $2004
+    PPUSCROLL     = 0x00;     // $2005
+    PPUADDR       = 0x00;     // $2006
+    PPUDATA       = 0x00;     // $2007
+    OAMDMA        = 0x00;     // $4014
+
+    // Initialize internal location coordinates
+    frameId = 0;
     cycles = 0;
     scanline = 0;
-    dot = 0;
-    line = 0;
-    color = 0;
+    colour = 0x00;
 
-    // 3. Reset hardware frame pointers
-    frameBufferActive = 0;
-    isRefreshRequested = false;
+    // Wipe internal memory domains to ensure no residual data
+    SDL_memset(vram, 0x00, sizeof(vram));
 
-    // 4. Wipe internal memory domains to ensure no residual data
-    if (palRam) SDL_memset(palRam, 0, 8 * 4);
-    if (oamRam) SDL_memset(oamRam, 0, 64 * 4);
-    if (vram)   SDL_memset(vram, 0, 4 * 1024);
+    // Initialize frame buffers with black
+    for (int i = 0; i < 2; i++) {
+        SDL_memset(frameBuffers[i], 0x00, sizeof(Uint8) * width * height * 4); // Fill with white (255, 255, 255, 255)
+    }
 }
 
 void NESPPU::reset() {
     SDL_Log("NESPPU: reset()...");
 
-    // 1. Control and Mask registers are forcefully cleared on warm reset
-    ppu_ctrl = 0x00;
-    ppu_mask = 0x00;
+    // Clears registers completely
+    PPUCTRL       = 0x00;     // $2000
+    PPUMASK       = 0x00;     // $2001
+    MASK_CLEAR(PPUSTATUS, ~FLAG_VBLANK);       // Clear all other bits
+    PPUSCROLL     = 0x00;     // $2005
+    PPUDATA       = 0x00;     // $2007
 
-    // 2. Clear V-Blank flag (Bit 7), Sprite 0 Hit (Bit 6), and Sprite Overflow (Bit 5).
-    // We mask with 0x1F to leave any remaining lower bits untouched.
-    ppu_status &= 0x1F;
-
-    // 3. Bring the scanning alignment back to the top of the display pipeline frame
+    // Initialize internal location coordinates
+    frameId = 0;
     cycles = 0;
     scanline = 0;
+    colour = 0x00;
+
+    // Wipe internal memory domains to ensure no residual data
+    SDL_memset(vram, 0x00, sizeof(vram));
+
+    // Initialize frame buffers with black
+    for (int i = 0; i < 2; i++) {
+        SDL_memset(frameBuffers[i], 0x00, sizeof(Uint8) * width * height * 4); // Fill with white (255, 255, 255, 255)
+    }
 }
 
 const Uint8 *NESPPU::getFrameBuffer() const {
-    return frameBuffers[(frameBufferActive + 1) % 2]; // Return the non-active buffer for rendering
+    return frameBuffers[(frameId + 1) % 2];     // Return the non-active buffer for rendering
 }
 
 Uint8 NESPPU::read(Uint16 address) {
@@ -101,23 +88,27 @@ Uint8 NESPPU::read(Uint16 address) {
     Uint16 regOffset = address % 8;
 
     switch (regOffset) {
-        case 2: { // $2002 PPUSTATUS
-            Uint8 temp = ppu_status;
+        case 2: {               // $2002 PPUSTATUS
+            SDL_Log("NESPPU: read PPUSTATUS = %02X", PPUSTATUS);
+            Uint8 temp = PPUSTATUS;
             // CRITICAL SIDE EFFECT: Reading PPUSTATUS clears bit 7 (V-Blank status flag)
             // and resets the internal PPU scroll/address latch flip-flop.
-            ppu_status &= ~0x80; 
+            MASK_CLEAR(PPUSTATUS, FLAG_VBLANK);
             return temp;
         }
-        case 7: { // $2007 PPUDATA
+        case 4: {               // $2004 OAMDATA
+            SDL_Log("NESPPU: read OAMDATA = %02X", OAMDATA);
+            return OAMDATA;
+        }
+        case 7: {               // $2007 PPUDATA
+            SDL_Log("NESPPU: read PPUDATA = %02X", PPUDATA);
             // Reading from PPUDATA retrieves bytes out of PPU VRAM.
             // TBD: Implement VRAM buffered read sequencing here later.
-            return 0x00;
+            return PPUDATA;
         }
-        default:
-            // Most other PPU registers ($2000, $2001, $2003, $2004, $2005, $2006) are write-only.
-            // Reading them typically returns an open-bus data state or 0.
-            return 0x00;
     }
+
+    return 0x00;
 }
 
 void NESPPU::write(Uint16 address, Uint8 value) {
@@ -125,97 +116,106 @@ void NESPPU::write(Uint16 address, Uint8 value) {
 
     switch (regOffset) {
         case 0: // $2000 PPUCTRL
-            ppu_ctrl = value;
+            SDL_Log("NESPPU: write PPUCTRL = %02X", value);
+            PPUCTRL = value;
             // If the CPU enables NMIs while the PPU is already in a V-Blank period,
             // an NMI is generated immediately.
-            if ((ppu_ctrl & 0x80) && (ppu_status & 0x80)) {
+            if (MASK_CHECK_SET(PPUCTRL, FLAG_NMI_ENABLE) && MASK_CHECK_SET(PPUSTATUS, FLAG_VBLANK)) {
                 emu->cpu->nmi_asserted = true;
             }
-            break;
-
+            return;
         case 1: // $2001 PPUMASK
-            ppu_mask = value;
-            break;
-
-        case 2: // $2002 PPUSTATUS (Hardware Read-Only, writes ignored)
-            break;
-
+            SDL_Log("NESPPU: write PPUMASK = %02X", value);
+            PPUMASK = value;
+            return;
+        case 3: // $2003 OAMADDR
+            SDL_Log("NESPPU: write OAMADDR = %02X", value);
+            OAMADDR = value;
+            return;
+        case 4: // $2004 OAMDATA
+            SDL_Log("NESPPU: write OAMDATA = %02X", value);
+            OAMDATA = value;
+            return;
         case 5: // $2005 PPUSCROLL
+            SDL_Log("NESPPU: write PPUSCROLL = %02X", value);
             // TBD: Feed scroll offsets into internal registers (X/Y latching)
+            PPUSCROLL = value;
             break;
-
         case 6: // $2006 PPUADDR
+            SDL_Log("NESPPU: write PPUADDR = %02X", value);
             // TBD: Sequence high byte then low byte to update the current VRAM pointer address
+            PPUADDR = value;
             break;
-
         case 7: // $2007 PPUDATA
+            SDL_Log("NESPPU: write PPUDATA = %02X", value);
             // TBD: Write value directly to PPU VRAM via the current internal PPUADDR register pointer, 
             // then automatically increment the register pointer by either 1 or 32 based on PPUCTRL.
+            PPUDATA = value;
             break;
-
         default:
             break;
     }
 }
 
+void NESPPU::writeDMA(Uint8 value) {
+    SDL_Log("NESPPU: write OAMDMA = %02X", value);
+    // TBD: writing on the OAM DMA
+    OAMDMA = value;
+}
+
 void NESPPU::step() {
-    // 1. Advance the fine internal clock components
-    cycles++; // Cycle acts as the current horizontal dot (0-340)
-    if (cycles >= 341) {
-        cycles = 0;
-        scanline++; // Progress to next vertical scanline (0-261)
-        
-        if (scanline >= 262) {
-            scanline = 0;
-            isRefreshRequested = true;
-            frameBufferActive = (frameBufferActive + 1) % 2;
+    switch (phase) {
+        case preRendering:
 
-            // Frame is completely done rendering!
+
+            break;
+        case visibleRendering:
+            if (cycles < 256) {
+                int index = (scanline * width + cycles) * 4;
+                frameBuffers[(frameId % 2)][index + 0] = colour;     // Red
+                frameBuffers[(frameId % 2)][index + 1] = colour;     // Green
+                frameBuffers[(frameId % 2)][index + 2] = colour;     // Blue
+                frameBuffers[(frameId % 2)][index + 3] = 0xFF;      // Alpha
+            }
+            break;
+        case postRendering:
+            break;
+        case verticalBlank:
+            break;
+    }
+
+    cycles++;
+    if (cycles == 1) {
+        if (scanline == 0) {
+            SDL_Log("NESPPU: Visible Rendering Phase");
+            phase = visibleRendering;
+        } else if (scanline == 240) {
+            SDL_Log("NESPPU: Post Rendering Phase");
+            phase = postRendering;
+        } else if (scanline == 241) {
+            colour = (colour + 1) % 256;                // DEBUG: uniform colour changing
+            MASK_SET(PPUSTATUS, FLAG_VBLANK);
+            if MASK_CHECK_SET(PPUCTRL, FLAG_NMI_ENABLE) {
+                emu->cpu->nmi_asserted = true;          // Signal NMI to NESCPU
+            }
+            emu->raiseEvent(NESEvent::VBLANK_START);    // Signal VBlank to NESEMU
+
+            SDL_Log("NESPPU: Vertical Blank Phase");
+            phase = verticalBlank;
+        } else if (scanline == 261) {
+            MASK_CLEAR(PPUSTATUS, FLAG_VBLANK);
+            frameId = (frameId + 1) % 2;
             emu->raiseEvent(NESEvent::FRAME_COMPLETE);
+
+            SDL_Log("NESPPU: Pre Rendering Phase");
+            phase = preRendering;
         }
     }
-
-    // 2. Check Scanline Boundaries for Interrupt Processing
-    if (scanline == 241 && cycles == 1) {
-        // Set the V-Blank Flag inside our status register representation (Bit 7)
-        ppu_status |= 0x80;
-
-        // Signal VBlank arrival autonomously
-        emu->raiseEvent(NESEvent::VBLANK_START);
-        
-        // If Bit 7 of PPUCTRL ($2000) is set, generate a hard hardware NMI signal!
-        if ((ppu_ctrl & 0x80) != 0) {
-            emu->cpu->nmi_asserted = true; 
-            SDL_Log("NESPPU: V-Blank reached on line 241. Triggering CPU NMI!");
-        }
-    }
-
-    if (scanline == 261 && cycles == 1) {
-        // Clear the V-Blank flag on the pre-render scanline preparation loop
-        ppu_status &= ~0x80;
-    }
-
-    // 3. Keep your existing procedural test pattern generation drawing safely tied to the grid:
-    if (scanline < height && cycles < width) {
-        int index = (scanline * width + cycles) * 4;
-        frameBuffers[frameBufferActive][index + 0] = color; // Red
-        frameBuffers[frameBufferActive][index + 1] = 0x00;  // Green
-        frameBuffers[frameBufferActive][index + 2] = color; // Blue
-        frameBuffers[frameBufferActive][index + 3] = 0xFF;  // Alpha
-    }
-
-    // Color shifting sequence loop wrapper 
-    dot++;
-    if (dot >= width) {
-        dot = 0;
-        line++;
-        if (line >= height) {
-            line = 0;
-            color = (color + 1) % 256;
+    if (cycles >= 342) {
+        scanline++;
+        cycles = 0;
+        if (scanline > 261) {
+            scanline = 0;
         }
     }
 }
-
-// void NESPPU::experimental() {
-//     if 
-// }

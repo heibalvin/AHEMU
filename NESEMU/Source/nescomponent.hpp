@@ -3,6 +3,14 @@
 
 #include <SDL3/SDL.h>
 
+// Macros for mask manipulation
+#define MASK_SET(var, mask)    ((var) |= (mask))
+#define MASK_CLEAR(var, mask)  ((var) &= ~(mask))
+#define MASK_TOGGLE(var, mask) ((var) ^= (mask))
+#define MASK_CHECK_SET(var, mask) (((var) & (mask)) == (mask))
+#define MASK_CHECK_CLEAR(var, mask) (((var) & (mask)) == 0)
+#define MASK_ASSIGN(var, mask, condition) ((var) = ((var) & ~(mask)) | ((condition) ? (mask) : 0))
+
 class NESEMU;
 
 class NESComponent {

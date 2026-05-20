@@ -63,14 +63,6 @@ void NESEMU::step() {
     // 3. Handle additional peripheral timing intervals (like APU or Mapper counters)
 }
 
-bool NESEMU::isRefreshRequested() const {
-    return ppu->isRefreshRequested;
-}
-
-void NESEMU::clearRefreshRequest() {
-    ppu->isRefreshRequested = false;
-}
-
 const Uint8 *NESEMU::getFrameBuffer() const {
     return ppu->getFrameBuffer();
 }
