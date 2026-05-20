@@ -22,6 +22,8 @@ public:
 
     const Uint8 *getFrameBuffer() const;
 
+    void ppuCtrlEvent(Uint8 value);
+
 private:
     friend class NESEMU;
     friend class NESBUS;
@@ -43,7 +45,9 @@ private:
     int frameId = 0;                            // Current frameId used for frameBuffers too.
     int cycles = 0;                             // Current cycle (dot) within the scanline
     int scanline = 0;                           // Current scanline (0-261)
+    
     Uint8 colour = 0x00;                        // DEBUG: uniform colour background
+
 
     // CPU-facing register tracking variables
     Uint8 PPUCTRL       = 0x00;     // $2000
@@ -51,8 +55,16 @@ private:
     Uint8 PPUSTATUS     = 0x00;     // $2002
     Uint8 OAMADDR       = 0x00;     // $2003
     Uint8 OAMDATA       = 0x00;     // $2004
+    
     Uint8 PPUSCROLL     = 0x00;     // $2005
+    Uint16 xScroll      = 0;
+    Uint16 yScroll      = 0;
+    int scrollLatch     = 0;
+
     Uint8 PPUADDR       = 0x00;     // $2006
+    Uint16 vramAddr     = 0x0000;
+    int vramLatch       = 0;
+
     Uint8 PPUDATA       = 0x00;     // $2007
     Uint8 OAMDMA        = 0x00;     // $4014
 

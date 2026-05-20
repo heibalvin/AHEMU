@@ -38,7 +38,7 @@ void SDLEMU::initSDL() {
         return;
     }
 
-    if (!SDL_CreateWindowAndRenderer(" ", 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+    if (!SDL_CreateWindowAndRenderer("NESEMU", 1024, 768, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "SDLinit: create window/renderer failed: %s", SDL_GetError());
         releaseSDL();
         return;

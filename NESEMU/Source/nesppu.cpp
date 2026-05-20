@@ -89,7 +89,7 @@ Uint8 NESPPU::read(Uint16 address) {
 
     switch (regOffset) {
         case 2: {               // $2002 PPUSTATUS
-            SDL_Log("NESPPU: read PPUSTATUS = %02X", PPUSTATUS);
+            // SDL_Log("NESPPU: read PPUSTATUS = %02X", PPUSTATUS);
             Uint8 temp = PPUSTATUS;
             // CRITICAL SIDE EFFECT: Reading PPUSTATUS clears bit 7 (V-Blank status flag)
             // and resets the internal PPU scroll/address latch flip-flop.
@@ -97,11 +97,11 @@ Uint8 NESPPU::read(Uint16 address) {
             return temp;
         }
         case 4: {               // $2004 OAMDATA
-            SDL_Log("NESPPU: read OAMDATA = %02X", OAMDATA);
+            // SDL_Log("NESPPU: read OAMDATA = %02X", OAMDATA);
             return OAMDATA;
         }
         case 7: {               // $2007 PPUDATA
-            SDL_Log("NESPPU: read PPUDATA = %02X", PPUDATA);
+            // SDL_Log("NESPPU: read PPUDATA = %02X", PPUDATA);
             // Reading from PPUDATA retrieves bytes out of PPU VRAM.
             // TBD: Implement VRAM buffered read sequencing here later.
             return PPUDATA;
@@ -111,12 +111,34 @@ Uint8 NESPPU::read(Uint16 address) {
     return 0x00;
 }
 
+void NESPPU::ppuCtrlEvent(Uint8 value) {
+    if ((value & 0x80) != (PPUCTRL & 0x80)) {
+        SDL_Log("NESPPU: PPUCTRL NMI ENABLE flag %d", (PPUCTRL & 0x80) >> 7);
+    }
+    if ((value & 0x20) != (PPUCTRL & 0x20)) {
+        SDL_Log("NESPPU: PPUCTRL Sprite Size %s", (PPUCTRL & 0x20) == 0x20 ? "8x16" : "8x8");
+    }
+    if ((value & 0x10) != (PPUCTRL & 0x10)) {
+        SDL_Log("NESPPU: PPUCTRL Background pattern table address %04X", (PPUCTRL & 0x10) == 0x10 ? 0x1000 : 0x0000);
+    }
+    if ((value & 0x08) != (PPUCTRL & 0x08)) {
+        SDL_Log("NESPPU: PPUCTRL Sprite pattern table address %04X", (PPUCTRL & 0x08) == 0x08 ? 0x0000 : 0x1000);
+    }
+    if ((value & 0x03) != (PPUCTRL & 0x03)) {
+        SDL_Log("NESPPU: PPUCTRL Base name table address %04X", Uint16(PPUCTRL & 0x03) * 0x0400 + 0x2000);
+    }
+    if ((value & 0x04) != (PPUCTRL & 0x04)) {
+        SDL_Log("NESPPU: PPUCTRL VRAM increment by %d", (PPUCTRL & 0x04) == 0x04 ? 32 : 1);
+    }
+}
+
 void NESPPU::write(Uint16 address, Uint8 value) {
     Uint16 regOffset = address % 8;
 
     switch (regOffset) {
         case 0: // $2000 PPUCTRL
-            SDL_Log("NESPPU: write PPUCTRL = %02X", value);
+            // SDL_Log("NESPPU: write PPUCTRL = %02X", value);
+            if (value != PPUCTRL)  ppuCtrlEvent(value);
             PPUCTRL = value;
             // If the CPU enables NMIs while the PPU is already in a V-Blank period,
             // an NMI is generated immediately.
@@ -129,28 +151,52 @@ void NESPPU::write(Uint16 address, Uint8 value) {
             PPUMASK = value;
             return;
         case 3: // $2003 OAMADDR
-            SDL_Log("NESPPU: write OAMADDR = %02X", value);
+            SDL_Log("NESPPU: OAMADDR write index = %02X", value);
             OAMADDR = value;
             return;
         case 4: // $2004 OAMDATA
-            SDL_Log("NESPPU: write OAMDATA = %02X", value);
+            SDL_Log("NESPPU: OAMDATA write oam[%20X] = %02X", OAMADDR, value);
             OAMDATA = value;
+            oam[OAMADDR] = value;
+            OAMADDR += 1;
             return;
         case 5: // $2005 PPUSCROLL
-            SDL_Log("NESPPU: write PPUSCROLL = %02X", value);
+            // SDL_Log("NESPPU: write PPUSCROLL = %02X", value);
             // TBD: Feed scroll offsets into internal registers (X/Y latching)
             PPUSCROLL = value;
+            if ((scrollLatch % 2) == 0) {
+                xScroll = Uint16(PPUCTRL & 0x01) << 8 | Uint16(PPUSCROLL);
+                SDL_Log("NESPPU: PPUSCROLL set X scroll  = %d", xScroll);
+            }  else {
+                yScroll = Uint16(PPUCTRL & 0x02) << 8 | Uint16(PPUSCROLL);    
+                SDL_Log("NESPPU: PPUSCROLL set Y scroll  = %d", yScroll);
+            }
+            scrollLatch = (scrollLatch + 1) % 2;
+            
             break;
         case 6: // $2006 PPUADDR
-            SDL_Log("NESPPU: write PPUADDR = %02X", value);
+            // SDL_Log("NESPPU: write PPUADDR = %02X", value);
             // TBD: Sequence high byte then low byte to update the current VRAM pointer address
             PPUADDR = value;
+            if (vramLatch == 0) {
+                vramAddr = (vramAddr & 0x00FF) | (Uint16(value) << 8);
+            } else {
+                vramAddr = (vramAddr & 0xFF00) | Uint16(value);
+                SDL_Log("NESPPU: PPUADDR set VRAM ADDR = %04X", vramAddr);
+            }
+            vramLatch = (vramLatch + 1) % 2;
             break;
         case 7: // $2007 PPUDATA
-            SDL_Log("NESPPU: write PPUDATA = %02X", value);
+            // SDL_Log("NESPPU: write PPUDATA = %02X", value);
             // TBD: Write value directly to PPU VRAM via the current internal PPUADDR register pointer, 
             // then automatically increment the register pointer by either 1 or 32 based on PPUCTRL.
             PPUDATA = value;
+            vram[vramAddr] = value;
+            if ((PPUCTRL & 0x04) == 0x00) {
+                vramAddr += 1;
+            } else {
+                vramAddr += 32;
+            }
             break;
         default:
             break;
@@ -159,7 +205,7 @@ void NESPPU::write(Uint16 address, Uint8 value) {
 
 void NESPPU::writeDMA(Uint8 value) {
     SDL_Log("NESPPU: write OAMDMA = %02X", value);
-    // TBD: writing on the OAM DMA
+    // TBD: transfer of 256 bytes from NESCPU not implemented
     OAMDMA = value;
 }
 
@@ -211,6 +257,11 @@ void NESPPU::step() {
             phase = preRendering;
         }
     }
+
+    if (cycles >= 257 & cycles <= 320) {
+        MASK_SET(OAMADDR, 0x00);
+    }
+
     if (cycles >= 342) {
         scanline++;
         cycles = 0;
