@@ -58,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: all
-	$(TARGET) 1-chip8-logo.ch8
+	$(TARGET) 6-keypad.ch8
 
 clean:
 	rm -rf ./Build

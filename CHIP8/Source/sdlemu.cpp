@@ -59,7 +59,7 @@ bool SDLEMU::init() {
 
     resolvePlatformPaths();
 
-    window = SDL_CreateWindow("CHIP-8 Virtual Framework Core", 64 * 12, 32 * 12, 0);
+    window = SDL_CreateWindow("CH8EMU", 64 * 10, 32 * 10, 0);
     if (!window) return false;
 
     renderer = SDL_CreateRenderer(window, nullptr);
@@ -67,6 +67,8 @@ bool SDLEMU::init() {
 
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 64, 32);
     if (!texture) return false;
+
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 
     initAudioSubsystem();
 

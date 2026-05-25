@@ -6,29 +6,13 @@ private:
     bool buzzerActive = false;
 
 public:
-    CH8APU(CH8EMU* parentEmu) : CH8COM(parentEmu) {}
+    CH8APU(CH8EMU* parentEmu);
+    ~CH8APU() = default;
 
-    void powerOn() override {
-        buzzerActive = false;
-    }
-
-    void powerOff() override {
-        buzzerActive = false;
-    }
-
-    void reset() override {
-        buzzerActive = false;
-    }
-
-    void step() override {
-        buzzerActive = true;
-    }
-
-    void stop() {
-        buzzerActive = false;
-    }
-
-    bool isBuzzerActive() const {
-        return buzzerActive;
-    }
+    void powerOn() override;
+    void powerOff() override;
+    void reset() override;
+    void step() override;
+    void stop();
+    bool isBuzzerActive() const;
 };
