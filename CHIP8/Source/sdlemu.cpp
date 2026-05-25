@@ -172,13 +172,21 @@ void SDLEMU::run(const char* romName) {
     const char* searchPaths[] = { resourcePath, "./Resources/", "./" };
     void* romBuffer = nullptr;
     size_t fileSize = 0;
-    char* fullRomLocationPath = nullptr;
 
-    for (int i = 0; i < 3 && !romBuffer; ++i) {
+    for (int i = 0; i < 3; ++i) {
+        char* fullRomLocationPath = nullptr;
+        // Check paths carefully
+        if (searchPaths[i] == nullptr) continue;
+
         SDL_asprintf(&fullRomLocationPath, "%s%s", searchPaths[i], romName);
-        romBuffer = SDL_LoadFile(fullRomLocationPath, &fileSize);
-        if (fullRomLocationPath) SDL_free(fullRomLocationPath);
-        fullRomLocationPath = nullptr;
+        if (fullRomLocationPath) {
+            romBuffer = SDL_LoadFile(fullRomLocationPath, &fileSize);
+            SDL_free(fullRomLocationPath); // Free immediately after load check
+        }
+        
+        if (romBuffer) {
+            break; // Successfully found and loaded file
+        }
     }
 
     if (!romBuffer) {
@@ -196,6 +204,7 @@ void SDLEMU::run(const char* romName) {
     Uint64 pastPerformanceCounterTick = SDL_GetPerformanceCounter();
     const double performanceCounterFrequency = static_cast<double>(SDL_GetPerformanceFrequency());
 
+    // Main Engine Lifecycle loop
     while (isRunning) {
         Uint64 currentTickCount = SDL_GetPerformanceCounter();
         double elapsedDeltaTimeSeconds = static_cast<double>(currentTickCount - pastPerformanceCounterTick) / performanceCounterFrequency;

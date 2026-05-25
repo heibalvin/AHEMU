@@ -58,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: all
-	$(TARGET) 7-beep.ch8
+	$(TARGET) 5-quirks.ch8
 
 clean:
 	rm -rf ./Build
