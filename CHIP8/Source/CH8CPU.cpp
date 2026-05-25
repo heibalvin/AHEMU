@@ -48,7 +48,16 @@ bool CH8CPU::decode() {
             return true;
         }
     }
-    matchedInstruction = { "UNKNOWN", 0x0000, 0x0000, &CH8CPU::opInvalid, 2, 1 };
+    
+    // SAFE FALLBACK: Explicitly define fields cleanly without direct compound literal assignments 
+    // that confuse release-mode stack alignment checking.
+    matchedInstruction.mnemonic = "UNKNOWN";
+    matchedInstruction.mask = 0x0000;
+    matchedInstruction.id = 0x0000;
+    matchedInstruction.handler = &CH8CPU::opInvalid;
+    matchedInstruction.length = 2;
+    matchedInstruction.cycles = 1;
+
     return false;
 }
 
@@ -77,10 +86,18 @@ void CH8CPU::opArithmetic(Uint16 op) {
     Uint8 y = (op & 0x00F0) >> 4;
     switch (op & 0x000F) {
     case 0x0: V[x] = V[y]; break;
-    case 0x1: V[x] |= V[y]; break;
-    case 0x2: V[x] &= V[y]; break;
-    case 0x3: V[x] ^= V[y]; break;
-    
+    case 0x1:
+        V[x] |= V[y]; 
+        V[0xF] = 0; // Force-clear VF flag for original CHIP-8 behavior
+        break;
+    case 0x2:
+        V[x] &= V[y]; 
+        V[0xF] = 0; // Force-clear VF flag for original CHIP-8 behavior
+        break;
+    case 0x3:
+        V[x] ^= V[y]; 
+        V[0xF] = 0; // Force-clear VF flag for original CHIP-8 behavior
+        break;
     case 0x4: { // ADD Vx, Vy
         Uint16 sum = V[x] + V[y];
         V[x] = sum & 0xFF;
@@ -169,8 +186,20 @@ void CH8CPU::opTimersAndMemory(Uint16 op) {
         }
         case 0x29: I = V[x] * 5; break;
         case 0x33: writeBus(I, V[x]/100); writeBus(I+1, (V[x]/10)%10); writeBus(I+2, V[x]%10); break;
-        case 0x55: for (int i = 0; i <= x; ++i) writeBus(I + i, V[i]); break;
-        case 0x65: for (int i = 0; i <= x; ++i) V[i] = readBus(I + i); break;
+        case 0x55: 
+            for (int i = 0; i <= x; ++i) {
+                writeBus(I + i, V[i]);
+            }
+            // Explicitly step I forward by the total number of registers checked
+            I += x + 1; 
+            break;
+        case 0x65: 
+            for (int i = 0; i <= x; ++i) {
+                V[i] = readBus(I + i);
+            }
+            // Explicitly step I forward by the total number of registers checked
+            I += x + 1; 
+            break;
     }
 }
 
