@@ -1,5 +1,5 @@
 #include "CH8CPU.hpp"
-#include "CH8EMU.hpp" // Fully included to resolve cross-subsystem dependencies
+#include "CH8EMU.hpp" 
 
 CH8CPU::CH8CPU(CH8EMU* parentEmu) : CH8COM(parentEmu) {
     buildOpcodesTable();
@@ -48,24 +48,19 @@ bool CH8CPU::decode() {
             return true;
         }
     }
-    // Fallback descriptor string constant allocation
     matchedInstruction = { "UNKNOWN", 0x0000, 0x0000, &CH8CPU::opInvalid, 2, 1 };
     return false;
 }
 
 void CH8CPU::execute() {
-    // Single-line macro injects zero-overhead telemetry logging
     CH8_DBG_EXEC(SDL_Log("[CPU Trace] PC: 0x%04X | Opcode: 0x%04X | Mnemonic: %s", PC - 2, currentOpcode, matchedInstruction.mnemonic));
-    
     (this->*matchedInstruction.handler)(currentOpcode);
 }
 
-// --- Debugger Inspection Accessors ---
 const CH8OPC* CH8CPU::getOpcodeTableInstance() const { return opcodesTable; }
 int           CH8CPU::getOpcodeTableSize() const    { return TABLE_SIZE; }
 CH8OPC        CH8CPU::getCurrentDebugFrame() const  { return matchedInstruction; }
 
-// --- Hardware Opcode Core Logic Sets ───
 void CH8CPU::opCLS(Uint16 op)  { emu->ppu.clearScreen(); }
 void CH8CPU::opRET(Uint16 op)  { if (SP > 0) { SP--; PC = STACK[SP]; } }
 void CH8CPU::opJP(Uint16 op)   { PC = (op & 0x0FFF); }
@@ -81,22 +76,60 @@ void CH8CPU::opArithmetic(Uint16 op) {
     Uint8 x = (op & 0x0F00) >> 8;
     Uint8 y = (op & 0x00F0) >> 4;
     switch (op & 0x000F) {
-        case 0x0: V[x] = V[y]; break;
-        case 0x1: V[x] |= V[y]; break;
-        case 0x2: V[x] &= V[y]; break;
-        case 0x3: V[x] ^= V[y]; break;
-        case 0x4: { Uint16 s = V[x] + V[y]; V[0xF] = (s > 255) ? 1 : 0; V[x] = s & 0xFF; break; }
-        case 0x5: V[0xF] = (V[x] >= V[y]) ? 1 : 0; V[x] -= V[y]; break;
-        case 0x6: V[0xF] = V[x] & 0x1; V[x] >>= 1; break;
-        case 0x7: V[0xF] = (V[y] >= V[x]) ? 1 : 0; V[x] = V[y] - V[x]; break;
-        case 0xE: V[0xF] = (V[x] & 0x80) >> 7; V[x] <<= 1; break;
+    case 0x0: V[x] = V[y]; break;
+    case 0x1: V[x] |= V[y]; break;
+    case 0x2: V[x] &= V[y]; break;
+    case 0x3: V[x] ^= V[y]; break;
+    
+    case 0x4: { // ADD Vx, Vy
+        Uint16 sum = V[x] + V[y];
+        V[x] = sum & 0xFF;
+        V[0xF] = (sum > 255) ? 1 : 0; // Set VF last
+        break;
     }
+    case 0x5: { // SUB Vx, Vy (Vx = Vx - Vy)
+        Uint8 vx_val = V[x];
+        Uint8 vy_val = V[y];
+        Uint8 flag = (vx_val >= vy_val) ? 1 : 0;
+        V[x] = vx_val - vy_val;
+        V[0xF] = flag; // Set VF last
+        break;
+    }
+    case 0x6: { // SHR Vx {, Vy} (Quirk: copy Vy first)
+        V[x] = V[y]; 
+        Uint8 flag = V[x] & 0x1;
+        V[x] >>= 1;
+        V[0xF] = flag; // Set VF last
+        break;
+    }
+    case 0x7: { // SUBN Vx, Vy (Vx = Vy - Vx)
+        Uint8 vx_val = V[x];
+        Uint8 vy_val = V[y];
+        Uint8 flag = (vy_val >= vx_val) ? 1 : 0;
+        V[x] = vy_val - vx_val;
+        V[0xF] = flag; // Set VF last
+        break;
+    }
+    case 0xE: { // SHL Vx {, Vy} (Quirk: copy Vy first)
+        V[x] = V[y];
+        Uint8 flag = (V[x] & 0x80) >> 7;
+        V[x] <<= 1;
+        V[0xF] = flag; // Set VF last
+        break;
+    }
+}
 }
 
 void CH8CPU::opSNEReg(Uint16 op) { if (V[(op & 0x0F00) >> 8] != V[(op & 0x00F0) >> 4]) PC += 2; }
 void CH8CPU::opLDI(Uint16 op)   { I = (op & 0x0FFF); }
 void CH8CPU::opJPV0(Uint16 op) { PC = (op & 0x0FFF) + V[0]; }
-void CH8CPU::opRND(Uint16 op)  { V[(op & 0x0F00) >> 8] = (0x42 & (op & 0x00FF)); }
+
+void CH8CPU::opRND(Uint16 op)  { 
+    Uint8 x = (op & 0x0F00) >> 8;
+    Uint8 mask = (op & 0x00FF);
+    Uint8 randomByte = static_cast<Uint8>(SDL_GetPerformanceCounter() & 0xFF);
+    V[x] = randomByte & mask;
+}
 
 void CH8CPU::opDRW(Uint16 op) {
     Uint8 x = (op & 0x0F00) >> 8;
@@ -117,7 +150,14 @@ void CH8CPU::opTimersAndMemory(Uint16 op) {
     switch (op & 0x00FF) {
         case 0x07: V[x] = DELAY_TIMER; break;
         case 0x15: DELAY_TIMER = V[x]; break;
-        case 0x18: SOUND_TIMER = V[x]; break;
+        case 0x18: 
+            SOUND_TIMER = V[x]; 
+            if (SOUND_TIMER > 0) {
+                emu->apu.step(); 
+            } else {
+                emu->apu.stop(); 
+            }
+            break;
         case 0x1E: I += V[x]; break;
         case 0x0A: {
             bool press = false;
@@ -135,12 +175,9 @@ void CH8CPU::opTimersAndMemory(Uint16 op) {
 }
 
 void CH8CPU::opInvalid(Uint16 op) {
-    SDL_Log("Processor Fault: Encounted structural invalid execution token pattern: 0x%04X", op);
+    SDL_Log("Processor Exception: Illegal operation instruction bit pattern: 0x%04X", op);
 }
 
-/**
- * Maps out the instruction mask matching layouts inside the lookup index array.
- */
 void CH8CPU::buildOpcodesTable() {
     opcodesTable[0]  = { "CLS",        0xFFFF, 0x00E0, &CH8CPU::opCLS,             2, 1 };
     opcodesTable[1]  = { "RET",        0xFFFF, 0x00EE, &CH8CPU::opRET,             2, 1 };

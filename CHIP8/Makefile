@@ -58,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: all
-	$(TARGET) 6-keypad.ch8
+	$(TARGET) 7-beep.ch8
 
 clean:
 	rm -rf ./Build

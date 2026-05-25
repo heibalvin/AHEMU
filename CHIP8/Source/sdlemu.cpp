@@ -7,7 +7,7 @@ SDLEMU::SDLEMU() :
     isRunning(false),
     projectPath(nullptr),
     resourcePath(nullptr),
-    audioDevice(0),
+    audioStream(nullptr),       // Initialized securely as a stream pointer type
     audioDevicePlaying(false)
 {}
 
@@ -15,10 +15,6 @@ SDLEMU::~SDLEMU() {
     release();
 }
 
-/**
- * Evaluates the execution environment using SDL3 string utility pipelines
- * to safely support vanilla macOS directories and Xcode app bundles.
- */
 void SDLEMU::resolvePlatformPaths() {
     const char* basePathStr = SDL_GetBasePath();
     if (!basePathStr) {
@@ -39,16 +35,17 @@ void SDLEMU::resolvePlatformPaths() {
     SDL_free((char *)basePathStr); 
 }
 
-/**
- * Initializes physical audio device descriptors and loops a standard square wave beep stream.
- */
 void SDLEMU::initAudioSubsystem() {
     SDL_AudioSpec spec;
-    spec.format   = SDL_AUDIO_S16LE;
-    spec.channels = 1;
-    spec.freq     = 44100;
+    spec.format   = SDL_AUDIO_S16LE; // Signed 16-bit Little Endian
+    spec.channels = 1;               // Mono
+    spec.freq     = 44100;           // 44.1 kHz
 
-    audioDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
+    // SDL3 Standard: Open the stream directly along with the hardware output
+    audioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, nullptr, nullptr);
+    if (!audioStream) {
+        SDL_Log("SDL Audio Stream Initialization Failure: %s", SDL_GetError());
+    }
 }
 
 bool SDLEMU::init() {
@@ -119,38 +116,51 @@ void SDLEMU::processInput() {
     }
 }
 
-/**
- * ── Stage A: Core Synchronization Update ──
- * Directs processing time slicing increments into the hardware emulator backend.
- */
 void SDLEMU::update(double deltaTime) {
     emu.update(deltaTime);
 }
 
-/**
- * ── Stage B: Platform Audio Control ──
- * Checks the abstract state in the APU to adjust physical hardware playback.
- */
 void SDLEMU::audio() {
-    if (audioDevice == 0) return;
+    if (!audioStream) return;
 
     if (emu.apu.isBuzzerActive()) {
+        // Maintain roughly 2 frames of audio ahead to avoid cracking or latency
+        if (SDL_GetAudioStreamQueued(audioStream) < 4096) {
+            const int sampleRate = 44100;
+            const int targetFrequency = 440; // Standard 440Hz clean tone
+            const int samplesPerHalfWave = sampleRate / (targetFrequency * 2);
+            const int16_t volumeAmplitude = 3000; 
+            
+            static int sampleIndex = 0;
+            int16_t sampleBuffer[512];
+
+            for (int i = 0; i < 512; ++i) {
+                if ((sampleIndex / samplesPerHalfWave) % 2 == 0) {
+                    sampleBuffer[i] = volumeAmplitude;
+                } else {
+                    sampleBuffer[i] = -volumeAmplitude;
+                }
+                sampleIndex++;
+            }
+            sampleIndex %= (sampleRate / targetFrequency);
+
+            // Queue synthesized samples to the SDL3 audio device stream
+            SDL_PutAudioStreamData(audioStream, sampleBuffer, sizeof(sampleBuffer));
+        }
+
         if (!audioDevicePlaying) {
-            SDL_ResumeAudioDevice(audioDevice);
+            SDL_ResumeAudioStreamDevice(audioStream);
             audioDevicePlaying = true;
         }
     } else {
         if (audioDevicePlaying) {
-            SDL_PauseAudioDevice(audioDevice);
+            SDL_PauseAudioStreamDevice(audioStream);
+            SDL_ClearAudioStream(audioStream); // Flush immediate trailing audio samples
             audioDevicePlaying = false;
         }
     }
 }
 
-/**
- * ── Stage C: Graphics Presentation ──
- * Locks the backbuffer and uploads textures directly into the GPU pipeline frame.
- */
 void SDLEMU::render() {
     SDL_RenderClear(renderer);
     SDL_UpdateTexture(texture, nullptr, emu.ppu.frameBuffer, 64 * sizeof(Uint32));
@@ -186,7 +196,6 @@ void SDLEMU::run(const char* romName) {
     Uint64 pastPerformanceCounterTick = SDL_GetPerformanceCounter();
     const double performanceCounterFrequency = static_cast<double>(SDL_GetPerformanceFrequency());
 
-    // --- Master Fixed Pipeline Loop ---
     while (isRunning) {
         Uint64 currentTickCount = SDL_GetPerformanceCounter();
         double elapsedDeltaTimeSeconds = static_cast<double>(currentTickCount - pastPerformanceCounterTick) / performanceCounterFrequency;
@@ -204,9 +213,9 @@ void SDLEMU::run(const char* romName) {
 void SDLEMU::release() {
     emu.powerOff();
 
-    if (audioDevice > 0) {
-        SDL_CloseAudioDevice(audioDevice);
-        audioDevice = 0;
+    if (audioStream) {
+        SDL_DestroyAudioStream(audioStream);
+        audioStream = nullptr;
     }
     audioDevicePlaying = false;
 

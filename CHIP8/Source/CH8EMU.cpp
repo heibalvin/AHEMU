@@ -1,18 +1,14 @@
 #include "CH8EMU.hpp"
 
-// ============================================================================
-// CH8EMU HARDWARE INSTANTIATION & LIFECYCLE ROUTINES
-// ============================================================================
-
 CH8EMU::CH8EMU() : 
-    CH8COM(nullptr), // Master core matrix holds no parent pointer context
+    CH8COM(nullptr),
     bus(this), 
     cpu(this), 
     ppu(this), 
     con(this), 
     apu(this),
     dsk(this)
-    CH8_DBG_INIT(dbg(this)) // Injection macro updates initialization signature lists
+    CH8_DBG_INIT(dbg(this))
 {
     cpuAccumulator   = 0.0;
     timerAccumulator = 0.0;
@@ -25,7 +21,7 @@ void CH8EMU::powerOn() {
     apu.powerOn();
     dsk.powerOn();
     CH8_DBG_EXEC(dbg.powerOn());
-    cpu.powerOn(); // CPU wakes up last to process safe structural entry spaces
+    cpu.powerOn();
 
     cpuAccumulator   = 0.0;
     timerAccumulator = 0.0;
@@ -55,30 +51,22 @@ void CH8EMU::step() {
     cpu.step();
 }
 
-// ============================================================================
-// SYNCHRONIZED CENTRAL CLOCK ENGINE PROCESSING LOOPS
-// ============================================================================
-
 void CH8EMU::update(double deltaTime) {
     cpuAccumulator   += deltaTime;
     timerAccumulator += deltaTime;
 
-    // 1. Process Virtual CPU Instruction Pipeline Steps
     while (cpuAccumulator >= CPU_PERIOD) {
         bool proceed = true;
-        
-        // Single-line macro intercepts active instructions smoothly
         CH8_DBG_EXEC(proceed = dbg.checkLifecycle(cpu.PC));
         
         if (proceed) {
             step();
             cpuAccumulator -= CPU_PERIOD;
         } else {
-            break; // Breakpoint encountered; freeze clock loops instantly
+            break; 
         }
     }
 
-    // 2. Process Independent Decoupled 60Hz Decrement Hardware Timers
     while (timerAccumulator >= TIMER_PERIOD) {
         if (cpu.DELAY_TIMER > 0) {
             cpu.DELAY_TIMER--;
@@ -86,9 +74,9 @@ void CH8EMU::update(double deltaTime) {
         
         if (cpu.SOUND_TIMER > 0) {
             cpu.SOUND_TIMER--;
-            apu.step(); // Keeps internal headless audio active
-        } else {
-            apu.stop(); // Cut current channel playback paths instantly
+            if (cpu.SOUND_TIMER == 0) {
+                apu.stop(); // Sets buzzerActive to false
+            }
         }
         
         timerAccumulator -= TIMER_PERIOD;
@@ -100,22 +88,17 @@ bool CH8EMU::injectROM(const Uint8* data, size_t size) {
     const Uint16 maxAvailableMemory = 4096;
 
     if (size > (maxAvailableMemory - programStartOffset)) {
-        return false; // Payload constraints violation layout catch
+        return false;
     }
 
     bus.clearRAM();
     dsk.loadROM((void*)data, size);
     
-    // Low-level memory block array replication pass
     SDL_memcpy(&bus.RAM[programStartOffset], dsk.ROM_DATA, dsk.ROM_SIZE);
     
-    cpu.reset(); // Snap registers and program counter positions to baseline
+    cpu.reset();
     return true;
 }
-
-// ============================================================================
-// CENTRALIZED DECENTRALIZED BUS PIPELINE ROUTERS
-// ============================================================================
 
 Uint8 CH8COM::readBus(Uint16 address) const {
     return emu->bus.read(address);

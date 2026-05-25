@@ -17,9 +17,9 @@ private:
     char* projectPath;
     char* resourcePath;
 
-    // Unified Audio Device Handles
-    SDL_AudioDeviceID audioDevice;
-    bool              audioDevicePlaying;
+    // Change these fields inside your SDLEMU class definition:
+    SDL_AudioStream* audioStream;  // Replaces SDL_AudioDeviceID audioDevice;
+    bool audioDevicePlaying;
 
 public:
     SDLEMU();
