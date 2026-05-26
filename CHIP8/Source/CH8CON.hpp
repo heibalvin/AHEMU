@@ -1,19 +1,35 @@
-#pragma once
+#ifndef CH8CON_HPP
+#define CH8CON_HPP
+
 #include <SDL3/SDL.h>
 #include "CH8COM.hpp"
 
+class CH8EMU; // Forward declaration of parent container
+
 class CH8CON : public CH8COM {
 public:
-    Uint8 KEYS[16];
-
     CH8CON(CH8EMU* parentEmu);
-    ~CH8CON() = default;
+    virtual ~CH8CON() = default;
 
-    void powerOn() override;
-    void powerOff() override;
-    void reset() override;
+    // Implementation of CH8COM abstract hardware interface overrides
+    virtual void powerOn() override;
+    virtual void powerOff() override;
+    virtual void reset() override;
 
-    void clearKeys();
-    Uint8 isKeyPressed(Uint8 keyIndex) const;
-    void setKeyState(Uint8 keyIndex, Uint8 isPressed);
+    // Standard keypad hardware operations
+    void setKeyState(Uint8 keyIndex, Uint8 state);
+    bool isKeyPressed(Uint8 keyIndex) const;
+
+    // FX0A Key release tracking subsystem latch
+    void lockKeyWait(Uint8 keyIndex);
+    void clearKeyWait();
+    bool isCurrentlyWaiting() const;
+    int getLatchedKey() const;
+
+private:
+    Uint8 keysState[16];      // 1 = Pressed, 0 = Released
+    bool isWaitingForKey;     // Active flag during FX0A hardware hold
+    int latchedKeyIndex;      // Index of locked active scanner key loop
 };
+
+#endif // CH8CON_HPP

@@ -3,29 +3,23 @@
 #include "CH8COM.hpp"
 
 class CH8DSK : public CH8COM {
-public:
-    // Raw binary buffer allocations mirroring original media sectors
-    Uint8* ROM_DATA;
-    size_t ROM_SIZE;
+private:
+    Uint8* romStorage;
+    size_t romStorageSize;
 
 public:
     CH8DSK(CH8EMU* parentEmu);
-    virtual ~CH8DSK();
+    ~CH8DSK();
 
-    // --- Core Component Lifecycle Protocol Contracts ---
-    void powerOn() override;
+    void powerOn()  override;
     void powerOff() override;
-    void reset() override;
+    void reset()    override;
 
-    /**
-     * Allocates standard system memory sectors and copies raw payload configurations.
-     * @param data Pointer to the source binary segment payload buffer block.
-     * @param size Total length in bytes of the target application payload data.
-     */
-    bool loadROM(const void* data, size_t size);
+    // Persistently clones incoming data using clean, low-dependency memory blocks
+    bool insertRom(const Uint8* datas, size_t size);
 
-    /**
-     * Explicit clean routine to flush storage blocks and clear memory leaking.
-     */
-    void clearStorage();
+    // Hardware alignment accessor lines
+    const Uint8* getRomData() const { return romStorage; }
+    size_t       getRomSize() const { return romStorageSize; }
+    bool         hasRom()     const { return (romStorage != nullptr && romStorageSize > 0); }
 };

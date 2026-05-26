@@ -1,16 +1,16 @@
 #pragma once
 #include <SDL3/SDL.h>
-#include "CH8COM.hpp"
 #include "CH8BUS.hpp"
 #include "CH8CPU.hpp"
 #include "CH8PPU.hpp"
 #include "CH8CON.hpp"
 #include "CH8APU.hpp"
 #include "CH8DSK.hpp"
+#include "CH8COM.hpp"
+
 
 class CH8EMU : public CH8COM {
 public:
-    // --- Central Subsystem Core Matrix ---
     CH8BUS bus;
     CH8CPU cpu;
     CH8PPU ppu;
@@ -19,21 +19,41 @@ public:
     CH8DSK dsk;
 
 private:
-    double cpuAccumulator;
-    double timerAccumulator;
+    double fpsTarget;
+    double upsTarget;
 
-    const double CPU_PERIOD   = 1.0 / 500.0; // 500Hz Instruction ticking rate
-    const double TIMER_PERIOD = 1.0 / 60.0;  // 60Hz Hardware countdown refresh line
+    double frameAccumulator;
+    double updateAccumulator;
+    double hardwareTimerAccumulator;
+    double profileTimer;
+
+    int fpsCount;
+    int upsCount;
+    int fpsCalculated;
+    int upsCalculated;
+
+    bool frameReadyFlag;
 
 public:
     CH8EMU();
-    virtual ~CH8EMU() = default;
+    ~CH8EMU() = default;
 
-    void powerOn() override;
-    void powerOff() override;
-    void reset() override;
-    void step() override;
-
+    void powerOn();
+    void powerOff();
+    void reset();
+    void step();
     void update(double deltaTime);
-    bool insertRom(const Uint8* data, size_t size);
+
+    // Dynamic interface pass-through straight to low-dependency DSK
+    bool insertRom(const Uint8* datas, size_t size) { return dsk.insertRom(datas, size); }
+
+    void setFpsTarget(double target) { fpsTarget = target; }
+    void setUpsTarget(double target) { upsTarget = target; }
+    double getFpsTarget() const { return fpsTarget; }
+    double getUpsTarget() const { return upsTarget; }
+    int getFpsCalculated() const { return fpsCalculated; }
+    int getUpsCalculated() const { return upsCalculated; }
+
+    bool isFrameReady() const { return frameReadyFlag; }
+    void clearFrameReadyFlag() { frameReadyFlag = false; }
 };

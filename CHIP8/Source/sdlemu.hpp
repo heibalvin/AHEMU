@@ -19,10 +19,6 @@ private:
     SDL_AudioStream* audioStream;  
     bool audioDevicePlaying;
 
-    // Cache the cartridge buffer tracking between insertion and power delivery
-    Uint8* cartridgeBuffer;
-    size_t cartridgeSize;
-
 public:
     SDLEMU();   // Constructor: Maps SDLinit() only
     ~SDLEMU();  // Destructor: Maps SDLrelease() only

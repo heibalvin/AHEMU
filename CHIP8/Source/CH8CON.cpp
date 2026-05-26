@@ -13,19 +13,38 @@ void CH8CON::powerOff() {
 }
 
 void CH8CON::reset() {
-    clearKeys();
+    SDL_memset(keysState, 0, sizeof(keysState));
+    isWaitingForKey = false;
+    latchedKeyIndex = -1;
 }
 
-void CH8CON::clearKeys() {
-    SDL_memset(KEYS, 0, sizeof(KEYS));
-}
-
-Uint8 CH8CON::isKeyPressed(Uint8 keyIndex) const {
-    return (keyIndex < 16) ? KEYS[keyIndex] : 0;
-}
-
-void CH8CON::setKeyState(Uint8 keyIndex, Uint8 isPressed) {
+void CH8CON::setKeyState(Uint8 keyIndex, Uint8 state) {
     if (keyIndex < 16) {
-        KEYS[keyIndex] = (isPressed ? 1 : 0);
+        keysState[keyIndex] = state;
     }
+}
+
+bool CH8CON::isKeyPressed(Uint8 keyIndex) const {
+    if (keyIndex < 16) {
+        return keysState[keyIndex] != 0;
+    }
+    return false;
+}
+
+void CH8CON::lockKeyWait(Uint8 keyIndex) {
+    isWaitingForKey = true;
+    latchedKeyIndex = static_cast<int>(keyIndex);
+}
+
+void CH8CON::clearKeyWait() {
+    isWaitingForKey = false;
+    latchedKeyIndex = -1;
+}
+
+bool CH8CON::isCurrentlyWaiting() const {
+    return isWaitingForKey;
+}
+
+int CH8CON::getLatchedKey() const {
+    return latchedKeyIndex;
 }

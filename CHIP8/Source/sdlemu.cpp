@@ -8,19 +8,12 @@ SDLEMU::SDLEMU() :
     projectPath(nullptr),
     resourcePath(nullptr),
     audioStream(nullptr),       
-    audioDevicePlaying(false),
-    cartridgeBuffer(nullptr),
-    cartridgeSize(0)
+    audioDevicePlaying(false)
 {
     SDLinit();
 }
 
 SDLEMU::~SDLEMU() {
-    // If a cartridge is still in the machine when destroyed, clear it up
-    if (cartridgeBuffer) {
-        SDL_free(cartridgeBuffer);
-        cartridgeBuffer = nullptr;
-    }
     SDLrelease();
 }
 
@@ -34,15 +27,8 @@ bool SDLEMU::insertRom(const char* romName) {
     SDL_asprintf(&fullRomLocationPath, "%s%s", resourcePath, romName);
     if (!fullRomLocationPath) return false;
 
-    // If a cartridge was already plugged in, take it out first
-    if (cartridgeBuffer) {
-        SDL_free(cartridgeBuffer);
-        cartridgeBuffer = nullptr;
-        cartridgeSize = 0;
-    }
-
-    // Read file data into local cartridge buffer slots
-    void* loadedFile = SDL_LoadFile(fullRomLocationPath, &cartridgeSize);
+    size_t size = 0;
+    void* loadedFile = SDL_LoadFile(fullRomLocationPath, &size);
     SDL_free(fullRomLocationPath);
 
     if (!loadedFile) {
@@ -50,50 +36,32 @@ bool SDLEMU::insertRom(const char* romName) {
         return false;
     }
 
-    cartridgeBuffer = static_cast<Uint8*>(loadedFile);
-    SDL_Log("Cartridge successfully slid into media deck socket: %s (%zu bytes)", romName, cartridgeSize);
+    // Direct shipment to the internal CH8DSK persistent hardware block
+    bool success = emu.insertRom(static_cast<Uint8*>(loadedFile), size);
+
+    // Free transient storage immediately — CH8DSK now holds its own safe C-style block allocation
+    SDL_free(loadedFile);
+
+    if (!success) {
+        SDL_Log("Cartridge Rejected: Rom dimensions violate operational specifications.");
+        return false;
+    }
+
+    SDL_Log("Cartridge successfully slotted into internal persistent storage drive: %s (%zu bytes)", romName, size);
     return true;
 }
 
 void SDLEMU::powerOn() {
-    // 1. Physically clear system data blocks during power spike reset 
-    // (This guarantees memory starts clean every time the user flips the power switch)
-    emu.powerOff(); 
-
-    if (!cartridgeBuffer || cartridgeSize == 0) {
-        SDL_Log("Power On Fault: Machine powered up with an empty cartridge slot.");
-        return;
-    }
-
-    // 2. Wake up target core architecture execution environments 
+    // Elevate main hardware line voltages
     emu.powerOn();
-
-    // 3. Inject the cartridge data directly into the system bus RAM/DSK layout matrix
-    if (!emu.insertRom(cartridgeBuffer, cartridgeSize)) {
-        SDL_Log("Power On Fault: Insufficient system memory space to map cartridge footprint.");
-        emu.powerOff();
-        return;
-    }
-
     isRunning = true;
     SDL_Log("Console Main Voltage Stabilized: Core systems running.");
 }
 
 void SDLEMU::powerOff() {
-    // 1. Cut engine processing executions down
     isRunning = false;
-
-    // 2. Physically clear internal volatile hardware registries and the DSK RAM layout spaces
-    emu.powerOff(); 
-
-    // 3. Safely eject and discard the cartridge allocation state lines
-    if (cartridgeBuffer) {
-        SDL_free(cartridgeBuffer);
-        cartridgeBuffer = nullptr;
-    }
-    cartridgeSize = 0;
-
-    SDL_Log("Console Main Power Dissipated: All storage matrices cleared out completely.");
+    emu.powerOff(); // Drops temporary registers, but your loaded cart remains mounted inside CH8DSK!
+    SDL_Log("Console Main Power Dissipated. Storage arrays safe.");
 }
 
 void SDLEMU::run() {
@@ -101,6 +69,7 @@ void SDLEMU::run() {
 
     Uint64 pastPerformanceCounterTick = SDL_GetPerformanceCounter();
     const double performanceCounterFrequency = static_cast<double>(SDL_GetPerformanceFrequency());
+    int lastObservedSecondValue = -1;
 
     while (isRunning) {
         Uint64 currentTickCount = SDL_GetPerformanceCounter();
@@ -110,9 +79,24 @@ void SDLEMU::run() {
         if (elapsedDeltaTimeSeconds > 0.1) elapsedDeltaTimeSeconds = 0.1;
 
         input(); 
-        update(elapsedDeltaTimeSeconds);
+        emu.update(elapsedDeltaTimeSeconds);
         audio();
-        render();
+
+        if (emu.isFrameReady()) {
+            render();
+            emu.clearFrameReadyFlag();
+        }
+
+        if (emu.getFpsCalculated() != lastObservedSecondValue) {
+            lastObservedSecondValue = emu.getFpsCalculated();
+            char windowTitle[128];
+            SDL_snprintf(windowTitle, sizeof(windowTitle), 
+                         "CH8EMU | FPS: %d (Target: %.0f) | UPS: %d Hz (Target: %.0f Hz)", 
+                         emu.getFpsCalculated(), emu.getFpsTarget(), 
+                         emu.getUpsCalculated(), emu.getUpsTarget());
+            SDL_SetWindowTitle(window, windowTitle);
+        }
+        SDL_Delay(1);
     }
 }
 
@@ -149,40 +133,48 @@ bool SDLEMU::SDLinit() {
 }
 
 void SDLEMU::SDLrelease() {
+    // 1. Terminate visual layer subsystems safely
+    if (texture) {
+        SDL_DestroyTexture(texture);
+        texture = nullptr;
+    }
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
+    if (window) {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
+
+    // 2. Shut down your active audio streams
     if (audioStream) {
         SDL_DestroyAudioStream(audioStream);
         audioStream = nullptr;
     }
-    audioDevicePlaying = false;
 
-    if (projectPath)  { SDL_free(projectPath); projectPath = nullptr; }
-    if (resourcePath) { SDL_free(resourcePath); resourcePath = nullptr; }
+    // 3. CLEAN UP STRINGS SAFELY BEFORE CALLING SDL_QUIT
+    // Ensure you use SDL_free and set pointers to nullptr to prevent double-frees
+    if (projectPath) {
+        SDL_free(projectPath);
+        projectPath = nullptr;
+    }
+    if (resourcePath) {
+        SDL_free(resourcePath);
+        resourcePath = nullptr;
+    }
 
-    if (texture)  { SDL_DestroyTexture(texture); texture = nullptr; }
-    if (renderer) { SDL_DestroyRenderer(renderer); renderer = nullptr; }
-    if (window)   { SDL_DestroyWindow(window); window = nullptr; }
-    
+    // 4. Finally, declare global system dissipation
     SDL_Quit();
 }
 
 void SDLEMU::filesystem() {
-    const char* basePathStr = SDL_GetBasePath();
-    if (!basePathStr) {
-        projectPath = SDL_strdup("./");
-        resourcePath = SDL_strdup("./Resources/");
-        return;
+    const char* basePath = SDL_GetBasePath();
+    if (basePath) {
+        // Allocate dynamic string memory that SDL understands how to track
+        SDL_asprintf(&projectPath, "%s", basePath);
+        SDL_asprintf(&resourcePath, "%s../Resources/", basePath);
     }
-
-    if (SDL_strstr(basePathStr, ".app/Contents/Resources/") != nullptr ||
-        SDL_strstr(basePathStr, ".app/Contents/MacOS/") != nullptr) {
-        projectPath = SDL_strdup(basePathStr);
-    } else {
-        SDL_asprintf(&projectPath, "%s../", basePathStr);
-    }
-
-    SDL_asprintf(&resourcePath, "%sResources/", projectPath);
-    SDL_Log("Platform paths resolved -> Project Root: %s | Resources: %s", projectPath, resourcePath);
-    SDL_free((char *)basePathStr);  
 }
 
 void SDLEMU::input() {
@@ -191,7 +183,12 @@ void SDLEMU::input() {
         if (event.type == SDL_EVENT_QUIT) {
             isRunning = false;
         } 
-        else if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+        // Add a check to ignore repeat events completely
+        else if ((event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP)) {
+            if (event.key.repeat) { 
+                continue; // Skip OS auto-generated repeat spams
+            }
+
             Uint8 state = (event.type == SDL_EVENT_KEY_DOWN) ? 1 : 0;
             
             switch (event.key.scancode) {

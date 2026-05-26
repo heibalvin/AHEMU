@@ -118,16 +118,75 @@ void CH8CPU::opADDByte() { V[(opc & 0x0F00) >> 8] += (opc & 0x00FF); }
 void CH8CPU::opArithmetic() {
     Uint8 x = (opc & 0x0F00) >> 8;
     Uint8 y = (opc & 0x00F0) >> 4;
+    
     switch (opc & 0x000F) {
-        case 0x0: V[x] = V[y]; break;
-        case 0x1: V[x] |= V[y]; V[0xF] = 0; break;
-        case 0x2: V[x] &= V[y]; V[0xF] = 0; break;
-        case 0x3: V[x] ^= V[y]; V[0xF] = 0; break;
-        case 0x4: { Uint16 s = V[x] + V[y]; V[0xF] = (s > 255) ? 1 : 0; V[x] = s & 0xFF; break; }
-        case 0x5: V[0xF] = (V[x] >= V[y]) ? 1 : 0; V[x] -= V[y]; break;
-        case 0x6: V[0xF] = V[x] & 0x1; V[x] >>= 1; break;
-        case 0x7: V[0xF] = (V[y] >= V[x]) ? 1 : 0; V[x] = V[y] - V[x]; break;
-        case 0xE: V[0xF] = (V[x] & 0x80) >> 7; V[x] <<= 1; break;
+        case 0x0: 
+            V[x] = V[y]; 
+            break;
+            
+        case 0x1: 
+            V[x] |= V[y]; 
+            V[0xF] = 0; 
+            break;
+            
+        case 0x2: 
+            V[x] &= V[y]; 
+            V[0xF] = 0; 
+            break;
+            
+        case 0x3: 
+            V[x] ^= V[y]; 
+            V[0xF] = 0; 
+            break;
+            
+        case 0x4: { 
+            // ADD Vx, Vy: Vx = Vx + Vy. VF = 1 if carry occurs, 0 otherwise.
+            Uint16 result = (Uint16)V[x] + (Uint16)V[y];
+            Uint8 carry = (result > 255) ? 1 : 0;
+            
+            V[x] = result & 0xFF;
+            V[0xF] = carry; // Flag assigned last, preventing premature overwrite
+            break; 
+        }
+        
+        case 0x5: {
+            // SUB Vx, Vy: Vx = Vx - Vy. VF = 1 if NOT a borrow (Vx >= Vy), 0 otherwise.
+            Uint8 notBorrow = (V[x] >= V[y]) ? 1 : 0;
+            Uint8 result = V[x] - V[y];
+            
+            V[x] = result;
+            V[0xF] = notBorrow; // Flag assigned last
+            break;
+        }
+            
+        case 0x6: { 
+            // SHIFTING ON: Vx = Vy >> 1. VF = dropped LSB.
+            Uint8 lsb = V[y] & 0x01; 
+            V[x] = V[y] >> 1; 
+            V[0xF] = lsb;
+            break;
+        } 
+        
+        case 0x7: { 
+            // SUBN Vx, Vy: Vx = Vy - Vx. VF = 1 if NOT a borrow (Vy >= Vx), 0 otherwise.
+            Uint8 notBorrow = (V[y] >= V[x]) ? 1 : 0;
+            Uint8 result = V[y] - V[x];
+            
+            V[x] = result;
+            V[0xF] = notBorrow; // Flag assigned last
+            break;
+        }
+        
+        case 0xE: { 
+            // SHIFTING ON: Vx = Vy << 1. VF = dropped MSB.
+            Uint8 msb = (V[y] & 0x80) >> 7;
+            V[x] = V[y] << 1;
+            V[0xF] = msb;
+            break;
+        }
+        
+        default: 
+            break;
     }
 }
 
@@ -158,11 +217,32 @@ void CH8CPU::opTimersAndMemory() {
         case 0x18: SOUND_TIMER = V[x]; break;
         case 0x1E: I += V[x]; break;
         case 0x0A: {
-            bool press = false;
-            for (Uint8 i = 0; i < 16; ++i) {
-                if (emu->con.isKeyPressed(i)) { V[x] = i; press = true; break; }
+            // Stage 1: No key has been locked down yet
+            if (!emu->con.isCurrentlyWaiting()) {
+                for (Uint8 i = 0; i < 16; ++i) {
+                    if (emu->con.isKeyPressed(i)) {
+                        // Delegate tracking management directly to the controller
+                        emu->con.lockKeyWait(i);
+                        break;
+                    }
+                }
+                // Halt effect: Keep PC pointing here until a key down-press occurs
+                PC -= 2; 
+            } 
+            // Stage 2: Controller is tracking a held key; wait for release
+            else {
+                Uint8 activeKey = static_cast<Uint8>(emu->con.getLatchedKey());
+                
+                if (!emu->con.isKeyPressed(activeKey)) {
+                    // Success! The physical key has transitioned to a released state
+                    V[x] = activeKey;
+                    emu->con.clearKeyWait();
+                    // Do NOT decrement PC here; execution advances normally
+                } else {
+                    // Keep halting: Key is still held down
+                    PC -= 2;
+                }
             }
-            if (!press) PC -= 2; 
             break;
         }
         case 0x29: I = V[x] * 5; break;

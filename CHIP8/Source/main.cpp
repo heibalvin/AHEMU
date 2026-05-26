@@ -6,7 +6,7 @@
  * and passes targeting control down to the game loop matrix.
  */
 int main(int argc, char* argv[]) {
-    const char* romTarget = "flags.ch8";
+    const char* romTarget = "5-quirks.ch8";
     if (argc > 1) {
         romTarget = argv[1];
     }

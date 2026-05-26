@@ -1,55 +1,51 @@
 #include "CH8DSK.hpp"
 
 CH8DSK::CH8DSK(CH8EMU* parentEmu) : 
-    CH8COM(parentEmu),
-    ROM_DATA(nullptr),
-    ROM_SIZE(0)
+    CH8COM(parentEmu), 
+    romStorage(nullptr), 
+    romStorageSize(0) 
 {}
 
 CH8DSK::~CH8DSK() {
-    clearStorage();
+    // Persistent: Memory is explicitly freed ONLY when the emulator is entirely destroyed
+    if (romStorage) {
+        SDL_free(romStorage);
+        romStorage = nullptr;
+    }
+    romStorageSize = 0;
 }
 
 void CH8DSK::powerOn() {
-    // Media connections remain on standby until an explicit load signal arrives
-    reset();
+    // Persistent: Do not touch storage structures during state/power spikes
 }
 
 void CH8DSK::powerOff() {
-    clearStorage();
+    // Persistent: Do not touch storage structures during state/power spikes
 }
 
 void CH8DSK::reset() {
-    // Resetting a disk layout keeps the existing media intact without wiping data blocks
+    // Persistent: Do not touch storage structures during state/power spikes
 }
 
-bool CH8DSK::loadROM(const void* data, size_t size) {
-    if (!data || size == 0) {
+bool CH8DSK::insertRom(const Uint8* datas, size_t size) {
+    if (!datas || size == 0) return false;
+
+    // Free any cartridge previously slotted into the disk deck
+    if (romStorage) {
+        SDL_free(romStorage);
+        romStorage = nullptr;
+    }
+
+    // Allocate a raw, zero-overhead memory segment matching the exact ROM layout footprint
+    romStorage = static_cast<Uint8*>(SDL_malloc(size));
+    if (!romStorage) {
+        romStorageSize = 0;
         return false;
     }
 
-    // Scrub any pre-existing sector mappings before re-allocating
-    clearStorage();
+    // Clone the source bits directly into your persistent storage bank
+    SDL_memcpy(romStorage, datas, size);
+    romStorageSize = size;
 
-    // Allocate storage using SDL3's centralized runtime allocations wrapper
-    ROM_DATA = static_cast<Uint8*>(SDL_malloc(size));
-    if (!ROM_DATA) {
-        SDL_Log("Disk Error: Core memory allocator allocation block fault.");
-        return false;
-    }
-
-    // Perform an accelerated low-level bytecode replication match copy execution pass
-    SDL_memcpy(ROM_DATA, data, size);
-    ROM_SIZE = size;
-
-    SDL_Log("Disk IO Status: Successfully verified and mounted %zu bytes into sector data array blocks.", ROM_SIZE);
     return true;
-}
-
-void CH8DSK::clearStorage() {
-    if (ROM_DATA) {
-        SDL_free(ROM_DATA);
-        ROM_DATA = nullptr;
-    }
-    ROM_SIZE = 0;
 }
