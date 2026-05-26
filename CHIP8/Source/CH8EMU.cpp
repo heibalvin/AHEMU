@@ -1,7 +1,7 @@
 #include "CH8EMU.hpp"
 
 CH8EMU::CH8EMU() : 
-    CH8COM(nullptr), bus(this), cpu(this), ppu(this), con(this), apu(this), dsk(this),
+    CH8COM(nullptr), bus(this), cpu(this), ppu(this), key(this), apu(this), dsk(this),
     fpsTarget(60.0), upsTarget(700.0), frameAccumulator(0.0), updateAccumulator(0.0),
     hardwareTimerAccumulator(0.0), profileTimer(0.0), fpsCount(0), upsCount(0),
     fpsCalculated(0), upsCalculated(0), frameReadyFlag(false)
@@ -10,7 +10,7 @@ CH8EMU::CH8EMU() :
 void CH8EMU::powerOn() {
     bus.powerOn();
     ppu.powerOn();
-    con.powerOn();
+    key.powerOn();
     apu.powerOn();
     dsk.powerOn();
     cpu.powerOn();
@@ -43,7 +43,7 @@ void CH8EMU::powerOff() {
     cpu.powerOff();
     dsk.powerOff();
     apu.powerOff();
-    con.powerOff();
+    key.powerOff();
     ppu.powerOff();
     bus.powerOff();
 }
@@ -51,7 +51,7 @@ void CH8EMU::powerOff() {
 void CH8EMU::reset() {
     bus.reset();
     ppu.reset();
-    con.reset();
+    key.reset();
     apu.reset();
     dsk.reset();
     cpu.reset();

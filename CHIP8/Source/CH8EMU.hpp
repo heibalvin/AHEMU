@@ -3,7 +3,7 @@
 #include "CH8BUS.hpp"
 #include "CH8CPU.hpp"
 #include "CH8PPU.hpp"
-#include "CH8CON.hpp"
+#include "CH8KEY.hpp"
 #include "CH8APU.hpp"
 #include "CH8DSK.hpp"
 #include "CH8COM.hpp"
@@ -14,7 +14,7 @@ public:
     CH8BUS bus;
     CH8CPU cpu;
     CH8PPU ppu;
-    CH8CON con;
+    CH8KEY key;
     CH8APU apu;
     CH8DSK dsk;
 

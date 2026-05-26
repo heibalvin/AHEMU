@@ -192,22 +192,22 @@ void SDLEMU::input() {
             Uint8 state = (event.type == SDL_EVENT_KEY_DOWN) ? 1 : 0;
             
             switch (event.key.scancode) {
-                case SDL_SCANCODE_1: emu.con.setKeyState(0x1, state); break;
-                case SDL_SCANCODE_2: emu.con.setKeyState(0x2, state); break;
-                case SDL_SCANCODE_3: emu.con.setKeyState(0x3, state); break;
-                case SDL_SCANCODE_4: emu.con.setKeyState(0xC, state); break;
-                case SDL_SCANCODE_Q: emu.con.setKeyState(0x4, state); break;
-                case SDL_SCANCODE_W: emu.con.setKeyState(0x5, state); break;
-                case SDL_SCANCODE_E: emu.con.setKeyState(0x6, state); break;
-                case SDL_SCANCODE_R: emu.con.setKeyState(0xD, state); break;
-                case SDL_SCANCODE_A: emu.con.setKeyState(0x7, state); break;
-                case SDL_SCANCODE_S: emu.con.setKeyState(0x8, state); break;
-                case SDL_SCANCODE_D: emu.con.setKeyState(0x9, state); break;
-                case SDL_SCANCODE_F: emu.con.setKeyState(0xE, state); break;
-                case SDL_SCANCODE_Z: emu.con.setKeyState(0xA, state); break;
-                case SDL_SCANCODE_X: emu.con.setKeyState(0x0, state); break;
-                case SDL_SCANCODE_C: emu.con.setKeyState(0xB, state); break;
-                case SDL_SCANCODE_V: emu.con.setKeyState(0xF, state); break;
+                case SDL_SCANCODE_1: emu.key.setKeyState(0x1, state); break;
+                case SDL_SCANCODE_2: emu.key.setKeyState(0x2, state); break;
+                case SDL_SCANCODE_3: emu.key.setKeyState(0x3, state); break;
+                case SDL_SCANCODE_4: emu.key.setKeyState(0xC, state); break;
+                case SDL_SCANCODE_Q: emu.key.setKeyState(0x4, state); break;
+                case SDL_SCANCODE_W: emu.key.setKeyState(0x5, state); break;
+                case SDL_SCANCODE_E: emu.key.setKeyState(0x6, state); break;
+                case SDL_SCANCODE_R: emu.key.setKeyState(0xD, state); break;
+                case SDL_SCANCODE_A: emu.key.setKeyState(0x7, state); break;
+                case SDL_SCANCODE_S: emu.key.setKeyState(0x8, state); break;
+                case SDL_SCANCODE_D: emu.key.setKeyState(0x9, state); break;
+                case SDL_SCANCODE_F: emu.key.setKeyState(0xE, state); break;
+                case SDL_SCANCODE_Z: emu.key.setKeyState(0xA, state); break;
+                case SDL_SCANCODE_X: emu.key.setKeyState(0x0, state); break;
+                case SDL_SCANCODE_C: emu.key.setKeyState(0xB, state); break;
+                case SDL_SCANCODE_V: emu.key.setKeyState(0xF, state); break;
                 default: break;
             }
         }

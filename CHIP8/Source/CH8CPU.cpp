@@ -205,8 +205,8 @@ void CH8CPU::opDRW() {
 void CH8CPU::opKeyboard() {
     Uint8 x = (opc & 0x0F00) >> 8;
     Uint8 sub = (opc & 0x00FF);
-    if (sub == 0x9E)      { if (emu->con.isKeyPressed(V[x])) PC += 2; }
-    else if (sub == 0xA1) { if (!emu->con.isKeyPressed(V[x])) PC += 2; }
+    if (sub == 0x9E)      { if (emu->key.isKeyPressed(V[x])) PC += 2; }
+    else if (sub == 0xA1) { if (!emu->key.isKeyPressed(V[x])) PC += 2; }
 }
 
 void CH8CPU::opTimersAndMemory() {
@@ -218,11 +218,11 @@ void CH8CPU::opTimersAndMemory() {
         case 0x1E: I += V[x]; break;
         case 0x0A: {
             // Stage 1: No key has been locked down yet
-            if (!emu->con.isCurrentlyWaiting()) {
+            if (!emu->key.isCurrentlyWaiting()) {
                 for (Uint8 i = 0; i < 16; ++i) {
-                    if (emu->con.isKeyPressed(i)) {
+                    if (emu->key.isKeyPressed(i)) {
                         // Delegate tracking management directly to the controller
-                        emu->con.lockKeyWait(i);
+                        emu->key.lockKeyWait(i);
                         break;
                     }
                 }
@@ -231,12 +231,12 @@ void CH8CPU::opTimersAndMemory() {
             } 
             // Stage 2: Controller is tracking a held key; wait for release
             else {
-                Uint8 activeKey = static_cast<Uint8>(emu->con.getLatchedKey());
+                Uint8 activeKey = static_cast<Uint8>(emu->key.getLatchedKey());
                 
-                if (!emu->con.isKeyPressed(activeKey)) {
+                if (!emu->key.isKeyPressed(activeKey)) {
                     // Success! The physical key has transitioned to a released state
                     V[x] = activeKey;
-                    emu->con.clearKeyWait();
+                    emu->key.clearKeyWait();
                     // Do NOT decrement PC here; execution advances normally
                 } else {
                     // Keep halting: Key is still held down
