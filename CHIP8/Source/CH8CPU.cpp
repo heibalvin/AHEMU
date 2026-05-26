@@ -57,6 +57,7 @@ bool CH8CPU::decode() {
         return false;
     }
 
+#ifdef DEBUG_MODE    
     // --- Format part 1: Registers Hexdump Space ---
     char regLog[256];
     SDL_snprintf(regLog, sizeof(regLog), 
@@ -92,6 +93,8 @@ bool CH8CPU::decode() {
     }
 
     SDL_Log("%s | %s | %s", regLog, instLog, asmLog);
+#endif
+
     return true;
 }
 
