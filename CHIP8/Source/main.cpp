@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
     }
     
     app->release();
-    delete app; // Completely flushes scope memory tracking profiles before returning
 
     return 0;
 }

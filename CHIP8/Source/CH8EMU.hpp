@@ -7,7 +7,6 @@
 #include "CH8CON.hpp"
 #include "CH8APU.hpp"
 #include "CH8DSK.hpp"
-#include "CH8DBG.hpp"
 
 class CH8EMU : public CH8COM {
 public:
@@ -18,8 +17,6 @@ public:
     CH8CON con;
     CH8APU apu;
     CH8DSK dsk;
-
-    CH8_DBG_MEMBER(CH8DBG dbg)
 
 private:
     double cpuAccumulator;

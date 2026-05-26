@@ -8,7 +8,6 @@ CH8EMU::CH8EMU() :
     con(this), 
     apu(this),
     dsk(this)
-    CH8_DBG_INIT(dbg(this))
 {
     cpuAccumulator   = 0.0;
     timerAccumulator = 0.0;
@@ -20,7 +19,6 @@ void CH8EMU::powerOn() {
     con.powerOn();
     apu.powerOn();
     dsk.powerOn();
-    CH8_DBG_EXEC(dbg.powerOn());
     cpu.powerOn();
 
     cpuAccumulator   = 0.0;
@@ -29,7 +27,6 @@ void CH8EMU::powerOn() {
 
 void CH8EMU::powerOff() {
     cpu.powerOff();
-    CH8_DBG_EXEC(dbg.powerOff());
     dsk.powerOff();
     apu.powerOff();
     con.powerOff();
@@ -43,7 +40,6 @@ void CH8EMU::reset() {
     con.reset();
     apu.reset();
     dsk.reset();
-    CH8_DBG_EXEC(dbg.reset());
     cpu.reset();
 }
 
@@ -57,7 +53,6 @@ void CH8EMU::update(double deltaTime) {
 
     while (cpuAccumulator >= CPU_PERIOD) {
         bool proceed = true;
-        CH8_DBG_EXEC(proceed = dbg.checkLifecycle(cpu.PC));
         
         if (proceed) {
             step();

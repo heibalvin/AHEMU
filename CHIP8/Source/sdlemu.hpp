@@ -30,6 +30,9 @@ public:
     void release();
 
 private:
+    const int WINDOW_WIDTH  = 1280;
+    const int WINDOW_HEIGHT = 640;
+
     void resolvePlatformPaths();
     void initAudioSubsystem();
     void processInput();

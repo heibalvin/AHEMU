@@ -56,7 +56,7 @@ bool SDLEMU::init() {
 
     resolvePlatformPaths();
 
-    window = SDL_CreateWindow("CH8EMU", 64 * 10, 32 * 10, 0);
+    window = SDL_CreateWindow("CH8EMU", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
     if (!window) return false;
 
     renderer = SDL_CreateRenderer(window, nullptr);
@@ -100,16 +100,6 @@ void SDLEMU::processInput() {
                 case SDL_SCANCODE_X: emu.con.setKeyState(0x0, state); break;
                 case SDL_SCANCODE_C: emu.con.setKeyState(0xB, state); break;
                 case SDL_SCANCODE_V: emu.con.setKeyState(0xF, state); break;
-
-                case SDL_SCANCODE_F10:
-                    if (state == 1) { CH8_DBG_EXEC(emu.dbg.stepInstruction()); }
-                    break;
-                case SDL_SCANCODE_F5:
-                    if (state == 1) { CH8_DBG_EXEC(emu.dbg.resumeExecution()); }
-                    break;
-                case SDL_SCANCODE_F6:
-                    if (state == 1) { CH8_DBG_EXEC(emu.dbg.pauseExecution()); }
-                    break;
                 default: break;
             }
         }

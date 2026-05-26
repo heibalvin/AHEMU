@@ -5,7 +5,7 @@
 class CH8BUS : public CH8COM {
 public:
     Uint8 RAM[4096]; 
-
+    
     CH8BUS(CH8EMU* parentEmu);
     ~CH8BUS() = default;
 

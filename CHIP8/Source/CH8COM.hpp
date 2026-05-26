@@ -3,17 +3,6 @@
 
 class CH8EMU;
 
-// --- High-Performance Micro-Conditional Macro Subsystem ---
-#if CH8_DEBUG_ENABLED
-    #define CH8_DBG_EXEC(code)  do { code; } while(0)
-    #define CH8_DBG_MEMBER(decl) decl;              
-    #define CH8_DBG_INIT(init)   , init             
-#else
-    #define CH8_DBG_EXEC(code)  do { } while(0)
-    #define CH8_DBG_MEMBER(decl)                     
-    #define CH8_DBG_INIT(init)                       
-#endif
-
 class CH8COM {
 protected:
     CH8EMU* emu = nullptr;
