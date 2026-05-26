@@ -35,5 +35,5 @@ public:
     void step() override;
 
     void update(double deltaTime);
-    bool injectROM(const Uint8* data, size_t size);
+    bool insertRom(const Uint8* data, size_t size);
 };

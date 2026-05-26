@@ -52,16 +52,11 @@ void CH8EMU::update(double deltaTime) {
     timerAccumulator += deltaTime;
 
     while (cpuAccumulator >= CPU_PERIOD) {
-        bool proceed = true;
-        
-        if (proceed) {
-            step();
-            cpuAccumulator -= CPU_PERIOD;
-        } else {
-            break; 
-        }
+        step();
+        cpuAccumulator -= CPU_PERIOD;
     }
 
+    // 60 Hz Hardware Register Refresh Clock
     while (timerAccumulator >= TIMER_PERIOD) {
         if (cpu.DELAY_TIMER > 0) {
             cpu.DELAY_TIMER--;
@@ -69,16 +64,13 @@ void CH8EMU::update(double deltaTime) {
         
         if (cpu.SOUND_TIMER > 0) {
             cpu.SOUND_TIMER--;
-            if (cpu.SOUND_TIMER == 0) {
-                apu.stop(); // Sets buzzerActive to false
-            }
         }
         
         timerAccumulator -= TIMER_PERIOD;
     }
 }
 
-bool CH8EMU::injectROM(const Uint8* data, size_t size) {
+bool CH8EMU::insertRom(const Uint8* data, size_t size) {
     const Uint16 programStartOffset = 0x200;
     const Uint16 maxAvailableMemory = 4096;
 

@@ -15,11 +15,13 @@ public:
     Uint8  SOUND_TIMER;
 
 private:
-    Uint16 currentOpcode;
-    CH8OPC matchedInstruction;
+    Uint16 opc; // Holds both instruction bytes
+    
+    // Lightened execution reference pointer
+    CH8OPC* opcode = nullptr;
 
     static const int TABLE_SIZE = 17; 
-    CH8OPC opcodesTable[TABLE_SIZE];
+    CH8OPC opcodes[TABLE_SIZE];
 
 public:
     CH8CPU(CH8EMU* parentEmu);
@@ -35,31 +37,26 @@ public:
     bool decode();
     void execute();
 
-    // Debugging Inspection Accessors
-    const CH8OPC* getOpcodeTableInstance() const;
-    int getOpcodeTableSize() const;
-    CH8OPC getCurrentDebugFrame() const;
-
 private:
     void buildOpcodesTable();
 
     // Core Opcode Command Bindings Matrix
-    void opCLS(Uint16 op);
-    void opRET(Uint16 op);
-    void opJP(Uint16 op);
-    void opCALL(Uint16 op);
-    void opSEByte(Uint16 op);
-    void opSNEByte(Uint16 op);
-    void opSEReg(Uint16 op);
-    void opLDByte(Uint16 op);
-    void opADDByte(Uint16 op);
-    void opArithmetic(Uint16 op);
-    void opSNEReg(Uint16 op);
-    void opLDI(Uint16 op);
-    void opJPV0(Uint16 op);
-    void opRND(Uint16 op);
-    void opDRW(Uint16 op);
-    void opKeyboard(Uint16 op);
-    void opTimersAndMemory(Uint16 op);
-    void opInvalid(Uint16 op);
+    void opCLS();
+    void opRET();
+    void opJP();
+    void opCALL();
+    void opSEByte();
+    void opSNEByte();
+    void opSEReg();
+    void opLDByte();
+    void opADDByte();
+    void opArithmetic();
+    void opSNEReg();
+    void opLDI();
+    void opJPV0();
+    void opRND();
+    void opDRW();
+    void opKeyboard();
+    void opTimersAndMemory();
+    void opInvalid();
 };
