@@ -259,6 +259,7 @@ DOT_GRAPH_CACHE_DIR    =
 DOT_GRAPH_CACHE_FILE   =
 DOT_GRAPH_CACHE_USE    = NO
 DOT_GRAPH_CACHE_FRESH  = NO
+MERMAID_ENABLED        = YES
 HAVE_DOT               = YES
 
 # Configuration options related to the search engine
