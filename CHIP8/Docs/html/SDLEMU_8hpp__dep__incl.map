@@ -1,0 +1,7 @@
+<map id="Source/SDLEMU.hpp" name="Source/SDLEMU.hpp">
+<area shape="rect" id="Node000001" title="Declaration of the SDLEMU class, which provides the SDL3 interface for the CHIP&#45;8 emulator." alt="" coords="84,5,231,31"/>
+<area shape="rect" id="Node000002" href="$SDLEMU_8cpp.html" title=" " alt="" coords="5,79,153,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,41,94,81,91,76,131,42"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html" title=" " alt="" coords="177,79,296,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,39,226,79,221,79,181,44"/>
+</map>

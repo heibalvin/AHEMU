@@ -1,0 +1,7 @@
+<map id="Source/CH8APU.hpp" name="Source/CH8APU.hpp">
+<area shape="rect" id="Node000001" title="Declaration of the CH8APU class, which emulates the audio processing unit of a CHIP&#45;8 system." alt="" coords="5,5,152,31"/>
+<area shape="rect" id="Node000002" href="$CH8COM_8hpp.html" title="Declaration of the CH8COM abstract base class, which defines the common interface for all CHIP&#45;8 hard..." alt="" coords="26,79,131,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,29,81,64,76,63,78,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="31,153,126,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,103,81,138,76,136,77,107"/>
+</map>

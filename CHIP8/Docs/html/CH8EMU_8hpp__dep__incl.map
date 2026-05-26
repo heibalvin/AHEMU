@@ -1,0 +1,17 @@
+<map id="Source/CH8EMU.hpp" name="Source/CH8EMU.hpp">
+<area shape="rect" id="Node000001" title="Declaration of the CH8EMU class, which represents the entire CHIP&#45;8 emulator system." alt="" coords="348,5,497,31"/>
+<area shape="rect" id="Node000002" href="$CH8APU_8cpp.html" title=" " alt="" coords="5,79,152,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="349,37,138,81,136,76,350,32"/>
+<area shape="rect" id="Node000003" href="$CH8COM_8cpp.html" title=" " alt="" coords="176,79,325,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="382,36,281,81,279,76,377,38"/>
+<area shape="rect" id="Node000004" href="$CH8CPU_8cpp.html" title=" " alt="" coords="349,79,496,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="424,44,425,80,420,77,421,49"/>
+<area shape="rect" id="Node000005" href="$CH8EMU_8cpp.html" title=" " alt="" coords="520,79,669,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="466,35,568,78,563,78,465,40"/>
+<area shape="rect" id="Node000006" href="$SDLEMU_8hpp.html" title="Declaration of the SDLEMU class, which provides the SDL3 interface for the CHIP&#45;8 emulator." alt="" coords="693,79,840,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="496,32,711,78,705,79,496,37"/>
+<area shape="rect" id="Node000007" href="$SDLEMU_8cpp.html" title=" " alt="" coords="614,153,762,178"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="745,114,702,155,700,150,740,116"/>
+<area shape="rect" id="Node000008" href="$main_8cpp.html" title=" " alt="" coords="786,153,905,178"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="792,113,835,153,829,152,790,118"/>
+</map>

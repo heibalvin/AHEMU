@@ -1,0 +1,26 @@
+<map id="CH8CPU" name="CH8CPU">
+<area shape="rect" id="Node000001" title="The CH8CPU class emulates the Central Processing Unit of a CHIP&#45;8 system. It inherits from CH8COM (co..." alt="" coords="352,122,429,148"/>
+<area shape="rect" id="Node000003" href="$classCH8EMU.html" title="The CH8EMU class represents the complete CHIP&#45;8 emulator. It inherits from CH8COM (common communicati..." alt="" coords="254,219,332,245"/>
+<area shape="poly" id="edge6_Node000003_Node000001" title=" " alt="" coords="369,157,307,220,304,216,365,161"/>
+<area shape="rect" id="Node000002" href="$classCH8COM.html" title="The CH8COM class is an abstract base class that defines the common interface for all CHIP&#45;8 hardware ..." alt="" coords="250,316,330,341"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="312,303,352,256,371,226,385,194,389,170,390,151,393,146,395,171,390,196,375,228,356,259,315,307"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="297,299,298,291,298,267,295,248,298,243,303,267,303,292,301,303"/>
+<area shape="rect" id="Node000004" href="$classCH8BUS.html" title="The CH8BUS class emulates the system bus of a CHIP&#45;8 system. It provides a 4KB RAM array and methods ..." alt="" coords="316,391,392,416"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="312,351,346,391,341,390,310,356"/>
+<area shape="rect" id="Node000005" href="$classCH8PPU.html" title="The CH8PPU class emulates the Pixel Processing Unit of a CHIP&#45;8 system. It handles all aspects of the..." alt="" coords="417,391,494,416"/>
+<area shape="poly" id="edge8_Node000005_Node000002" title=" " alt="" coords="332,345,430,390,425,390,331,351"/>
+<area shape="rect" id="Node000006" href="$classCH8KEY.html" title="The CH8KEY class emulates the keyboard controller of a CHIP&#45;8 system. It maps the host keyboard to th..." alt="" coords="215,391,290,416"/>
+<area shape="poly" id="edge10_Node000006_Node000002" title=" " alt="" coords="279,354,261,392,257,388,275,356"/>
+<area shape="rect" id="Node000007" href="$classCH8APU.html" title="The CH8APU class emulates the Audio Processing Unit of a CHIP&#45;8 system. It handles the sound timer an..." alt="" coords="5,391,82,416"/>
+<area shape="poly" id="edge12_Node000007_Node000002" title=" " alt="" coords="236,348,83,393,81,388,235,343"/>
+<area shape="rect" id="Node000008" href="$classCH8DSK.html" title="The CH8DSK class emulates the disk system of a CHIP&#45;8 system. It handles loading ROM files into memor..." alt="" coords="112,391,188,416"/>
+<area shape="poly" id="edge14_Node000008_Node000002" title=" " alt="" coords="256,348,174,393,172,388,251,349"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="275,256,270,269,268,280,270,291,283,316,278,315,265,293,263,280,265,268,271,260"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="350,374,340,316,330,292,317,270,302,248,304,243,322,267,335,290,345,315,355,376"/>
+<area shape="poly" id="edge7_Node000003_Node000005" title=" " alt="" coords="436,377,396,327,343,271,313,248,313,242,347,267,400,324,441,379"/>
+<area shape="poly" id="edge9_Node000003_Node000006" title=" " alt="" coords="226,378,208,350,204,332,207,315,220,292,237,272,271,247,276,244,240,276,224,295,212,317,209,332,213,348,232,380"/>
+<area shape="poly" id="edge11_Node000003_Node000007" title=" " alt="" coords="60,376,112,321,146,291,184,266,218,251,256,241,251,244,220,256,186,271,149,295,115,324,64,380"/>
+<area shape="poly" id="edge13_Node000003_Node000008" title=" " alt="" coords="151,374,157,345,170,314,188,290,211,270,263,244,259,247,214,274,192,294,174,317,162,346,155,377"/>
+<area shape="rect" id="Node000009" href="$structCH8OPC.html" title="The CH8OPC struct defines an entry in the CPU&#39;s opcode handler table. Each entry specifies:" alt="" coords="352,5,429,31"/>
+<area shape="poly" id="edge15_Node000001_Node000009" title=" " alt="" coords="392,44,393,123,388,121,389,49"/>
+</map>

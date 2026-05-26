@@ -1,0 +1,22 @@
+<map id="Source/CH8OPC.hpp" name="Source/CH8OPC.hpp">
+<area shape="rect" id="Node000001" title="Declaration of the CH8OPC struct, which defines an opcode handler entry in the CPU&#39;s opcode table." alt="" coords="176,5,323,31"/>
+<area shape="rect" id="Node000002" href="$CH8CPU_8hpp.html" title="Declaration of the CH8CPU class, which emulates the CPU of a CHIP&#45;8 system." alt="" coords="176,79,323,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,44,252,79,247,78,249,49"/>
+<area shape="rect" id="Node000003" href="$CH8CPU_8cpp.html" title=" " alt="" coords="5,226,153,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="225,117,95,228,91,224,223,112"/>
+<area shape="rect" id="Node000004" href="$CH8EMU_8hpp.html" title="Declaration of the CH8EMU class, which represents the entire CHIP&#45;8 emulator system." alt="" coords="261,153,409,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="276,112,323,152,318,152,275,117"/>
+<area shape="poly" id="edge6_Node000004_Node000003" title=" " alt="" coords="276,185,124,228,122,223,278,180"/>
+<area shape="rect" id="Node000005" href="$CH8APU_8cpp.html" title=" " alt="" coords="176,226,323,252"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="311,187,265,228,262,224,307,190"/>
+<area shape="rect" id="Node000006" href="$CH8COM_8cpp.html" title=" " alt="" coords="347,226,496,252"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="362,186,410,226,405,226,361,191"/>
+<area shape="rect" id="Node000007" href="$CH8EMU_8cpp.html" title=" " alt="" coords="521,226,669,252"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="394,180,553,225,548,226,394,186"/>
+<area shape="rect" id="Node000008" href="$SDLEMU_8hpp.html" title="Declaration of the SDLEMU class, which provides the SDL3 interface for the CHIP&#45;8 emulator." alt="" coords="693,226,841,252"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="424,179,696,225,691,227,424,184"/>
+<area shape="rect" id="Node000009" href="$SDLEMU_8cpp.html" title=" " alt="" coords="615,300,762,326"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="745,262,703,302,700,297,740,263"/>
+<area shape="rect" id="Node000010" href="$main_8cpp.html" title=" " alt="" coords="786,300,905,326"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="792,260,835,300,830,299,790,265"/>
+</map>

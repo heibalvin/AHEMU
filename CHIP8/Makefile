@@ -11,6 +11,9 @@ OBJ_DIR  := Build
 TARGET_RELEASE := $(OBJ_DIR)/ch8emu
 TARGET_DEBUG   := $(OBJ_DIR)/ch8emu_debug
 
+# Doxygen configuration
+DOXYFILE := Doxyfile
+
 # 1. Dynamically find all .cpp source files inside the Source/ folder
 SRCS     := $(wildcard $(SRC_DIR)/*.cpp)
 
@@ -29,6 +32,10 @@ release: $(TARGET_RELEASE)
 
 # Running "make debug" builds ONLY the diagnostic binary with loop logging active
 debug: $(TARGET_DEBUG)
+
+# Running "make doxygen" generates the documentation
+doxygen: $(DOXYFILE)
+	doxygen $(DOXYFILE)
 
 # ---------------------------------------------------------------------
 # Binary Generation Rules
@@ -69,4 +76,4 @@ clean:
 	rm -f $(TARGET_RELEASE) $(TARGET_DEBUG)
 	@echo "Objects and binaries cleared. Build/ directory and .gitkeep preserved."
 
-.PHONY: all debug release clean
+.PHONY: all debug release clean doxygen

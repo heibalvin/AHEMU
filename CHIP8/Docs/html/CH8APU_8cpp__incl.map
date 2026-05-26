@@ -1,0 +1,36 @@
+<map id="Source/CH8APU.cpp" name="Source/CH8APU.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="212,5,358,31"/>
+<area shape="rect" id="Node000002" href="$CH8APU_8hpp.html" title="Declaration of the CH8APU class, which emulates the audio processing unit of a CHIP&#45;8 system." alt="" coords="128,153,229,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,29,199,141,194,138,275,33"/>
+<area shape="rect" id="Node000005" href="$CH8EMU_8hpp.html" title="Declaration of the CH8EMU class, which represents the entire CHIP&#45;8 emulator system." alt="" coords="340,79,444,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="303,29,364,69,358,70,303,34"/>
+<area shape="rect" id="Node000003" href="$CH8COM_8hpp.html" title="Declaration of the CH8COM abstract base class, which defines the common interface for all CHIP&#45;8 hard..." alt="" coords="341,226,445,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="215,176,345,220,340,222,215,182"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="435,300,530,326"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="409,250,458,291,453,290,407,255"/>
+<area shape="poly" id="edge19_Node000005_Node000002" title=" " alt="" coords="353,107,230,150,228,145,358,104"/>
+<area shape="poly" id="edge23_Node000005_Node000003" title=" " alt="" coords="394,103,395,212,390,210,390,107"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="444,90,534,93,639,101,690,109,734,119,771,133,795,151,807,167,812,183,811,198,804,212,779,237,741,257,694,274,643,287,546,306,545,300,641,282,692,269,739,252,776,232,800,209,805,197,806,184,802,170,791,155,768,138,733,124,688,114,638,106,534,98,444,95"/>
+<area shape="rect" id="Node000006" href="$CH8BUS_8hpp.html" title="Declaration of the CH8BUS class, which emulates the system bus and memory of a CHIP&#45;8 system." alt="" coords="429,153,530,178"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="407,103,456,143,451,143,406,108"/>
+<area shape="rect" id="Node000007" href="$CH8CPU_8hpp.html" title="Declaration of the CH8CPU class, which emulates the CPU of a CHIP&#45;8 system." alt="" coords="554,153,656,178"/>
+<area shape="poly" id="edge9_Node000005_Node000007" title=" " alt="" coords="428,103,557,147,552,148,428,108"/>
+<area shape="rect" id="Node000009" href="$CH8PPU_8hpp.html" title="Declaration of the CH8PPU class, which emulates the pixel processing unit (display) of a CHIP&#45;8 syste..." alt="" coords="680,153,781,178"/>
+<area shape="poly" id="edge13_Node000005_Node000009" title=" " alt="" coords="444,101,667,149,662,151,444,107"/>
+<area shape="rect" id="Node000010" href="$CH8KEY_8hpp.html" title="Declaration of the CH8KEY class, which emulates the keyboard controller of a CHIP&#45;8 system." alt="" coords="5,153,104,178"/>
+<area shape="poly" id="edge16_Node000005_Node000010" title=" " alt="" coords="339,107,120,153,118,148,341,102"/>
+<area shape="rect" id="Node000011" href="$CH8DSK_8hpp.html" title="Declaration of the CH8DSK class, which emulates the disk system (ROM loader) of a CHIP&#45;8 system." alt="" coords="253,153,354,178"/>
+<area shape="poly" id="edge20_Node000005_Node000011" title=" " alt="" coords="379,104,332,145,329,141,375,107"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="468,178,421,219,418,214,463,180"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="482,177,484,286,480,283,478,180"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="572,178,444,224,443,218,567,180"/>
+<area shape="rect" id="Node000008" href="$CH8OPC_8hpp.html" title="Declaration of the CH8OPC struct, which defines an opcode handler entry in the CPU&#39;s opcode table." alt="" coords="537,226,639,252"/>
+<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="604,177,596,213,592,209,600,180"/>
+<area shape="poly" id="edge12_Node000008_Node000004" title=" " alt="" coords="573,252,514,293,512,289,567,253"/>
+<area shape="poly" id="edge15_Node000009_Node000003" title=" " alt="" coords="677,178,461,226,460,221,682,177"/>
+<area shape="poly" id="edge14_Node000009_Node000004" title=" " alt="" coords="725,177,695,216,652,254,599,281,546,300,545,294,597,276,649,250,691,212,720,180"/>
+<area shape="poly" id="edge18_Node000010_Node000003" title=" " alt="" coords="104,175,328,222,324,226,104,180"/>
+<area shape="poly" id="edge17_Node000010_Node000004" title=" " alt="" coords="91,176,434,292,431,297,90,182"/>
+<area shape="poly" id="edge22_Node000011_Node000003" title=" " alt="" coords="320,176,369,217,364,216,318,181"/>
+<area shape="poly" id="edge21_Node000011_Node000004" title=" " alt="" coords="306,177,313,214,320,233,331,250,350,267,373,280,422,301,417,300,370,285,347,271,327,254,315,236,307,215,303,181"/>
+</map>

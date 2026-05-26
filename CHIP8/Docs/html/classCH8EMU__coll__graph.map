@@ -1,0 +1,26 @@
+<map id="CH8EMU" name="CH8EMU">
+<area shape="rect" id="Node000001" title="The CH8EMU class represents the complete CHIP&#45;8 emulator. It inherits from CH8COM (common communicati..." alt="" coords="252,5,331,31"/>
+<area shape="rect" id="Node000002" href="$classCH8COM.html" title="The CH8COM class is an abstract base class that defines the common interface for all CHIP&#45;8 hardware ..." alt="" coords="250,102,330,128"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="270,41,264,56,261,66,264,77,280,102,274,101,259,79,256,66,259,54,266,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="296,86,297,78,297,55,294,34,296,29,302,55,302,78,300,89"/>
+<area shape="rect" id="Node000003" href="$classCH8BUS.html" title="The CH8BUS class emulates the system bus of a CHIP&#45;8 system. It provides a 4KB RAM array and methods ..." alt="" coords="5,219,82,245"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="233,134,187,154,119,189,64,221,61,216,116,184,185,149,238,132"/>
+<area shape="rect" id="Node000004" href="$classCH8CPU.html" title="The CH8CPU class emulates the Central Processing Unit of a CHIP&#45;8 system. It inherits from CH8COM (co..." alt="" coords="509,219,586,245"/>
+<area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="341,131,389,149,528,218,522,219,386,154,340,136"/>
+<area shape="rect" id="Node000006" href="$classCH8PPU.html" title="The CH8PPU class emulates the Pixel Processing Unit of a CHIP&#45;8 system. It handles all aspects of the..." alt="" coords="107,219,183,245"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="266,137,161,221,159,216,261,137"/>
+<area shape="rect" id="Node000007" href="$classCH8KEY.html" title="The CH8KEY class emulates the keyboard controller of a CHIP&#45;8 system. It maps the host keyboard to th..." alt="" coords="208,219,284,245"/>
+<area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="282,141,253,220,249,217,278,143"/>
+<area shape="rect" id="Node000008" href="$classCH8APU.html" title="The CH8APU class emulates the Audio Processing Unit of a CHIP&#45;8 system. It handles the sound timer an..." alt="" coords="308,219,384,245"/>
+<area shape="poly" id="edge13_Node000008_Node000002" title=" " alt="" coords="304,139,343,219,338,218,301,144"/>
+<area shape="rect" id="Node000009" href="$classCH8DSK.html" title="The CH8DSK class emulates the disk system of a CHIP&#45;8 system. It handles loading ROM files into memor..." alt="" coords="408,219,484,245"/>
+<area shape="poly" id="edge15_Node000009_Node000002" title=" " alt="" coords="319,134,433,218,427,219,318,139"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="53,204,73,168,101,126,138,85,182,53,217,37,254,27,250,30,219,42,185,57,141,89,105,130,77,171,58,207"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="595,208,608,194,619,169,620,147,613,125,596,104,578,91,550,78,478,56,399,39,332,28,331,22,400,34,479,51,552,73,580,86,600,100,618,123,626,146,624,170,612,196,597,213"/>
+<area shape="rect" id="Node000005" href="$structCH8OPC.html" title="The CH8OPC struct defines an entry in the CPU&#39;s opcode handler table. Each entry specifies:" alt="" coords="509,102,586,128"/>
+<area shape="poly" id="edge7_Node000004_Node000005" title=" " alt="" coords="549,141,550,220,545,217,546,145"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="143,202,150,154,157,127,168,101,186,76,209,56,261,30,257,33,213,61,190,80,173,103,162,128,155,155,148,205"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="227,205,215,185,206,158,202,129,207,101,219,78,236,59,270,33,274,30,240,62,224,81,212,103,207,129,211,157,220,182,232,207"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="347,202,347,156,340,103,322,63,301,34,303,29,326,60,345,101,352,156,351,205"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="434,204,400,133,374,93,343,57,313,34,313,29,347,53,379,90,405,131,439,205"/>
+</map>
