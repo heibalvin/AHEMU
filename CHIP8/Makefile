@@ -25,7 +25,7 @@ OBJS     := $(patsubst %.cpp, %.o, $(notdir $(SRCS)))
 # ---------------------------------------------------------------------
 
 # Running "make" with no arguments now automatically builds BOTH targets
-all: release debug
+all: release
 
 # Running "make release" builds ONLY the optimized production binary
 release: $(TARGET_RELEASE)
