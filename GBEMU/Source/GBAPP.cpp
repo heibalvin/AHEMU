@@ -40,6 +40,10 @@ void GBAPP::powerOn() {
 }
 
 void GBAPP::powerOff() {
+    if (!emu.isRunning) {
+        return;
+    }
+    
 	emu.powerOff();
 
 	if (renderer) { SDL_DestroyRenderer(renderer); renderer = nullptr; }
