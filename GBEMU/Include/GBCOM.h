@@ -17,6 +17,9 @@ public:
     virtual void powerOn() = 0;
     virtual void powerOff() = 0;
     virtual void reset() = 0;
+
+    virtual Uint8 read(Uint16 addr) = 0;
+    virtual void  write(Uint16 addr, Uint8 value) = 0;
 };
 
 #endif // GBCOM_H

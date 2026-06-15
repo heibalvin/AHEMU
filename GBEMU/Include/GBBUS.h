@@ -4,26 +4,33 @@
 #include <SDL3/SDL.h>
 #include "GBCOM.h"
 
-class GBBUS: GBCOM {
+class GBEMU;
+
+class GBBUS : public GBCOM {
 private:
-	Uint8 *memory;
+    Uint8 WRAM[0x2000]; // 8KB
+    Uint8 HRAM[0x7F];   // 127 bytes
+
+    Uint8 IE; // 0xFFFF: Which interrupts are allowed to trigger
+    Uint8 IF; // 0xFF0F: Which interrupts are currently pending
+
 public:
-    GBBUS(GBEMU *emu);
-    ~GBBUS();
+    explicit GBBUS(GBEMU* emu);
 
-	void powerOn();
-    void powerOff();
-    void reset();
+    // GBCOM Interface
+    void powerOn() override { reset(); }
+    void powerOff() override {}
+    void reset() override;
 
-    // Standard Accessors
-    Uint8 read(Uint16 address);
-    void  write(Uint16 address, Uint8 value);
+    // Bus Access
+    Uint8 read(Uint16 addr) override;
+    void  write(Uint16 addr, Uint8 value) override;
 
-    Uint16 readLE(Uint16 address);
-    void   writeLE(Uint16 address, Uint16 value);
-
-	Uint16 readBE(Uint16 address);
-    void   writeBE(Uint16 address, Uint16 value);
+    // Endian-Aware Accessors
+    Uint16 readLE(Uint16 addr);
+    void   writeLE(Uint16 addr, Uint16 value);
+    Uint16 readBE(Uint16 addr);
+    void   writeBE(Uint16 addr, Uint16 value);
 };
 
-#endif // GBBUS_H
+#endif

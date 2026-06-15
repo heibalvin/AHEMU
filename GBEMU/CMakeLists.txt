@@ -12,6 +12,10 @@ add_library(GBEMUCORE STATIC
     Source/GBEMU.cpp
     Source/GBBUS.cpp
     Source/GBDSK.cpp
+    Source/GBCPU.cpp
+    Source/GBVDP.cpp
+    Source/GBJOY.cpp
+    Source/GBAPU.cpp
 )
 
 # 2. Compile Native Window App Driver Target

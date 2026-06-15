@@ -2,8 +2,9 @@
 
 // 1. Use an initializer list to construct components with 'this'
 GBEMU::GBEMU() 
-    : isRunning(false), bus(this), dsk(this) 
-{}
+    : isRunning(false), bus(this), dsk(this), cpu(this), vdp(this), joy(this), apu(this) {
+        
+    }
 
 GBEMU::~GBEMU() {
 

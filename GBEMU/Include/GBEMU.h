@@ -3,12 +3,21 @@
 
 #include "GBBUS.h"
 #include "GBDSK.h"
+#include "GBCPU.h"
+#include "GBVDP.h"
+#include "GBJOY.h"
+#include "GBAPU.h"
 
 class GBEMU {
     friend class GBAPP; // Allows GBAPP to access isRunning
 private:
     GBBUS bus;
     GBDSK dsk;
+    GBCPU cpu;
+    GBVDP vdp;
+    GBJOY joy;
+    GBAPU apu;
+
 	bool isRunning;
 	int width = 160;
 	int height = 144;
