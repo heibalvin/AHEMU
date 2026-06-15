@@ -63,9 +63,9 @@ void GBAPP::step() {
 
 void GBAPP::run() {
     if (isHeadless) {
-		while (emu.isRunning) {
-			step();
-		}
+        while (emu.isRunning) {
+            step();
+        }
         return;
     }
 
@@ -75,13 +75,27 @@ void GBAPP::run() {
             if (event.type == SDL_EVENT_QUIT) {
                 emu.isRunning = false;
             }
+            // Add keyboard mapping here
+            else if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+                bool pressed = (event.type == SDL_EVENT_KEY_DOWN);
+                switch (event.key.key) {
+                    case SDLK_Z:     emu.joy.setButton(GBJOY::A,      pressed); break;
+                    case SDLK_X:     emu.joy.setButton(GBJOY::B,      pressed); break;
+                    case SDLK_RETURN:emu.joy.setButton(GBJOY::START,  pressed); break;
+                    case SDLK_RSHIFT:emu.joy.setButton(GBJOY::SELECT, pressed); break;
+                    case SDLK_UP:    emu.joy.setButton(GBJOY::UP,     pressed); break;
+                    case SDLK_DOWN:  emu.joy.setButton(GBJOY::DOWN,   pressed); break;
+                    case SDLK_LEFT:  emu.joy.setButton(GBJOY::LEFT,   pressed); break;
+                    case SDLK_RIGHT: emu.joy.setButton(GBJOY::RIGHT,  pressed); break;
+                }
+            }
         }
 
         step();
 
-		SDL_SetRenderDrawColor(renderer, 0x08, 0x18, 0x20, 0xFF); // gray
-		SDL_RenderClear(renderer);
-		SDL_RenderPresent(renderer);
+        SDL_SetRenderDrawColor(renderer, 0x08, 0x18, 0x20, 0xFF);
+        SDL_RenderClear(renderer);
+        SDL_RenderPresent(renderer);
     }
 }
 

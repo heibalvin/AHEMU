@@ -10,6 +10,8 @@
 
 class GBEMU {
     friend class GBAPP; // Allows GBAPP to access isRunning
+    friend class GBBUS;
+    friend class GBVDP; // Add this line to allow GBVDP to access 'bus'
 private:
     GBBUS bus;
     GBDSK dsk;

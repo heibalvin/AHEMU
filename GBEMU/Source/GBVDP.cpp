@@ -16,6 +16,10 @@ void GBVDP::reset() {
     LCDC = 0;
     STAT = 0;
     LY   = 0;
+    LYC = 0;
+    OBP0 = 0;
+    OBP1 = 0;
+    fetcherState = 0;
     SCX  = 0;
     SCY  = 0;
     BGP  = 0;
@@ -396,4 +400,15 @@ void GBVDP::tickFetcher() {
             }
             break;
     }
+}
+
+// Implement these according to your VDP state
+Uint8 GBVDP::getMode() {
+    // Return the current PPU mode (0-3)
+    return currentMode; 
+}
+
+bool GBVDP::isDmaActive() {
+    // Return true if OAM DMA is currently in progress
+    return dmaInProgress; 
 }

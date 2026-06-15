@@ -14,6 +14,14 @@ GBDSK::~GBDSK() {
     }
 }
 
+void GBDSK::powerOn() {
+    reset(); // Or your specific startup logic
+}
+
+void GBDSK::powerOff() {
+    // Add cleanup logic if needed
+}
+
 void GBDSK::reset() { 
     romBank = 1; 
     ramBank = 0;

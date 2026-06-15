@@ -1,4 +1,5 @@
 #include "GBBUS.h"
+#include "GBEMU.h" // ADD THIS LINE: It provides the full definition of GBEMU
 
 GBBUS::GBBUS(GBEMU *emu) 
     : GBCOM(emu) {
@@ -41,9 +42,11 @@ Uint8 GBBUS::read(Uint16 addr) {
     // 0xFEA0 - 0xFEFF: Unusable (Return 0xFF)
     if (addr >= 0xFEA0 && addr <= 0xFEFF) return 0xFF;
 
+   
     // 0xFF00 - 0xFF7F: I/O Registers
     if (addr >= 0xFF00 && addr <= 0xFF7F) {
         if (addr == 0xFF00) return emu->joy.read(addr);
+         if (addr == 0xFF0F) return IF; // Read
         return emu->vdp.read(addr); // VDP Registers like LCDC, STAT, etc.
     }
 
@@ -84,6 +87,7 @@ void GBBUS::write(Uint16 addr, Uint8 value) {
     // 0xFF00 - 0xFF7F: I/O Registers
     if (addr >= 0xFF00 && addr <= 0xFF7F) {
         if (addr == 0xFF00) { emu->joy.write(addr, value); return; }
+        if (addr == 0xFF0F) { IF = value; return; } // Write
         emu->vdp.write(addr, value); return;
     }
 

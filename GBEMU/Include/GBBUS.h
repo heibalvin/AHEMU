@@ -16,6 +16,7 @@ private:
 
 public:
     explicit GBBUS(GBEMU* emu);
+    ~GBBUS(); // Explicitly declare here
 
     // GBCOM Interface
     void powerOn() override { reset(); }

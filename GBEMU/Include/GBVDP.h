@@ -23,9 +23,11 @@ private:
     Uint8 VRAM[0x2000];
     Uint8 OAM[0xA0];
     Uint8 LX;
-    Uint8 LCDC, STAT, LY;
+    Uint8 LCDC, STAT, LY, LYC;
     Uint8 SCX, SCY; // 0xFF43, 0xFF42
     Uint8 BGP; // 0xFF47: Background Palette Data
+    Uint8 OBP0, OBP1;     // Object Palette registers
+    int   fetcherState; // Add this (or define an enum)
     
     // Store only the OAM indices (0-39) of the sprites found for this line
     Uint8 spriteIndices[10]; 
@@ -60,6 +62,9 @@ private:
     int fifoWriteIdx;
     int fifoCount;
 
+    Uint8 currentMode;   // Should NOT be static
+    bool  dmaInProgress; // Should NOT be static
+    
     // Cycle tracking
     Uint32 cycle;
 
@@ -86,6 +91,10 @@ public:
 
     void pushPixel(Pixel p);
     Pixel popPixel();
+
+    Uint8 getMode();
+    bool  isDmaActive();
+    void tickFetcher(); // Add this declaration
 };
 
 #endif

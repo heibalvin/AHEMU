@@ -2,26 +2,24 @@
 #define GBJOY_H
 
 #include <SDL3/SDL.h>
-// Inside GBJOY.h
 #include "GBCOM.h"
 
 class GBJOY : public GBCOM {
-    Uint8 joyp;
-    bool btnStates[8];
+private:
+    Uint8 buttons;   // Bitmask: 0=pressed, 1=released
+    Uint8 select;    // Current selection (bits 4-5 of 0xFF00)
 
 public:
-    explicit GBJOY(GBEMU *emu) : GBCOM(emu), joyp(0xCF) {} // Initialize with default mask
+    explicit GBJOY(GBEMU *emu);
+    void powerOn() override;
+    void powerOff() override;
+    void reset() override;
 
-    // GBCOM Interface implementation
-    void powerOn() override { joyp = 0xCF; }
-    void powerOff() override {}
-    void reset() override { powerOn(); }
+    enum Button { A, B, SELECT, START, RIGHT, LEFT, UP, DOWN };
+    void setButton(Button btn, bool pressed);
 
     Uint8 read(Uint16 addr) override;
     void  write(Uint16 addr, Uint8 value) override;
-
-    // Component-specific methods
-    void setKeyState(int key, bool pressed);
 };
 
-#endif 	// GBJOY_H
+#endif
