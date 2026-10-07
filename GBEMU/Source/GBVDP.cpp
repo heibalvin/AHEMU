@@ -1,8 +1,8 @@
 #include "GBVDP.h"
 #include "GBEMU.h"
 
-GBVDP::GBVDP(GBEMU* emu) : GBCOM(emu) {
-    backBufferIdx = 0;
+GBVDP::GBVDP(GBEMU &emu) : GBCOM(emu) {
+    backBufferId = 0;
     reset();
 }
 
@@ -94,17 +94,16 @@ void GBVDP::write(Uint16 addr, Uint8 value) {
 }
 
 void GBVDP::swapBuffers() {
-    frontBuffer = buffers[backBufferIdx];
-    backBufferIdx = 1 - backBufferIdx;
+    backBufferId = (backBufferId + 1) % 2;
 }
 
-void GBVDP::update(Uint8 cycles) {
+void GBVDP::step(Uint8 cycles) {
     // 1. OAM DMA Logic (High-priority cycle tracking)
     if (dmaActive) {
         dmaCycles += (cycles * 4);
         if (dmaCycles >= 160) {
             for (int i = 0; i < 160; ++i) {
-                OAM[i] = emu->bus.read((dmaSource << 8) + i);
+                OAM[i] = emu.bus.read((dmaSource << 8) + i);
             }
             dmaActive = false;
         }
@@ -140,7 +139,7 @@ void GBVDP::update(Uint8 cycles) {
             // Consume from FIFO to output to screen
             if (cycle >= 1 && fifoCount > 0) {
                 Pixel p = popPixel();
-                buffers[backBufferIdx][LY * 160 + LX] = PALETTE[p.color];
+                buffers[backBufferId][LY * 160 + LX] = PALETTE[p.color];
                 LX++;
                 cycle -= 1;
             }
@@ -168,7 +167,7 @@ void GBVDP::update(Uint8 cycles) {
                     windowLine = 0;
                     STAT = (STAT & 0xFC) | 1; // V-Blank
                     // Trigger V-Blank Interrupt
-                    emu->bus.write(0xFF0F, emu->bus.read(0xFF0F) | 0x01);
+                    emu.bus.write(0xFF0F, emu.bus.read(0xFF0F) | 0x01);
                     checkSTATInterrupts();
                     swapBuffers();
                 } else {
@@ -211,7 +210,7 @@ void GBVDP::renderPixel() {
 
     // 4. Output to active buffer
     // BackBufferIdx toggles between 0 and 1 to prevent tearing
-    buffers[backBufferIdx][LY * 160 + LX] = finalColor;
+    buffers[backBufferId][LY * 160 + LX] = finalColor;
     
     // Increment X position for the next pixel
     LX++;
@@ -231,7 +230,7 @@ Uint8 GBVDP::getBackgroundOrWindowPixel() {
     // 3. Find the Tile ID in the background/window tile map
     // Tile map base address is determined by LCDC bits (0x1800 or 0x1C00 relative to 0x8000)
     Uint16 mapBase = (useWindow ? (LCDC & 0x40) : (LCDC & 0x08)) ? 0x1C00 : 0x1800;
-    Uint8 tileId = emu->bus.read(0x8000 + mapBase + (mapY / 8) * 32 + (mapX / 8));
+    Uint8 tileId = emu.bus.read(0x8000 + mapBase + (mapY / 8) * 32 + (mapX / 8));
 
     // 4. Determine tile data location
     // Tile data base is determined by LCDC bit 4
@@ -241,8 +240,8 @@ Uint8 GBVDP::getBackgroundOrWindowPixel() {
     Uint16 pixelRowAddr = 0x8000 + tileBase + tileAddr + ((mapY % 8) * 2);
 
     // 5. Fetch the 2 bits of color data for this pixel
-    Uint8 byte1 = emu->bus.read(pixelRowAddr);
-    Uint8 byte2 = emu->bus.read(pixelRowAddr + 1);
+    Uint8 byte1 = emu.bus.read(pixelRowAddr);
+    Uint8 byte2 = emu.bus.read(pixelRowAddr + 1);
     
     // Bit position in the byte (7 to 0)
     int bitPos = 7 - (mapX % 8);
@@ -256,10 +255,10 @@ Uint8 GBVDP::fetchSpritePixel(Uint8 idx, Uint8 &sFlags) {
     Uint16 addr = 0xFE00 + (idx * 4);
     
     // 2. Read sprite attributes from the Bus
-    Uint8 sY = emu->bus.read(addr);
-    Uint8 sX = emu->bus.read(addr + 1);
-    Uint8 sTile = emu->bus.read(addr + 2);
-    sFlags = emu->bus.read(addr + 3); // Store flags for palette/priority logic
+    Uint8 sY = emu.bus.read(addr);
+    Uint8 sX = emu.bus.read(addr + 1);
+    Uint8 sTile = emu.bus.read(addr + 2);
+    sFlags = emu.bus.read(addr + 3); // Store flags for palette/priority logic
 
     // 3. Check if the current LX coordinate overlaps with the sprite
     // Sprites are 8 pixels wide, and sX/sY are offset by 8 and 16 respectively
@@ -273,8 +272,8 @@ Uint8 GBVDP::fetchSpritePixel(Uint8 idx, Uint8 &sFlags) {
         // 5. Fetch tile data from VRAM
         // Each tile is 16 bytes (8 lines * 2 bytes/line)
         Uint16 sTileAddr = 0x8000 + (sTile * 16) + (row * 2);
-        Uint8 sByte1 = emu->bus.read(sTileAddr);
-        Uint8 sByte2 = emu->bus.read(sTileAddr + 1);
+        Uint8 sByte1 = emu.bus.read(sTileAddr);
+        Uint8 sByte2 = emu.bus.read(sTileAddr + 1);
 
         // 6. Handle Horizontal Flip
         int col = LX - (sX - 8);
@@ -328,7 +327,7 @@ void GBVDP::oamSearch() {
     // 2. Iterate through OAM (40 entries total, 4 bytes each)
     for (int i = 0; i < 40 && spriteCount < 10; ++i) {
         Uint16 addr = 0xFE00 + (i * 4);
-        Uint8 sY = emu->bus.read(addr);
+        Uint8 sY = emu.bus.read(addr);
         
         // 3. Check if sprite intersects the current LY
         // The hardware offset for Y is 16.
@@ -357,8 +356,8 @@ void GBVDP::checkSTATInterrupts() {
 
     // 3. Trigger the interrupt in the Interrupt Master (0xFF0F)
     if (interruptTriggered) {
-        Uint8 ifReg = emu->bus.read(0xFF0F);
-        emu->bus.write(0xFF0F, ifReg | 0x02); // Bit 1 of IF is STAT interrupt
+        Uint8 ifReg = emu.bus.read(0xFF0F);
+        emu.bus.write(0xFF0F, ifReg | 0x02); // Bit 1 of IF is STAT interrupt
     }
 }
 

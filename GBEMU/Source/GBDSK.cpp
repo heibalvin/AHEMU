@@ -1,7 +1,7 @@
 #include "GBDSK.h"
 #include "GBEMU.h"
 
-GBDSK::GBDSK(GBEMU *emu) 
+GBDSK::GBDSK(GBEMU &emu) 
     : GBCOM(emu), romData(nullptr), romSize(0), 
       romBank(1), ramBank(0), ramEnabled(false), bankingMode(false) {
     SDL_memset(externalRAM, 0, sizeof(externalRAM));

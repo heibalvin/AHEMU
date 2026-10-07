@@ -9,13 +9,9 @@ class GBEMU;
 class GBBUS : public GBCOM {
 private:
     Uint8 WRAM[0x2000]; // 8KB
-    Uint8 HRAM[0x7F];   // 127 bytes
-
-    Uint8 IE; // 0xFFFF: Which interrupts are allowed to trigger
-    Uint8 IF; // 0xFF0F: Which interrupts are currently pending
 
 public:
-    explicit GBBUS(GBEMU* emu);
+    explicit GBBUS(GBEMU &emu);
     ~GBBUS(); // Explicitly declare here
 
     // GBCOM Interface

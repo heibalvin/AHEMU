@@ -31,6 +31,9 @@ void GBAPP::powerOn() {
 
 		SDL_SetRenderLogicalPresentation(renderer, emu.width, emu.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
+        texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, 
+                                    SDL_TEXTUREACCESS_STREAMING, 160, 144);
+
 		SDL_SetRenderDrawColor(renderer, 0x08, 0x18, 0x20, 0xFF); // gray
 		SDL_RenderClear(renderer);
 		SDL_RenderPresent(renderer);
@@ -57,46 +60,70 @@ void GBAPP::reset() {
     emu.reset();
 }
 
-void GBAPP::step() {
-    emu.step();
-}
-
 void GBAPP::run() {
     if (isHeadless) {
         while (emu.isRunning) {
-            step();
+            emu.step();
         }
         return;
     }
 
-    SDL_Event event;
+    Uint64 lastTime = SDL_GetTicksNS();
+    const Uint64 frameTimeNs = 1000000000 / 60; // 60Hz target
+
     while (emu.isRunning) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
-                emu.isRunning = false;
-            }
-            // Add keyboard mapping here
-            else if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
-                bool pressed = (event.type == SDL_EVENT_KEY_DOWN);
-                switch (event.key.key) {
-                    case SDLK_Z:     emu.joy.setButton(GBJOY::A,      pressed); break;
-                    case SDLK_X:     emu.joy.setButton(GBJOY::B,      pressed); break;
-                    case SDLK_RETURN:emu.joy.setButton(GBJOY::START,  pressed); break;
-                    case SDLK_RSHIFT:emu.joy.setButton(GBJOY::SELECT, pressed); break;
-                    case SDLK_UP:    emu.joy.setButton(GBJOY::UP,     pressed); break;
-                    case SDLK_DOWN:  emu.joy.setButton(GBJOY::DOWN,   pressed); break;
-                    case SDLK_LEFT:  emu.joy.setButton(GBJOY::LEFT,   pressed); break;
-                    case SDLK_RIGHT: emu.joy.setButton(GBJOY::RIGHT,  pressed); break;
-                }
+        inputs(); // Handle key events
+        
+        Uint64 currentTime = SDL_GetTicksNS();
+        Uint64 deltaTime = currentTime - lastTime;
+
+        // Run the emulator for the elapsed time
+        emu.run(deltaTime);
+        lastTime = currentTime;
+
+        render(); // Update texture from VDP buffer
+
+        // Simple frame rate cap (optional: allow emulator to catch up)
+        if (deltaTime < frameTimeNs) {
+            SDL_DelayNS(frameTimeNs - deltaTime);
+        }
+    }
+}
+void GBAPP::inputs() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_EVENT_QUIT) emu.isRunning = false;
+        
+        if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+            bool pressed = (event.type == SDL_EVENT_KEY_DOWN);
+            switch (event.key.key) {
+                case SDLK_Z:      emu.setJoypadButton(GBJOY::A, pressed);      break;
+                case SDLK_X:      emu.setJoypadButton(GBJOY::B, pressed);      break;
+                case SDLK_RETURN: emu.setJoypadButton(GBJOY::START, pressed);  break;
+                case SDLK_RSHIFT: emu.setJoypadButton(GBJOY::SELECT, pressed); break;
+                case SDLK_UP:     emu.setJoypadButton(GBJOY::UP, pressed);     break;
+                case SDLK_DOWN:   emu.setJoypadButton(GBJOY::DOWN, pressed);   break;
+                case SDLK_LEFT:   emu.setJoypadButton(GBJOY::LEFT, pressed);   break;
+                case SDLK_RIGHT:  emu.setJoypadButton(GBJOY::RIGHT, pressed);  break;
+                default: break;
             }
         }
-
-        step();
-
-        SDL_SetRenderDrawColor(renderer, 0x08, 0x18, 0x20, 0xFF);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
     }
+}
+
+void GBAPP::render() {
+    if (!texture) {
+        return;
+    }
+
+    // 2. Update from VDP buffer
+    const Uint32* pixels = emu.getVDPFrameBuffer();
+    SDL_UpdateTexture(texture, nullptr, pixels, 160 * sizeof(Uint32));
+    
+    // 3. Draw
+    SDL_RenderClear(renderer);
+    SDL_RenderTexture(renderer, texture, nullptr, nullptr);
+    SDL_RenderPresent(renderer);
 }
 
 // ======================================================================

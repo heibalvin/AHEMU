@@ -52,8 +52,7 @@ private:
 
     // Double Buffering: 0 and 1
     Uint32 buffers[2][160 * 144];
-    Uint32* frontBuffer;
-    int backBufferIdx;
+    int backBufferId;
 
     // FIFO implementation
     #define FIFO_SIZE 16
@@ -69,7 +68,7 @@ private:
     Uint32 cycle;
 
 public:
-    explicit GBVDP(GBEMU* emu);
+    explicit GBVDP(GBEMU &emu);
 
     void powerOn() override { reset(); }
     void powerOff() override {}
@@ -78,7 +77,7 @@ public:
     Uint8 read(Uint16 addr) override;
     void  write(Uint16 addr, Uint8 value) override;
     
-    void  update(Uint8 cycles);
+    void  step(Uint8 cycles);
     void renderPixel();
     Uint8 getBackgroundOrWindowPixel();
     Uint8 fetchSpritePixel(Uint8 idx, Uint8 &sFlags);
@@ -87,7 +86,7 @@ public:
     void checkSTATInterrupts();
 
     void swapBuffers();
-    const Uint32* getFrontBuffer() const { return frontBuffer; }
+    const Uint32* getFrontBuffer() const { return buffers[(backBufferId + 1) % 2]; }
 
     void pushPixel(Pixel p);
     Pixel popPixel();

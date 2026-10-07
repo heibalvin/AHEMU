@@ -18,7 +18,7 @@ private:
     Uint8 externalRAM[0x8000]; // 32KB SRAM buffer
 
 public:
-    GBDSK(GBEMU *emu);
+    GBDSK(GBEMU &emu);
     ~GBDSK();
 
     void powerOn() override;

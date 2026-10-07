@@ -10,7 +10,7 @@ private:
     Uint8 select;    // Current selection (bits 4-5 of 0xFF00)
 
 public:
-    explicit GBJOY(GBEMU *emu);
+    explicit GBJOY(GBEMU &emu);
     void powerOn() override;
     void powerOff() override;
     void reset() override;

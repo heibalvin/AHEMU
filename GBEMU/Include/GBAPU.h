@@ -8,7 +8,7 @@ class GBAPU: GBCOM {
 private:
 
 public:
-    GBAPU(GBEMU *emu);
+    GBAPU(GBEMU &emu);
     ~GBAPU();
 
 	void powerOn();

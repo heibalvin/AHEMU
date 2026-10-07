@@ -1,6 +1,6 @@
 #include "GBJOY.h"
 
-GBJOY::GBJOY(GBEMU *emu) : GBCOM(emu), buttons(0xFF), select(0x30) {}
+GBJOY::GBJOY(GBEMU &emu) : GBCOM(emu), buttons(0xFF), select(0x30) {}
 
 // Ensure these three exist in GBJOY.cpp
 void GBJOY::powerOn() {

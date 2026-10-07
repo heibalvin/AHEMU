@@ -1,6 +1,6 @@
 #include "GBAPU.h"
 
-GBAPU::GBAPU(GBEMU *emu) 
+GBAPU::GBAPU(GBEMU &emu) 
     : GBCOM(emu) {
 	
 }

@@ -1,7 +1,7 @@
 #include "GBBUS.h"
 #include "GBEMU.h" // ADD THIS LINE: It provides the full definition of GBEMU
 
-GBBUS::GBBUS(GBEMU *emu) 
+GBBUS::GBBUS(GBEMU &emu) 
     : GBCOM(emu) {
 	reset();
 }
@@ -11,91 +11,119 @@ GBBUS::~GBBUS() {
 
 void GBBUS::reset() {
 	SDL_memset(WRAM, 0, sizeof(WRAM));
-    SDL_memset(HRAM, 0, sizeof(HRAM));
 }
 
 Uint8 GBBUS::read(Uint16 addr) {
     // 0x0000 - 0x7FFF: Cartridge ROM
-    if (addr <= 0x7FFF) return emu->dsk.read(addr);
+    if (addr <= 0x7FFF) {
+        return emu.dsk.read(addr);
+    }
 
     // 0x8000 - 0x9FFF: VRAM (Blocked during PPU Mode 3)
     if (addr >= 0x8000 && addr <= 0x9FFF) {
-        if (emu->vdp.getMode() == 3) return 0xFF;
-        return emu->vdp.read(addr);
+        if (emu.vdp.getMode() == 3) return 0xFF;
+        return emu.vdp.read(addr);
     }
 
     // 0xA000 - 0xBFFF: Cartridge RAM (Banked)
-    if (addr >= 0xA000 && addr <= 0xBFFF) return emu->dsk.readRam(addr);
+    if (addr >= 0xA000 && addr <= 0xBFFF) {    
+        return emu.dsk.readRam(addr);
+    }
 
     // 0xC000 - 0xDFFF: WRAM
-    if (addr >= 0xC000 && addr <= 0xDFFF) return WRAM[addr & 0x1FFF];
+    if (addr >= 0xC000 && addr <= 0xDFFF) {
+        return WRAM[addr & 0x1FFF];
+    }
 
     // 0xE000 - 0xFDFF: Echo RAM (Mirror of WRAM)
-    if (addr >= 0xE000 && addr <= 0xFDFF) return WRAM[addr & 0x1FFF];
+    if (addr >= 0xE000 && addr <= 0xFDFF) {
+        return WRAM[addr & 0x1FFF];
+    }
 
     // 0xFE00 - 0xFE9F: OAM (Blocked during PPU Mode 2/3 OR DMA)
     if (addr >= 0xFE00 && addr <= 0xFE9F) {
-        if (emu->vdp.isDmaActive() || emu->vdp.getMode() >= 2) return 0xFF;
-        return emu->vdp.read(addr);
+        if (emu.vdp.isDmaActive() || emu.vdp.getMode() >= 2) return 0xFF;
+        return emu.vdp.read(addr);
     }
 
-    // 0xFEA0 - 0xFEFF: Unusable (Return 0xFF)
-    if (addr >= 0xFEA0 && addr <= 0xFEFF) return 0xFF;
-
-   
     // 0xFF00 - 0xFF7F: I/O Registers
     if (addr >= 0xFF00 && addr <= 0xFF7F) {
-        if (addr == 0xFF00) return emu->joy.read(addr);
-         if (addr == 0xFF0F) return IF; // Read
-        return emu->vdp.read(addr); // VDP Registers like LCDC, STAT, etc.
+        if (addr == 0xFF00) return emu.joy.read(addr);
+        if (addr == 0xFF0F) return emu.IE;          // Interrupts
+        if (addr >= 0xFF40 && addr <= 0xFF4B) {
+            return emu.vdp.read(addr);         // VDP Registers like LCDC, STAT, etc.
+        }
+        if (addr >= 0xFF10 && addr <= 0xFF3F) {
+            return emu.apu.read(addr);         // APU Registers ...
+        }
     }
 
-    // 0xFF80 - 0xFFFE: HRAM
-    if (addr >= 0xFF80 && addr <= 0xFFFE) return HRAM[addr - 0xFF80];
-
-    // 0xFFFF: Interrupt Enable
-    if (addr == 0xFFFF) return IE;
+    // 0xFF80 - 0xFFFF: HRAM
+    if (addr >= 0xFF80 && addr <= 0xFFFF) {
+        if (addr == 0xFFFF) {
+            return emu.IE;
+        }
+        return emu.cpu.read(addr);
+    }
 
     return 0xFF; // Default for open bus
 }
 
 void GBBUS::write(Uint16 addr, Uint8 value) {
     // 0x0000 - 0x7FFF: Cartridge (Bank Switching)
-    if (addr <= 0x7FFF) { emu->dsk.write(addr, value); return; }
+    if (addr <= 0x7FFF) { 
+        emu.dsk.write(addr, value);
+    }
 
     // 0x8000 - 0x9FFF: VRAM (Blocked during PPU Mode 3)
     if (addr >= 0x8000 && addr <= 0x9FFF) {
-        if (emu->vdp.getMode() == 3) return;
-        emu->vdp.write(addr, value); return;
+        if (emu.vdp.getMode() == 3) return;
+        emu.vdp.write(addr, value);
     }
 
     // 0xA000 - 0xBFFF: Cartridge RAM
-    if (addr >= 0xA000 && addr <= 0xBFFF) { emu->dsk.writeRam(addr, value); return; }
+    if (addr >= 0xA000 && addr <= 0xBFFF) { 
+        emu.dsk.writeRam(addr, value);
+    }
 
     // 0xC000 - 0xDFFF: WRAM
-    if (addr >= 0xC000 && addr <= 0xDFFF) { WRAM[addr & 0x1FFF] = value; return; }
-
-    // 0xE000 - 0xFDFF: Echo RAM
-    if (addr >= 0xE000 && addr <= 0xFDFF) { WRAM[addr & 0x1FFF] = value; return; }
+    if (addr >= 0xC000 && addr <= 0xDFFF) { 
+        WRAM[addr & 0x1FFF] = value;
+    }
 
     // 0xFE00 - 0xFE9F: OAM (Blocked during PPU Mode 2/3 OR DMA)
     if (addr >= 0xFE00 && addr <= 0xFE9F) {
-        if (emu->vdp.isDmaActive() || emu->vdp.getMode() >= 2) return;
-        emu->vdp.write(addr, value); return;
+        if (emu.vdp.isDmaActive() || emu.vdp.getMode() >= 2) return;
+        emu.vdp.write(addr, value); return;
     }
 
     // 0xFF00 - 0xFF7F: I/O Registers
     if (addr >= 0xFF00 && addr <= 0xFF7F) {
-        if (addr == 0xFF00) { emu->joy.write(addr, value); return; }
-        if (addr == 0xFF0F) { IF = value; return; } // Write
-        emu->vdp.write(addr, value); return;
+        if (addr == 0xFF00) emu.joy.write(addr, value);
+        if (addr == 0xFF0F) {
+            emu.IF = value;
+            emu.updateIRQRequest();
+        }
+        if (addr >= 0xFF40 && addr <= 0xFF4B) {
+            emu.vdp.write(addr, value);         // VDP Registers like LCDC, STAT, etc.
+        }
+        if (addr >= 0xFF10 && addr <= 0xFF3F) {
+            emu.apu.write(addr, value);         // APU Registers ...
+        }
     }
 
-    // 0xFF80 - 0xFFFE: HRAM
-    if (addr >= 0xFF80 && addr <= 0xFFFE) { HRAM[addr - 0xFF80] = value; return; }
+    // 0xFF80 - 0xFFFF: HRAM
+    if (addr >= 0xFF80 && addr <= 0xFFFF) { 
+        emu.cpu.write(addr, value);
 
-    // 0xFFFF: Interrupt Enable
-    if (addr == 0xFFFF) { IE = value; return; }
+        if (addr == 0xFFFF) {
+            emu.IE = value;
+            emu.updateIRQRequest();
+        }
+        return;   
+    }
+
+
 }
 
 // 16-bit Little Endian Helpers

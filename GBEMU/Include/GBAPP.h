@@ -8,7 +8,6 @@ class GBAPP {
 private:
     GBEMU           emu;
     bool            isHeadless;
-
     SDL_Window*     window;
     SDL_Renderer*   renderer;
     SDL_Texture*    texture;
@@ -21,8 +20,9 @@ public:
     void powerOff();
     void reset();
 
-    void step();
-    void run();
+    void inputs();  // Renamed from handleEvents
+    void render();  // New dedicated rendering logic
+    void run();     // Updated orchestration
 
     void load(const char* filepath);
 };

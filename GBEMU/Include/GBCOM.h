@@ -8,10 +8,10 @@ class GBEMU;
 
 class GBCOM {
 protected:
-    GBEMU *emu;
+    GBEMU &emu;
 
 public:
-    explicit GBCOM(GBEMU *emu) : emu(emu) {}
+    explicit GBCOM(GBEMU &emu) : emu(emu) {}
     virtual ~GBCOM() {};
 
     virtual void powerOn() = 0;
